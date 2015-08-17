@@ -92,11 +92,15 @@ namespace T3DConvoEditor
                                     {
                                         case "Graph.Items.ItemTextBoxPart":
                                             {
-                                                
+                                                CItemTextBoxPartFields tmpPrtFld = part as CItemTextBoxPartFields;
+                                                ItemTextBoxPart p = new ItemTextBoxPart(tmpPrtFld.Text);
+                                                temp.AddPart(p);
                                             }
                                             break;
                                         default:
-                                            { }
+                                            {
+
+                                            }
                                             break;
                                     }
                                 }
