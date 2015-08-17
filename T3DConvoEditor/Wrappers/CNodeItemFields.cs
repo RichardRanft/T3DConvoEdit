@@ -15,8 +15,6 @@ namespace T3DConvoEditor.Wrappers
     {
         public List<CConnectionFields> Input { get; set; }
         public List<CConnectionFields> Output { get; set; }
-        public String ItemType { get; set; }
-        public String ParentNode { get; set; }
 
         public CNodeItemFields(NodeItem nodeItem, ObjectIDGenerator idGen) : base(nodeItem, idGen)
         {

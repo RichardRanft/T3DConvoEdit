@@ -86,7 +86,18 @@ namespace T3DConvoEditor
                             {
                                 CNodeCompositeItemFields tempFields = item as CNodeCompositeItemFields;
                                 NodeCompositeItem temp = new NodeCompositeItem(tempFields.IOMode);
-
+                                foreach(CItemPartFields part in tempFields.ItemParts)
+                                {
+                                    switch(part.PartType)
+                                    {
+                                        case "Graph.Items.ItemTextBoxPart":
+                                            { }
+                                            break;
+                                        default:
+                                            { }
+                                            break;
+                                    }
+                                }
                                 n.AddItem(temp);
                             }
                             break;

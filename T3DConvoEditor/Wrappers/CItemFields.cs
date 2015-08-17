@@ -15,6 +15,8 @@ namespace T3DConvoEditor.Wrappers
     {
         public String id { get; set; }
         public String name { get; set; }
+        public String ItemType { get; set; }
+        public String ParentNode { get; set; }
         public Graph.NodeIOMode IOMode { get; set; }
 
         internal string Identifier
