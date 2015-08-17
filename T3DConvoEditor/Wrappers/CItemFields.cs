@@ -13,9 +13,10 @@ namespace T3DConvoEditor.Wrappers
 {
     public class CItemFields
     {
+        protected String m_itemType;
         public String id { get; set; }
         public String name { get; set; }
-        public String ItemType { get; set; }
+        public String ItemType { get { return m_itemType; } }
         public String ParentNode { get; set; }
         public Graph.NodeIOMode IOMode { get; set; }
 
@@ -28,6 +29,7 @@ namespace T3DConvoEditor.Wrappers
         {
             bool first = false;
             id = idGen.GetId(item, out first).ToString();
+            m_itemType = item.GetType().ToString();
             name = item.Name;
             if (item.Input.Enabled && item.Output.Enabled)
                 IOMode = NodeIOMode.InOut;

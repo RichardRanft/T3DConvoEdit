@@ -21,9 +21,22 @@ namespace T3DConvoEditor.Wrappers
             NodeCompositeItem item = nodeItem as NodeCompositeItem;
             foreach(ItemPart part in item.Parts)
             {
-                CItemPartFields temp = new CItemPartFields(part, idGen);
-                temp.PartType = part.GetType().ToString();
-                ItemParts.Add(temp);
+                switch(part.GetType().ToString())
+                {
+                    case "Graph.Items.ItemTextBoxPart":
+                        {
+                            ItemTextBoxPart temp = part as ItemTextBoxPart;
+                            CItemTextBoxPartFields tempFields = new CItemTextBoxPartFields(temp, idGen);
+                            ItemParts.Add(tempFields);
+                        }
+                        break;
+                    default:
+                        {
+                            CItemPartFields temp = new CItemPartFields(part, idGen);
+                            ItemParts.Add(temp);
+                        }
+                        break;
+                }
             }
         }
     }

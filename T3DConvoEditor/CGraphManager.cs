@@ -91,7 +91,9 @@ namespace T3DConvoEditor
                                     switch(part.PartType)
                                     {
                                         case "Graph.Items.ItemTextBoxPart":
-                                            { }
+                                            {
+                                                
+                                            }
                                             break;
                                         default:
                                             { }

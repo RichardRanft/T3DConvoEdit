@@ -37,7 +37,6 @@ namespace T3DConvoEditor.Wrappers
                     }
                 }
             }
-            ItemType = nodeItem.GetType().ToString();
             Input = new List<CConnectionFields>();
             Output = new List<CConnectionFields>();
         }
