@@ -69,13 +69,58 @@ namespace T3DConvoEditor
 
         private void rebuildGraph(GraphControl graph)
         {
-            List<CConnectionFields> connections = new List<CConnectionFields>();
+            Dictionary<String, CConnectionFields> inputs = new Dictionary<String, CConnectionFields>();
+            Dictionary<String, CConnectionFields> outputs = new Dictionary<String, CConnectionFields>();
             foreach(CNodeFields node in m_graphFields.Nodes)
             {
                 Node n = new Node(node.Title);
+                foreach(CNodeItemFields item in node.Items)
+                {
+                    foreach (CConnectionFields conn in item.Input)
+                        inputs.Add(conn.id, conn);
+                    foreach (CConnectionFields conn in item.Output)
+                        outputs.Add(conn.id, conn);
+                    switch (item.ItemType)
+                    {
+                        case "Graph.Items.NodeCompositeItem":
+                            {
+                                CNodeCompositeItemFields tempFields = item as CNodeCompositeItemFields;
+                                NodeCompositeItem temp = new NodeCompositeItem(tempFields.IOMode);
 
+                                n.AddItem(temp);
+                            }
+                            break;
+                        case "Graph.Items.NodeTextBoxItem":
+                            {
+                                CNodeTextBoxItemFields tempFields = item as CNodeTextBoxItemFields;
+                                NodeTextBoxItem temp = new NodeTextBoxItem(tempFields.Text, tempFields.IOMode);
+                                
+                                n.AddItem(temp);
+                            }
+                            break;
+                        case "Graph.Items.NodeLabelItem":
+                            {
+                                CNodeLabelItemFields tempFields = item as CNodeLabelItemFields;
+                                NodeLabelItem temp = new NodeLabelItem(tempFields.Text, tempFields.IOMode);
+                                
+                                n.AddItem(temp);
+                            }
+                            break;
+                        default:
+                            {
+                                //NodeItem temp = new NodeItem(item.IOMode);
+                            }
+                            break;
+                    }
+                }
                 graph.AddNode(n);
             }
+            rebuildConnections(inputs, outputs);
+        }
+
+        private void rebuildConnections(Dictionary<string, CConnectionFields> inputs, Dictionary<string, CConnectionFields> outputs)
+        {
+            throw new NotImplementedException();
         }
     }
 }
