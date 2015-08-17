@@ -15,6 +15,7 @@ namespace T3DConvoEditor.Wrappers
     {
         public String id { get; set; }
         public String name { get; set; }
+        public Graph.NodeIOMode IOMode { get; set; }
 
         internal string Identifier
         {
@@ -26,7 +27,14 @@ namespace T3DConvoEditor.Wrappers
             bool first = false;
             id = idGen.GetId(item, out first).ToString();
             name = item.Name;
+            if (item.Input.Enabled && item.Output.Enabled)
+                IOMode = NodeIOMode.InOut;
+            if (item.Input.Enabled && !item.Output.Enabled)
+                IOMode = NodeIOMode.Input;
+            if (!item.Input.Enabled && item.Output.Enabled)
+                IOMode = NodeIOMode.Output;
+            if (!item.Input.Enabled && !item.Output.Enabled)
+                IOMode = NodeIOMode.None;
         }
-
     }
 }
