@@ -115,6 +115,20 @@ namespace T3DConvoEditor.Wrappers
                         foreach (NodeConnection conn in item.Input.Connectors)
                         {
                             CConnectionFields cFields = new CConnectionFields();
+                            bool cfirst = false;
+                            cFields.id = idGen.GetId(cFields, out cfirst).ToString();
+                            cFields.From = conn.From.Item.Name;
+                            cFields.To = conn.To.Item.Name;
+                            idFieldMap[iid].Input.Add(new CConnectionFields());
+                        }
+                    }
+                    if (item.Output.Enabled && item.Output.HasConnection)
+                    {
+                        foreach (NodeConnection conn in item.Output.Connectors)
+                        {
+                            CConnectionFields cFields = new CConnectionFields();
+                            bool cfirst = false;
+                            cFields.id = idGen.GetId(cFields, out cfirst).ToString();
                             cFields.From = conn.From.Item.Name;
                             cFields.To = conn.To.Item.Name;
                             idFieldMap[iid].Input.Add(new CConnectionFields());
