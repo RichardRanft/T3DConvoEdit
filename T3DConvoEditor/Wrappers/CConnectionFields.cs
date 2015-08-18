@@ -13,8 +13,8 @@ namespace T3DConvoEditor.Wrappers
     [Serializable]
     public class CConnectionFields
     {
-        public CNodeItemFields From { get; set; }
-        public CNodeItemFields To { get; set; }
+        public String From { get; set; }
+        public String To { get; set; }
         public String id { get; set; }
         public String name { get; set; }
 

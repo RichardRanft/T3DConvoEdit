@@ -27,6 +27,8 @@ namespace T3DConvoEditor.Wrappers
 
         public CGraphFields(GraphControl control, ObjectIDGenerator idGen)
         {
+            Dictionary<String, CNodeItemFields> idFieldMap = new Dictionary<String, CNodeItemFields>();
+            Dictionary<NodeItem, String> idItemMap = new Dictionary<NodeItem, String>();
             bool first = false;
             id = idGen.GetId(control, out first).ToString();
             name = control.Name;
@@ -44,6 +46,11 @@ namespace T3DConvoEditor.Wrappers
                 foreach(NodeItem item in node.Items)
                 {
                     CNodeItemFields iFields = new CNodeItemFields();
+                    bool ifirst = false;
+                    iFields.id = idGen.GetId(iFields, out ifirst).ToString();
+                    iFields.Input = new List<CConnectionFields>();
+                    iFields.Output = new List<CConnectionFields>();
+                    iFields.ItemParts = new List<CItemPartFields>();
                     iFields.name = item.Name;
                     iFields.ParentNode = nFields.id;
                     if(item.Tag != null)
@@ -56,7 +63,8 @@ namespace T3DConvoEditor.Wrappers
                         iFields.IOMode = NodeIOMode.Output;
                     if (!item.Input.Enabled && !item.Output.Enabled)
                         iFields.IOMode = NodeIOMode.None;
-                    switch(item.GetType().ToString())
+                    iFields.ItemType = item.GetType().ToString();
+                    switch(iFields.ItemType)
                     {
                         case "Graph.Items.NodeTextBoxItem":
                             {
@@ -76,6 +84,8 @@ namespace T3DConvoEditor.Wrappers
                                 foreach(ItemPart part in temp.Parts)
                                 {
                                     CItemPartFields pFields = new CItemPartFields();
+                                    bool pfirst = false;
+                                    pFields.id = idGen.GetId(pFields, out pfirst).ToString();
                                     pFields.name = part.Name;
                                     pFields.PartType = part.GetType().ToString();
                                     switch(pFields.PartType)
@@ -95,6 +105,21 @@ namespace T3DConvoEditor.Wrappers
                             break;
                     }
                     nFields.Items.Add(iFields);
+                }
+                foreach(NodeItem item in node.Items)
+                {
+                    // now get connection info
+                    String iid = idItemMap[item];
+                    if (item.Input.Enabled && item.Input.HasConnection)
+                    {
+                        foreach (NodeConnection conn in item.Input.Connectors)
+                        {
+                            CConnectionFields cFields = new CConnectionFields();
+                            cFields.From = conn.From.Item.Name;
+                            cFields.To = conn.To.Item.Name;
+                            idFieldMap[iid].Input.Add(new CConnectionFields());
+                        }
+                    }
                 }
                 Nodes.Add(nFields);
             }

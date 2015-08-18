@@ -20,12 +20,16 @@ namespace T3DConvoEditor
         private JsonSerializer m_serializer;
         private ObjectIDGenerator m_idGen;
         private CGraphFields m_graphFields;
+        private Dictionary<String, NodeItem> m_itemMap;
+        private Dictionary<String, String> m_idNameMap;
 
         public CGraphManager(CLog log)
         {
             m_log = log;
             m_idGen = new ObjectIDGenerator();
             m_serializer = new JsonSerializer();
+            m_itemMap = new Dictionary<String, NodeItem>();
+            m_idNameMap = new Dictionary<String, String>();
         }
 
         public void SaveGraph(GraphControl graph, String filename)
@@ -76,10 +80,14 @@ namespace T3DConvoEditor
             Dictionary<String, CConnectionFields> outputs = new Dictionary<String, CConnectionFields>();
             foreach(CNodeFields node in m_graphFields.Nodes)
             {
+                m_idNameMap.Add(node.id, node.name);
                 Node n = new Node(node.Title);
                 n.Location = node.Location;
                 foreach(CNodeItemFields item in node.Items)
                 {
+                    String name = "";
+                    if(item.name != null)
+                        name = item.name;
                     if (item.Input != null)
                     {
                         foreach (CConnectionFields conn in item.Input)
@@ -101,6 +109,7 @@ namespace T3DConvoEditor
                         case "Graph.Items.NodeCompositeItem":
                             {
                                 NodeCompositeItem temp = new NodeCompositeItem(item.IOMode);
+                                temp.Name = name;
                                 foreach(CItemPartFields part in item.ItemParts)
                                 {
                                     switch(part.PartType)
@@ -117,18 +126,26 @@ namespace T3DConvoEditor
                                             break;
                                     }
                                 }
+                                m_itemMap.Add(item.id, temp);
+                                m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
                             }
                             break;
                         case "Graph.Items.NodeTextBoxItem":
                             {
                                 NodeTextBoxItem temp = new NodeTextBoxItem(item.Text, item.IOMode);
+                                temp.Name = name;
+                                m_itemMap.Add(item.id, temp);
+                                m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
                             }
                             break;
                         case "Graph.Items.NodeLabelItem":
                             {
                                 NodeLabelItem temp = new NodeLabelItem(item.Text, item.IOMode);
+                                temp.Name = name;
+                                m_itemMap.Add(item.id, temp);
+                                m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
                             }
                             break;
