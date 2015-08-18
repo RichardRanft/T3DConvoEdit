@@ -52,16 +52,19 @@ namespace T3DConvoEditor
 
         public void LoadGraph(GraphControl graph, String filename)
         {
+            graph.Controls.Clear();
             try
             {
                 using (StreamReader sr = new StreamReader(filename))
                 {
-                    m_graphFields = (CGraphFields)m_serializer.Deserialize(sr, typeof(CGraphFields));
+                    var tempFields = (CGraphFields)m_serializer.Deserialize(sr, typeof(CGraphFields));
+                    m_graphFields = tempFields;
                 }
             }
             catch(Exception ex)
             {
                 m_log.WriteLine("Could not load file " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                return;
             }
             rebuildGraph(graph);
             m_log.WriteLine("Loaded " + filename);
@@ -74,32 +77,42 @@ namespace T3DConvoEditor
             foreach(CNodeFields node in m_graphFields.Nodes)
             {
                 Node n = new Node(node.Title);
+                n.Location = node.Location;
                 foreach(CNodeItemFields item in node.Items)
                 {
-                    foreach (CConnectionFields conn in item.Input)
-                        inputs.Add(conn.id, conn);
-                    foreach (CConnectionFields conn in item.Output)
-                        outputs.Add(conn.id, conn);
+                    if (item.Input != null)
+                    {
+                        foreach (CConnectionFields conn in item.Input)
+                        {
+                            if (!inputs.ContainsKey(conn.id))
+                                inputs.Add(conn.id, conn);
+                        }
+                    }
+                    if (item.Output != null)
+                    {
+                        foreach (CConnectionFields conn in item.Output)
+                        {
+                            if (!outputs.ContainsKey(conn.id))
+                                outputs.Add(conn.id, conn);
+                        }
+                    }
                     switch (item.ItemType)
                     {
                         case "Graph.Items.NodeCompositeItem":
                             {
-                                CNodeCompositeItemFields tempFields = item as CNodeCompositeItemFields;
-                                NodeCompositeItem temp = new NodeCompositeItem(tempFields.IOMode);
-                                foreach(CItemPartFields part in tempFields.ItemParts)
+                                NodeCompositeItem temp = new NodeCompositeItem(item.IOMode);
+                                foreach(CItemPartFields part in item.ItemParts)
                                 {
                                     switch(part.PartType)
                                     {
                                         case "Graph.Items.ItemTextBoxPart":
                                             {
-                                                CItemTextBoxPartFields tmpPrtFld = part as CItemTextBoxPartFields;
-                                                ItemTextBoxPart p = new ItemTextBoxPart(tmpPrtFld.Text);
+                                                ItemTextBoxPart p = new ItemTextBoxPart(part.Text);
                                                 temp.AddPart(p);
                                             }
                                             break;
                                         default:
                                             {
-
                                             }
                                             break;
                                     }
@@ -109,17 +122,13 @@ namespace T3DConvoEditor
                             break;
                         case "Graph.Items.NodeTextBoxItem":
                             {
-                                CNodeTextBoxItemFields tempFields = item as CNodeTextBoxItemFields;
-                                NodeTextBoxItem temp = new NodeTextBoxItem(tempFields.Text, tempFields.IOMode);
-                                
+                                NodeTextBoxItem temp = new NodeTextBoxItem(item.Text, item.IOMode);
                                 n.AddItem(temp);
                             }
                             break;
                         case "Graph.Items.NodeLabelItem":
                             {
-                                CNodeLabelItemFields tempFields = item as CNodeLabelItemFields;
-                                NodeLabelItem temp = new NodeLabelItem(tempFields.Text, tempFields.IOMode);
-                                
+                                NodeLabelItem temp = new NodeLabelItem(item.Text, item.IOMode);
                                 n.AddItem(temp);
                             }
                             break;
@@ -137,7 +146,7 @@ namespace T3DConvoEditor
 
         private void rebuildConnections(Dictionary<string, CConnectionFields> inputs, Dictionary<string, CConnectionFields> outputs)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

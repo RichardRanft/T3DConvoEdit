@@ -190,7 +190,11 @@ namespace T3DConvoEditor
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if(ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                CGraphManager graphman = new CGraphManager(m_log);
+                graphman.LoadGraph(graphCtrl, ofdOpenFile.FileName);
+            }
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)

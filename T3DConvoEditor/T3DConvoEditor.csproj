@@ -39,8 +39,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="BasicSettings, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\BasicSettings\BasicSettings\bin\Release\BasicSettings.dll</HintPath>
+      <HintPath>..\packages\BasicSettings.1.0.0.5\lib\net45\BasicSettings.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Graph, Version=1.0.0.15, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,13 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wrappers\CConnectionFields.cs" />
     <Compile Include="Wrappers\CGraphFields.cs" />
-    <Compile Include="Wrappers\CItemFields.cs" />
     <Compile Include="Wrappers\CItemPartFields.cs" />
-    <Compile Include="Wrappers\CNodeCompositeItemFields.cs" />
     <Compile Include="Wrappers\CNodeFields.cs" />
     <Compile Include="Wrappers\CNodeItemFields.cs" />
-    <Compile Include="Wrappers\CNodeLabelItemFields.cs" />
-    <Compile Include="Wrappers\CNodeTextBoxItemFields.cs" />
     <None Include="RTG.ico" />
     <EmbeddedResource Include="FNodeEdit.resx">
       <DependentUpon>FNodeEdit.cs</DependentUpon>

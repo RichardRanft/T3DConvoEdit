@@ -23,13 +23,6 @@ namespace T3DConvoEditor.Wrappers
             get { return String.IsNullOrWhiteSpace(id) ? name : id; }
         }
 
-        public CConnectionFields(NodeConnection conn, ObjectIDGenerator idGen)
-        {
-            bool first = false;
-            id = idGen.GetId(conn, out first).ToString();
-            name = conn.Name;
-            From = new CNodeItemFields(conn.From.Item, idGen);
-            To = new CNodeItemFields(conn.To.Item, idGen);
-        }
+        public CConnectionFields() { }
     }
 }

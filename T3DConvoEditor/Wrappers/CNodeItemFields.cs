@@ -11,34 +11,24 @@ using System.Runtime.Serialization;
 namespace T3DConvoEditor.Wrappers
 {
     [Serializable]
-    public class CNodeItemFields : CItemFields
+    public class CNodeItemFields
     {
         public List<CConnectionFields> Input { get; set; }
         public List<CConnectionFields> Output { get; set; }
+        public String id { get; set; }
+        public String name { get; set; }
+        public String ItemType { get; set; }
+        public String ParentNode { get; set; }
+        public Graph.NodeIOMode IOMode { get; set; }
+        public String Text { get; set; }
+        public List<CItemPartFields> ItemParts { get; set; }
+        public String Tag { get; set; }
 
-        public CNodeItemFields(NodeItem nodeItem, ObjectIDGenerator idGen) : base(nodeItem, idGen)
+        public CNodeItemFields()
         {
-            bool first = false;
-            id = idGen.GetId(nodeItem, out first).ToString();
-            name = nodeItem.Name;
-            foreach(NodeItem item in nodeItem.Node.Items)
-            {
-                if (item.Name == "NodeName")
-                {
-                    if(item.GetType().ToString() == "Graph.Items.NodeLabelItem")
-                    {
-                        NodeLabelItem temp = item as NodeLabelItem;
-                        ParentNode = temp.Text;
-                    }
-                    if (item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
-                    {
-                        NodeTextBoxItem temp = item as NodeTextBoxItem;
-                        ParentNode = temp.Text;
-                    }
-                }
-            }
-            Input = new List<CConnectionFields>();
-            Output = new List<CConnectionFields>();
+            List<CConnectionFields> Input = new List<CConnectionFields>();
+            List<CConnectionFields> Output = new List<CConnectionFields>();
+            List<CItemPartFields> ItemParts = new List<CItemPartFields>();
         }
     }
 }
