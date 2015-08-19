@@ -58,14 +58,7 @@ namespace T3DConvoEditor.Wrappers
                     iFields.ParentNode = nFields.id;
                     if(item.Tag != null)
                         iFields.Tag = item.Tag.GetType().ToString();
-                    if(item.Input.Enabled && item.Output.Enabled)
-                        iFields.IOMode = NodeIOMode.InOut;
-                    if(item.Input.Enabled && !item.Output.Enabled)
-                        iFields.IOMode = NodeIOMode.Input;
-                    if(!item.Input.Enabled && item.Output.Enabled)
-                        iFields.IOMode = NodeIOMode.Output;
-                    if (!item.Input.Enabled && !item.Output.Enabled)
-                        iFields.IOMode = NodeIOMode.None;
+                    iFields.IOMode = getIOMode(item);
                     iFields.ItemType = item.GetType().ToString();
                     switch(iFields.ItemType)
                     {
@@ -222,6 +215,19 @@ namespace T3DConvoEditor.Wrappers
                 }
                 Nodes.Add(nFields);
             }
+        }
+
+        private NodeIOMode getIOMode(NodeItem item)
+        {
+            bool input = item.Input.Enabled;
+            bool output = item.Output.Enabled;
+            if (input && output)
+                return NodeIOMode.InOut;
+            else if (input)
+                return NodeIOMode.Input;
+            else if (output)
+                return NodeIOMode.Output;
+            return NodeIOMode.None;
         }
     }
 }
