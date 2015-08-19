@@ -48,10 +48,13 @@ namespace T3DConvoEditor.Wrappers
                     CNodeItemFields iFields = new CNodeItemFields();
                     bool ifirst = false;
                     iFields.id = idGen.GetId(iFields, out ifirst).ToString();
+                    String fName = nFields.name + ":" + (item.Name == null ? iFields.id : item.Name);
+                    idFieldMap.Add(fName, iFields);
+                    idItemMap.Add(item, fName);
                     iFields.Input = new List<CConnectionFields>();
                     iFields.Output = new List<CConnectionFields>();
                     iFields.ItemParts = new List<CItemPartFields>();
-                    iFields.name = item.Name;
+                    iFields.name = fName;
                     iFields.ParentNode = nFields.id;
                     if(item.Tag != null)
                         iFields.Tag = item.Tag.GetType().ToString();
@@ -117,9 +120,50 @@ namespace T3DConvoEditor.Wrappers
                             CConnectionFields cFields = new CConnectionFields();
                             bool cfirst = false;
                             cFields.id = idGen.GetId(cFields, out cfirst).ToString();
-                            cFields.From = conn.From.Item.Name;
-                            cFields.To = conn.To.Item.Name;
-                            idFieldMap[iid].Input.Add(new CConnectionFields());
+                            Node nFrom = conn.From.Node;
+                            String fromName = "";
+                            foreach(NodeItem nItem in nFrom.Items)
+                            {
+                                if(nItem.Name == "NodeName")
+                                {
+                                    if(nItem.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                                    {
+                                        NodeTextBoxItem i = nItem as NodeTextBoxItem;
+                                        fromName = i.Text;
+                                    }
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                                    {
+                                        NodeLabelItem i = nItem as NodeLabelItem;
+                                        fromName = i.Text;
+                                    }
+                                }
+                            }
+                            Node nTo = conn.To.Node;
+                            String toName = "";
+                            foreach (NodeItem nItem in nTo.Items)
+                            {
+                                if (nItem.Name == "NodeName")
+                                {
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                                    {
+                                        NodeTextBoxItem i = nItem as NodeTextBoxItem;
+                                        toName = i.Text;
+                                    }
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                                    {
+                                        NodeLabelItem i = nItem as NodeLabelItem;
+                                        toName = i.Text;
+                                    }
+                                }
+                            }
+                            if (conn.Tag != null)
+                                cFields.Tag = conn.Tag.GetType().ToString();
+                            else if (item.Tag != null)
+                                cFields.Tag = item.Tag.GetType().ToString();
+                            cFields.name = (conn.Name == null ? cFields.id : conn.Name);
+                            cFields.From = fromName + ":" + conn.From.Item.Name;
+                            cFields.To = toName + ":" + conn.To.Item.Name;
+                            idFieldMap[iid].Input.Add(cFields);
                         }
                     }
                     if (item.Output.Enabled && item.Output.HasConnection)
@@ -129,9 +173,50 @@ namespace T3DConvoEditor.Wrappers
                             CConnectionFields cFields = new CConnectionFields();
                             bool cfirst = false;
                             cFields.id = idGen.GetId(cFields, out cfirst).ToString();
-                            cFields.From = conn.From.Item.Name;
-                            cFields.To = conn.To.Item.Name;
-                            idFieldMap[iid].Input.Add(new CConnectionFields());
+                            Node nFrom = conn.From.Node;
+                            String fromName = "";
+                            foreach (NodeItem nItem in nFrom.Items)
+                            {
+                                if (nItem.Name == "NodeName")
+                                {
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                                    {
+                                        NodeTextBoxItem i = nItem as NodeTextBoxItem;
+                                        fromName = i.Text;
+                                    }
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                                    {
+                                        NodeLabelItem i = nItem as NodeLabelItem;
+                                        fromName = i.Text;
+                                    }
+                                }
+                            }
+                            Node nTo = conn.To.Node;
+                            String toName = "";
+                            foreach (NodeItem nItem in nTo.Items)
+                            {
+                                if (nItem.Name == "NodeName")
+                                {
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                                    {
+                                        NodeTextBoxItem i = nItem as NodeTextBoxItem;
+                                        toName = i.Text;
+                                    }
+                                    if (nItem.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                                    {
+                                        NodeLabelItem i = nItem as NodeLabelItem;
+                                        toName = i.Text;
+                                    }
+                                }
+                            }
+                            if (conn.Tag != null)
+                                cFields.Tag = conn.Tag.GetType().ToString();
+                            else if (item.Tag != null)
+                                cFields.Tag = item.Tag.GetType().ToString();
+                            cFields.name = (conn.Name == null ? cFields.id : conn.Name);
+                            cFields.From = fromName + ":" + conn.From.Item.Name;
+                            cFields.To = toName + ":" + conn.To.Item.Name;
+                            idFieldMap[iid].Input.Add(cFields);
                         }
                     }
                 }

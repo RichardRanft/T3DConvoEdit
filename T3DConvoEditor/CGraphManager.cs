@@ -56,7 +56,6 @@ namespace T3DConvoEditor
 
         public void LoadGraph(GraphControl graph, String filename)
         {
-            graph.Controls.Clear();
             try
             {
                 using (StreamReader sr = new StreamReader(filename))
@@ -87,7 +86,7 @@ namespace T3DConvoEditor
                 {
                     String name = "";
                     if(item.name != null)
-                        name = item.name;
+                        name = item.name.Split(':')[1];
                     if (item.Input != null)
                     {
                         foreach (CConnectionFields conn in item.Input)
@@ -126,6 +125,8 @@ namespace T3DConvoEditor
                                             break;
                                     }
                                 }
+                                if (item.Tag != null)
+                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
@@ -135,6 +136,8 @@ namespace T3DConvoEditor
                             {
                                 NodeTextBoxItem temp = new NodeTextBoxItem(item.Text, item.IOMode);
                                 temp.Name = name;
+                                if (item.Tag != null)
+                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
@@ -144,6 +147,8 @@ namespace T3DConvoEditor
                             {
                                 NodeLabelItem temp = new NodeLabelItem(item.Text, item.IOMode);
                                 temp.Name = name;
+                                if (item.Tag != null)
+                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
@@ -158,12 +163,86 @@ namespace T3DConvoEditor
                 }
                 graph.AddNode(n);
             }
-            rebuildConnections(inputs, outputs);
+            rebuildConnections(graph, inputs, outputs);
         }
 
-        private void rebuildConnections(Dictionary<string, CConnectionFields> inputs, Dictionary<string, CConnectionFields> outputs)
+        private void rebuildConnections(GraphControl graph, Dictionary<string, CConnectionFields> inputs, Dictionary<string, CConnectionFields> outputs)
         {
-            //throw new NotImplementedException();
+            foreach(String key in inputs.Keys)
+            {
+                CConnectionFields inputFields = inputs[key];
+                NodeConnection conn = new NodeConnection();
+                conn.Tag = TagFactory.GetTagObject(inputFields.Tag);
+                String[] fromNameParts = inputFields.From.Split(':');
+                String fromNodeName = fromNameParts[0];
+                String fromItemName = fromNameParts[1];
+                String[] toNameParts = inputFields.To.Split(':');
+                String toNodeName = toNameParts[0];
+                String toItemName = toNameParts[1];
+                Node fromNode = findNode(graph, fromNodeName);
+                NodeItem fromItem = findItem(fromNode, fromItemName);
+                Node toNode = findNode(graph, toNodeName);
+                NodeItem toItem = findItem(toNode, toItemName);
+                graph.Connect(fromItem.Input, toItem.Input);
+                conn.FromItem = fromItemName;
+                conn.ToItem = toItemName;
+            }
+            foreach (String key in outputs.Keys)
+            {
+                CConnectionFields outputFields = outputs[key];
+                NodeConnection conn = new NodeConnection();
+                conn.Tag = TagFactory.GetTagObject(outputFields.Tag);
+                String[] fromNameParts = outputFields.From.Split(':');
+                String fromNodeName = fromNameParts[0];
+                String fromItemName = fromNameParts[1];
+                String[] toNameParts = outputFields.To.Split(':');
+                String toNodeName = toNameParts[0];
+                String toItemName = toNameParts[1];
+                Node fromNode = findNode(graph, fromNodeName);
+                NodeItem fromItem = findItem(fromNode, fromItemName);
+                Node toNode = findNode(graph, toNodeName);
+                NodeItem toItem = findItem(toNode, toItemName);
+                graph.Connect(fromItem.Output, toItem.Output);
+                conn.FromItem = fromItemName;
+                conn.ToItem = toItemName;
+            }
+            graph.Refresh();
+        }
+
+        private Node findNode(GraphControl ctrl, String name)
+        {
+            foreach(Node n in ctrl.Nodes)
+            {
+                foreach (NodeItem i in n.Items)
+                {
+                    if (i.Name == "NodeName")
+                    {
+                        if(i.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                        {
+                            NodeTextBoxItem item = i as NodeTextBoxItem;
+                            if (item.Text == name)
+                                return n;
+                        }
+                        if(i.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                        {
+                            NodeLabelItem item = i as NodeLabelItem;
+                            if (item.Text == name)
+                                return n;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private NodeItem findItem(Node node, String name)
+        {
+            foreach(NodeItem i in node.Items)
+            {
+                if (i.Name == name)
+                    return i;
+            }
+            return null;
         }
     }
 }

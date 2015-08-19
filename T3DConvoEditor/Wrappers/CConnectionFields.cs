@@ -16,6 +16,7 @@ namespace T3DConvoEditor.Wrappers
         public String From { get; set; }
         public String To { get; set; }
         public String id { get; set; }
+        public String Tag { get; set; }
         public String name { get; set; }
 
         internal string Identifier

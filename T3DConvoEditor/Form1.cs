@@ -185,6 +185,7 @@ namespace T3DConvoEditor
             {
                 CGraphManager graphman = new CGraphManager(m_log);
                 graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
+                m_dirty = false;
             }
         }
 
@@ -192,8 +193,14 @@ namespace T3DConvoEditor
         {
             if(ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                List<Node> nodeList = new List<Node>();
+                foreach (Node n in graphCtrl.Nodes)
+                    nodeList.Add(n);
+                graphCtrl.RemoveNodes(nodeList);
+                graphCtrl.Refresh();
                 CGraphManager graphman = new CGraphManager(m_log);
                 graphman.LoadGraph(graphCtrl, ofdOpenFile.FileName);
+                m_dirty = false;
             }
         }
 
@@ -305,9 +312,62 @@ namespace T3DConvoEditor
             String defFileName = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxConvoName.Text = defFileName.Remove(defFileName.LastIndexOf('.'));
         }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(m_dirty)
+            {
+                if(MessageBox.Show("Save before starting a new conversation?", "Save", MessageBoxButtons.YesNoCancel) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
+                    {
+                        CGraphManager graphman = new CGraphManager(m_log);
+                        graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
+                    }
+                }
+            }
+            List<Node> nodeList = new List<Node>();
+            foreach (Node n in graphCtrl.Nodes)
+                nodeList.Add(n);
+            graphCtrl.RemoveNodes(nodeList);
+            graphCtrl.Refresh();
+            m_dirty = false;
+        }
     }
 
     // Friendly tag def
+    public static class TagFactory
+    {
+        public static object GetTagObject(String typeName)
+        {
+            switch(typeName)
+            {
+                case "T3DConvoEditor.CheckboxClass":
+                    return TagType.CHECKBOX;
+                case "T3DConvoEditor.ColorClass":
+                    return TagType.COLOR;
+                case "T3DConvoEditor.DropDownClass":
+                    return TagType.DROPDOWN;
+                case "T3DConvoEditor.ImageClass":
+                    return TagType.IMAGE;
+                case "T3DConvoEditor.LabelClass":
+                    return TagType.LABEL;
+                case "T3DConvoEditor.NumericSliderClass":
+                    return TagType.NUMERICSLIDER;
+                case "T3DConvoEditor.SliderClass":
+                    return TagType.SLIDER;
+                case "T3DConvoEditor.TextBoxClass":
+                    return TagType.TEXTBOX;
+                case "T3DConvoEditor.NodeTitleClass":
+                    return TagType.NODETITLE;
+                case "T3DConvoEditor.CompositeClass":
+                    return TagType.COMPOSITE;
+                default:
+                    return null;
+            }
+        }
+    }
+
     [Serializable]
     public static class TagType
     {
