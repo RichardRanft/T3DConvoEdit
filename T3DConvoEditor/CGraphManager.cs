@@ -173,6 +173,7 @@ namespace T3DConvoEditor
                 CConnectionFields inputFields = inputs[key];
                 NodeConnection conn = new NodeConnection();
                 conn.Tag = TagFactory.GetTagObject(inputFields.Tag);
+                conn.Name = inputFields.name;
                 String[] fromNameParts = inputFields.From.Split(':');
                 String fromNodeName = fromNameParts[0];
                 String fromItemName = fromNameParts[1];
@@ -192,6 +193,7 @@ namespace T3DConvoEditor
                 CConnectionFields outputFields = outputs[key];
                 NodeConnection conn = new NodeConnection();
                 conn.Tag = TagFactory.GetTagObject(outputFields.Tag);
+                conn.Name = outputFields.name;
                 String[] fromNameParts = outputFields.From.Split(':');
                 String fromNodeName = fromNameParts[0];
                 String fromItemName = fromNameParts[1];
