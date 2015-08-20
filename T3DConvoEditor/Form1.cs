@@ -122,6 +122,7 @@ namespace T3DConvoEditor
             inputLabel.Name = nodeName + "_in";
             node.AddItem(inputLabel);
             var editNode = new NodeLabelItem("Click Here To Edit Output List");
+            editNode.Name = "EditNodeItem";
             editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
             node.AddItem(editNode);
             NodeTextBoxItem firstButton = new NodeTextBoxItem("Enter player text", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
@@ -168,6 +169,11 @@ namespace T3DConvoEditor
             return count;
         }
 
+        public EventHandler<NodeItemEventArgs> GetEditMouseHandler()
+        {
+            return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+        }
+
         private void editOutputListNode_MouseDown(object sender, NodeItemEventArgs e)
         {
             if(e.Item != null)
@@ -181,7 +187,7 @@ namespace T3DConvoEditor
         {
             if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
             {
-                CGraphManager graphman = new CGraphManager(m_log);
+                CGraphManager graphman = new CGraphManager(this, m_log);
                 graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
                 m_dirty = false;
             }
@@ -196,7 +202,7 @@ namespace T3DConvoEditor
                     nodeList.Add(n);
                 graphCtrl.RemoveNodes(nodeList);
                 graphCtrl.Refresh();
-                CGraphManager graphman = new CGraphManager(m_log);
+                CGraphManager graphman = new CGraphManager(this, m_log);
                 graphman.LoadGraph(graphCtrl, ofdOpenFile.FileName);
                 m_dirty = false;
             }
@@ -320,7 +326,7 @@ namespace T3DConvoEditor
                 {
                     if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
                     {
-                        CGraphManager graphman = new CGraphManager(m_log);
+                        CGraphManager graphman = new CGraphManager(this, m_log);
                         graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
                     }
                 }

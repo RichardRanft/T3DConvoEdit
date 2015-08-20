@@ -20,12 +20,14 @@ namespace T3DConvoEditor
         private JsonSerializer m_serializer;
         private ObjectIDGenerator m_idGen;
         private CGraphFields m_graphFields;
+        private Form1 m_parentForm;
         private Dictionary<String, NodeItem> m_itemMap;
         private Dictionary<String, String> m_idNameMap;
 
-        public CGraphManager(CLog log)
+        public CGraphManager(Form1 parent, CLog log)
         {
             m_log = log;
+            m_parentForm = parent;
             m_idGen = new ObjectIDGenerator();
             m_serializer = new JsonSerializer();
             m_itemMap = new Dictionary<String, NodeItem>();
@@ -151,6 +153,8 @@ namespace T3DConvoEditor
                                     temp.Tag = TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
+                                if (temp.Name == "EditNodeItem")
+                                    temp.Clicked += m_parentForm.GetEditMouseHandler();
                                 n.AddItem(temp);
                             }
                             break;
