@@ -42,7 +42,6 @@ namespace T3DConvoEditor
             m_preferences.Settings = m_settings;
 
             m_nodeEdit = new FNodeEdit();
-            //m_nodeEdit.ConvoNodeStart = int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
             m_nodeEdit.MaxOutputs = int.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
             m_nodeEdit.Text = "Edit Conversation Selection List";
             m_log.WriteLine("T3D Conversation Editor started");
@@ -68,7 +67,6 @@ namespace T3DConvoEditor
             pnlGraph.Controls.Add(graphCtrl);
 
 			_Plugins = new Dictionary<string, IPlugin>();
-			//ICollection<IPlugin> plugins = PluginLoader.LoadPlugins("Plugins");
 			ICollection<IPlugin> plugins = GenericPluginLoader<IPlugin>.LoadPlugins("Plugins");
             foreach (var item in plugins)
             {
@@ -340,7 +338,7 @@ namespace T3DConvoEditor
         }
     }
 
-    // Friendly tag def
+    // translation tool for deserialization-time recovery of object types.
     public static class TagFactory
     {
         public static object GetTagObject(String typeName)
@@ -373,6 +371,7 @@ namespace T3DConvoEditor
         }
     }
 
+    // Friendly tag def
     [Serializable]
     public static class TagType
     {
