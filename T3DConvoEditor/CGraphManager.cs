@@ -184,7 +184,7 @@ namespace T3DConvoEditor
                 NodeItem fromItem = findItem(fromNode, fromItemName);
                 Node toNode = findNode(graph, toNodeName);
                 NodeItem toItem = findItem(toNode, toItemName);
-                graph.Connect(fromItem.Input, toItem.Input);
+                graph.Connect(fromItem.Output, toItem.Input);
                 conn.FromItem = fromItemName;
                 conn.ToItem = toItemName;
             }
@@ -204,7 +204,7 @@ namespace T3DConvoEditor
                 NodeItem fromItem = findItem(fromNode, fromItemName);
                 Node toNode = findNode(graph, toNodeName);
                 NodeItem toItem = findItem(toNode, toItemName);
-                graph.Connect(fromItem.Output, toItem.Output);
+                graph.Connect(fromItem.Output, toItem.Input);
                 conn.FromItem = fromItemName;
                 conn.ToItem = toItemName;
             }
