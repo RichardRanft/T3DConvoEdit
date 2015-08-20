@@ -38,7 +38,7 @@ namespace T3DConvoEditor.Wrappers
             {
                 CNodeFields nFields = new CNodeFields();
                 nFields.Title = node.Title;
-                nFields.name = node.Title;
+                nFields.name = getNodeName(node);
                 nFields.Location = node.Location;
                 nFields.Items = new List<CNodeItemFields>();
                 bool nfirst = false;
@@ -215,6 +215,30 @@ namespace T3DConvoEditor.Wrappers
                 }
                 Nodes.Add(nFields);
             }
+        }
+
+        private String getNodeName(Node node)
+        {
+            String name = "";
+            foreach(NodeItem item in node.Items)
+            {
+                if(item.Name == "NodeName")
+                {
+                    if(item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                    {
+                        NodeTextBoxItem i = item as NodeTextBoxItem;
+                        name = i.Text;
+                        break;
+                    }
+                    if (item.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                    {
+                        NodeLabelItem i = item as NodeLabelItem;
+                        name = i.Text;
+                        break;
+                    }
+                }
+            }
+            return name;
         }
 
         private NodeIOMode getIOMode(NodeItem item)
