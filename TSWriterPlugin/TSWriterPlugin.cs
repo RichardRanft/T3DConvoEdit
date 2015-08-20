@@ -46,6 +46,11 @@ namespace TSWriterPlugin
             writer.WriteScript(filename, (List<Node>)m_graphCtrl.Nodes);
         }
 
+        public System.String GetDefaultExtension()
+        {
+            return m_settings.Attributes["[Default]"]["DEFAULTEXT"];
+        }
+
         class CTorquescriptWriter
         {
             private CLog m_log;

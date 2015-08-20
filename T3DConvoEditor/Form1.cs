@@ -84,9 +84,7 @@ namespace T3DConvoEditor
                 System.Windows.Forms.DialogResult save = MessageBox.Show("Save before exiting?", "Save", MessageBoxButtons.YesNo);
                 if (save == System.Windows.Forms.DialogResult.Yes)
                 {
-                    exportGraph();
-                    if (m_dirty)
-                        return;
+                    saveToolStripMenuItem_Click(sender, e);
                 }
                 else
                     m_dirty = false;
@@ -206,24 +204,25 @@ namespace T3DConvoEditor
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            exportGraph();
-        }
-
-        private void exportGraph()
-        {
             if (validateGraph())
             {
-                
-                if(_Plugins.ContainsKey("TSWriterPlugin"))
+                if (_Plugins.ContainsKey("TSWriterPlugin"))
                 {
                     IPlugin plugin = _Plugins["TSWriterPlugin"];
                     plugin.Initialize(graphCtrl, m_log);
-                    String filename = m_settings.Attributes["[Default]"]["OUTPUTFOLDER"] + "\\" + tbxConvoName.Text + ".cs";
-                    plugin.Export(filename);
+                    sfdExportScript.DefaultExt = plugin.GetDefaultExtension();
+                    sfdExportScript.InitialDirectory = m_settings.Attributes["[Default]"]["OUTPUTFOLDER"];
+                    sfdExportScript.FileName = tbxConvoName.Text + ".cs";
+                    sfdExportScript.Filter = "TorqueScript file|*.cs";
+                    if(sfdExportScript.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        exportGraph(plugin, sfdExportScript.FileName);
                 }
-                //CTorquescriptWriter writer = new CTorquescriptWriter(m_log, m_settings);
-                //m_dirty = !writer.WriteScript(tbxConvoName.Text, (List<Node>)graphCtrl.Nodes); // WriteScript() returns true on success, false on failure
             }
+        }
+
+        private void exportGraph(IPlugin plugin, String filename)
+        {
+            plugin.Export(filename);
         }
 
         private bool validateGraph()

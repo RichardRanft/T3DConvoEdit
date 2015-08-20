@@ -8,6 +8,7 @@ namespace PluginContracts
 	{
 		string Name { get; }
 		void Export(System.String filename);
+        System.String GetDefaultExtension();
         void Initialize(GraphControl ctrl, CLog log);
 	}
 }
