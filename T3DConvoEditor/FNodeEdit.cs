@@ -52,6 +52,7 @@ namespace T3DConvoEditor
             if (items.Count < (MaxOutputs + ConvoNodeStart))
             {
                 NodeCompositeItem newNode = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                newNode.Name = "button_" + findUnusedButtonIndex().ToString().PadLeft(2, '0');
                 ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
                 btnText.Name = "ConvText";
                 ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
@@ -60,7 +61,6 @@ namespace T3DConvoEditor
                 newNode.AddPart(btnMethod);
                 newNode.Clicked += MainForm.GetConvMouseHandler();
                 NodeTextBoxItem nodeName = (NodeTextBoxItem)items[0];
-                newNode.Name = nodeName.Text + "_btn" + findUnusedButtonIndex().ToString().PadLeft(2, '0');
                 EditingNode.AddItem(newNode);
                 lbxChoiceNodes.Items.Clear();
                 if (items.Count > ConvoNodeStart)

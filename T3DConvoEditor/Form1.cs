@@ -25,6 +25,7 @@ namespace T3DConvoEditor
         private FNodeEdit m_nodeEdit;
         private FConvPartEdit m_partEdit;
         private FPreferences m_preferences;
+        private FPluginPage m_plugins;
         private String m_saveDefaultPath;
         private Dictionary<string, IPlugin> _Plugins;
 
@@ -37,7 +38,6 @@ namespace T3DConvoEditor
             m_settings.LoadSettings();
 
             InitializeComponent();
-            init();
 
             m_preferences = new FPreferences(m_settings);
             m_preferences.Settings = m_settings;
@@ -47,6 +47,7 @@ namespace T3DConvoEditor
             m_nodeEdit.Text = "Edit Conversation Selection List";
             m_nodeEdit.MainForm = this;
             m_partEdit = new FConvPartEdit();
+            m_plugins = new FPluginPage(m_log);
             m_log.WriteLine("T3D Conversation Editor started");
 
             String homeFolder = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
@@ -58,6 +59,7 @@ namespace T3DConvoEditor
 
             String defFileName = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxConvoName.Text = defFileName.Remove(defFileName.LastIndexOf('.'));
+            init();
         }
 
         private void init()
@@ -69,13 +71,7 @@ namespace T3DConvoEditor
             pnlGraph.Bounds = graphBounds;
             pnlGraph.Controls.Add(graphCtrl);
 
-			_Plugins = new Dictionary<string, IPlugin>();
-			ICollection<IPlugin> plugins = GenericPluginLoader<IPlugin>.LoadPlugins("Plugins");
-            foreach (var item in plugins)
-            {
-                _Plugins.Add(item.Name, item);
-                m_log.WriteLine("Loaded " + item.Name);
-            }
+            _Plugins = m_plugins.Plugins;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -361,6 +357,11 @@ namespace T3DConvoEditor
             graphCtrl.RemoveNodes(nodeList);
             graphCtrl.Refresh();
             m_dirty = false;
+        }
+
+        private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_plugins.ShowDialog();
         }
     }
 

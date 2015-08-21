@@ -86,6 +86,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FPluginPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FPluginPage.Designer.cs">
+      <DependentUpon>FPluginPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="FPreferences.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FPluginPage.resx">
+      <DependentUpon>FPluginPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FPreferences.resx">
       <DependentUpon>FPreferences.cs</DependentUpon>

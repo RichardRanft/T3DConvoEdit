@@ -175,7 +175,7 @@ namespace TSWriterPlugin
                 int outNodeCount = items.Count - int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
                 int start = int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
                 NodeTextBoxItem nodeText = (NodeTextBoxItem)items[1];
-                script += "\t\t\tdisplayText = \"" + nodeText.Text + "\";" + Environment.NewLine;
+                script += "\t\t\tdisplayText = \"" + conditionText(nodeText.Text) + "\";" + Environment.NewLine;
                 script += "\t\t\tnumOutLinks = " + outNodeCount + ";" + Environment.NewLine;
 
                 String target = "";
@@ -228,7 +228,7 @@ namespace TSWriterPlugin
                         }
                     }
                     script += "\t\t\tbutton" + (i - start).ToString() + "next = " + convName + "_" + target + ";" + Environment.NewLine;
-                    script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + Text + "\";" + Environment.NewLine;
+                    script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + conditionText(Text) + "\";" + Environment.NewLine;
                     script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
                 }
                 script += "\t};" + Environment.NewLine;
@@ -254,12 +254,20 @@ namespace TSWriterPlugin
                 script += "\t\tcanSave = \"1\";" + Environment.NewLine;
                 script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
                 NodeTextBoxItem tb = (NodeTextBoxItem)items[0];
-                script += "\t\t\tdisplayText = \"" + tb.Text + "\";" + Environment.NewLine;
+                script += "\t\t\tdisplayText = \"" + conditionText(tb.Text) + "\";" + Environment.NewLine;
                 tb = (NodeTextBoxItem)items[2];
                 script += "\t\t\tscriptMethod = \"" + tb.Text + "\";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation End Node" + nodename);
                 return script;
+            }
+
+            private String conditionText(String text)
+            {
+                String clean = text.Replace("\"", "\\\"");
+                clean = clean.Replace("\'", "\\\'");
+
+                return clean;
             }
         }
     }
