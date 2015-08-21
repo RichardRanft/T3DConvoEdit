@@ -229,7 +229,8 @@ namespace TSWriterPlugin
                     }
                     script += "\t\t\tbutton" + (i - start).ToString() + "next = " + convName + "_" + target + ";" + Environment.NewLine;
                     script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + conditionText(Text) + "\";" + Environment.NewLine;
-                    script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
+                    if (Method != "Enter script method")
+                        script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
                 }
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
