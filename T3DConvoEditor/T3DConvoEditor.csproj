@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CGraphManager.cs" />
+    <Compile Include="Documentation\ConversationGui.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +100,7 @@
     <Compile Include="Wrappers\CItemPartFields.cs" />
     <Compile Include="Wrappers\CNodeFields.cs" />
     <Compile Include="Wrappers\CNodeItemFields.cs" />
+    <None Include="Documentation\ConversationGui.gui" />
     <None Include="RTG.ico" />
     <EmbeddedResource Include="FConvPartEdit.resx">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
