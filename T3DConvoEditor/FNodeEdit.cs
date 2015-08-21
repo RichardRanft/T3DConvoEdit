@@ -15,6 +15,7 @@ namespace T3DConvoEditor
 {
     public partial class FNodeEdit : Form
     {
+        public Form1 MainForm = null;
         public int MaxOutputs = 6;
         public Node EditingNode;
 
@@ -33,8 +34,14 @@ namespace T3DConvoEditor
             {
                 for (int i = ConvoNodeStart; i < items.Count; i++)
                 {
-                    NodeTextBoxItem item = (NodeTextBoxItem)items[i];
-                    lbxChoiceNodes.Items.Add(item.Text);
+                    NodeCompositeItem item = (NodeCompositeItem)items[i];
+                    String text = "";
+                    foreach(ItemTextBoxPart part in item.Parts)
+                    {
+                        if (part.Name == "ConvText")
+                            text = part.Text;
+                    }
+                    lbxChoiceNodes.Items.Add(text);
                 }
             }
         }
@@ -44,7 +51,14 @@ namespace T3DConvoEditor
             List<NodeItem> items = (List<NodeItem>)EditingNode.Items;
             if (items.Count < (MaxOutputs + ConvoNodeStart))
             {
-                NodeTextBoxItem newNode = new NodeTextBoxItem("Enter player text", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                NodeCompositeItem newNode = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
+                btnText.Name = "ConvText";
+                ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
+                btnMethod.Name = "ConvMethod";
+                newNode.AddPart(btnText);
+                newNode.AddPart(btnMethod);
+                newNode.Clicked += MainForm.GetConvMouseHandler();
                 NodeTextBoxItem nodeName = (NodeTextBoxItem)items[0];
                 newNode.Name = nodeName.Text + "_btn" + findUnusedButtonIndex().ToString().PadLeft(2, '0');
                 EditingNode.AddItem(newNode);
@@ -53,8 +67,14 @@ namespace T3DConvoEditor
                 {
                     for (int i = ConvoNodeStart; i < items.Count; i++)
                     {
-                        NodeTextBoxItem item = (NodeTextBoxItem)items[i];
-                        lbxChoiceNodes.Items.Add(item.Text);
+                        NodeCompositeItem item = (NodeCompositeItem)items[i];
+                        String text = "";
+                        foreach(ItemTextBoxPart part in item.Parts)
+                        {
+                            if (part.Name == "ConvText")
+                                text = part.Text;
+                        }
+                        lbxChoiceNodes.Items.Add(text);
                     }
                 }
             }

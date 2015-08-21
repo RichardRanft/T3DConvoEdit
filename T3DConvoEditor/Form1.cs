@@ -23,6 +23,7 @@ namespace T3DConvoEditor
         private CSettings m_settings;
         private bool m_dirty;
         private FNodeEdit m_nodeEdit;
+        private FConvPartEdit m_partEdit;
         private FPreferences m_preferences;
         private String m_saveDefaultPath;
         private Dictionary<string, IPlugin> _Plugins;
@@ -44,6 +45,8 @@ namespace T3DConvoEditor
             m_nodeEdit = new FNodeEdit();
             m_nodeEdit.MaxOutputs = int.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
             m_nodeEdit.Text = "Edit Conversation Selection List";
+            m_nodeEdit.MainForm = this;
+            m_partEdit = new FConvPartEdit();
             m_log.WriteLine("T3D Conversation Editor started");
 
             String homeFolder = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
@@ -115,7 +118,9 @@ namespace T3DConvoEditor
             var nodeNameItem = new NodeTextBoxItem(nodeName);
             nodeNameItem.Name = "NodeName";
             node.AddItem(nodeNameItem);
-            node.AddItem(new NodeTextBoxItem("Enter NPC text", NodeIOMode.None));
+            NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
+            displayText.Name = "DisplayText";
+            node.AddItem(displayText);
             var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
             inputLabel.Name = nodeName + "_in";
             node.AddItem(inputLabel);
@@ -123,8 +128,15 @@ namespace T3DConvoEditor
             editNode.Name = "EditNodeItem";
             editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
             node.AddItem(editNode);
-            NodeTextBoxItem firstButton = new NodeTextBoxItem("Enter player text", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+            NodeCompositeItem firstButton = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
             firstButton.Name = "button_1";
+            ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
+            btnText.Name = "ConvText";
+            ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
+            btnMethod.Name = "ConvMethod";
+            firstButton.AddPart(btnText);
+            firstButton.AddPart(btnMethod);
+            firstButton.Clicked += new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
             node.AddItem(firstButton);
 			this.DoDragDrop(node, DragDropEffects.Copy);
         }
@@ -172,12 +184,26 @@ namespace T3DConvoEditor
             return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
         }
 
+        public EventHandler<NodeItemEventArgs> GetConvMouseHandler()
+        {
+            return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+        }
+
         private void editOutputListNode_MouseDown(object sender, NodeItemEventArgs e)
         {
             if(e.Item != null)
             {
                 m_nodeEdit.EditingNode = e.Item.Node;
                 m_nodeEdit.ShowDialog(this);
+            }
+        }
+
+        private void editConvNode_MouseDown(object sender, NodeItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                m_partEdit.Node = e.Item as NodeCompositeItem;
+                m_partEdit.ShowDialog(this);
             }
         }
 

@@ -118,6 +118,7 @@ namespace T3DConvoEditor
                                         case "Graph.Items.ItemTextBoxPart":
                                             {
                                                 ItemTextBoxPart p = new ItemTextBoxPart(part.Text);
+                                                p.Name = part.name;
                                                 temp.AddPart(p);
                                             }
                                             break;
@@ -129,6 +130,8 @@ namespace T3DConvoEditor
                                 }
                                 if (item.Tag != null)
                                     temp.Tag = TagFactory.GetTagObject(item.Tag);
+                                if (temp.Name.Contains("button_"))
+                                    temp.Clicked += m_parentForm.GetConvMouseHandler();
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);

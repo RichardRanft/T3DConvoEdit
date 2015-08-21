@@ -179,7 +179,16 @@ namespace TSWriterPlugin
                 List<String> foundNodes = new List<String>();
                 for (int i = start; i < items.Count; i++)
                 {
-                    NodeTextBoxItem textItem = (NodeTextBoxItem)items[i];
+                    NodeCompositeItem textItem = (NodeCompositeItem)items[i];
+                    String Text = "";
+                    String Method = "";
+                    foreach(ItemTextBoxPart part in textItem.Parts)
+                    {
+                        if (part.Name == "ConvText")
+                            Text = part.Text;
+                        if (part.Name == "ConvMethod")
+                            Method = part.Text;
+                    }
                     NodeOutputConnector conn = (NodeOutputConnector)textItem.Output;
                     foreach (NodeConnection con in conn.Connectors)
                     {
@@ -216,7 +225,8 @@ namespace TSWriterPlugin
                         }
                     }
                     script += "\t\t\tbutton" + (i - start).ToString() + "next = " + target + ";" + Environment.NewLine;
-                    script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + textItem.Text + "\";" + Environment.NewLine;
+                    script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + Text + "\";" + Environment.NewLine;
+                    script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
                 }
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
@@ -241,7 +251,7 @@ namespace TSWriterPlugin
                 script += "\t\tcanSave = \"1\";" + Environment.NewLine;
                 script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
                 NodeTextBoxItem tb = (NodeTextBoxItem)items[0];
-                script += "\t\t\tconvoText = \"" + tb.Text + "\";" + Environment.NewLine;
+                script += "\t\t\tdisplayText = \"" + tb.Text + "\";" + Environment.NewLine;
                 tb = (NodeTextBoxItem)items[2];
                 script += "\t\t\tscriptMethod = \"" + tb.Text + "\";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
