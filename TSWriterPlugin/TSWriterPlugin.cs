@@ -114,6 +114,9 @@ namespace TSWriterPlugin
 
                 script += "//--- OBJECT WRITE BEGIN ---" + Environment.NewLine;
                 script += "new SimSet(" + convoName + "){" + Environment.NewLine;
+                script += "\tclass = \"Conversation\";" + Environment.NewLine;
+                script += "\tcanSave = \"1\";" + Environment.NewLine;
+                script += "\tcanSaveDynamicFields = \"1\";" + Environment.NewLine + Environment.NewLine;
 
                 foreach (Node node in nodes)
                 {
@@ -144,17 +147,17 @@ namespace TSWriterPlugin
             {
                 String script = "";
                 List<NodeItem> items = (List<NodeItem>)node.Items;
-                script += "\tnew ScriptObject(" + convName + "Start) {" + Environment.NewLine;
+                NodeLabelItem linkItem = (NodeLabelItem)items[0];
+                script += "\tnew ScriptObject(" + convName + "_" + linkItem.Text + ") {" + Environment.NewLine;
                 script += "\t\tclass = \"ConversationStart\";" + Environment.NewLine;
                 script += "\t\tcanSave = \"1\";" + Environment.NewLine;
                 script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
                 script += "\t\t\tnumOutLinks = 1;" + Environment.NewLine;
-                NodeLabelItem linkItem = (NodeLabelItem)items[0];
                 List<NodeConnection> conns = (List<NodeConnection>)linkItem.Node.Connections;
                 NodeConnection outconn = conns[0];
                 List<NodeItem> targetItemList = (List<NodeItem>)outconn.To.Node.Items;
                 NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
-                script += "\t\t\toutLink0 = " + targetItem.Text + ";" + Environment.NewLine;
+                script += "\t\t\toutLink0 = " + convName + "_" + targetItem.Text + ";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Start node");
                 return script;
@@ -165,7 +168,7 @@ namespace TSWriterPlugin
                 String script = "";
                 List<NodeItem> items = (List<NodeItem>)node.Items;
                 NodeTextBoxItem nameItem = (NodeTextBoxItem)items[0];
-                script += "\tnew ScriptObject(" + nameItem.Text + ") {" + Environment.NewLine;
+                script += "\tnew ScriptObject(" + convName + "_" + nameItem.Text + ") {" + Environment.NewLine;
                 script += "\t\tclass = \"ConversationNode\";" + Environment.NewLine;
                 script += "\t\tcanSave = \"1\";" + Environment.NewLine;
                 script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
@@ -224,7 +227,7 @@ namespace TSWriterPlugin
                             }
                         }
                     }
-                    script += "\t\t\tbutton" + (i - start).ToString() + "next = " + target + ";" + Environment.NewLine;
+                    script += "\t\t\tbutton" + (i - start).ToString() + "next = " + convName + "_" + target + ";" + Environment.NewLine;
                     script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + Text + "\";" + Environment.NewLine;
                     script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
                 }
@@ -246,7 +249,7 @@ namespace TSWriterPlugin
                         nodename = nameitem.Text;
                     }
                 }
-                script += "\tnew ScriptObject(" + nodename + ") {" + Environment.NewLine;
+                script += "\tnew ScriptObject(" + convName + "_" + nodename + ") {" + Environment.NewLine;
                 script += "\t\tclass = \"ConversationEnd\";" + Environment.NewLine;
                 script += "\t\tcanSave = \"1\";" + Environment.NewLine;
                 script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;

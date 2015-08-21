@@ -66,8 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CGraphManager.cs" />
-    <Compile Include="Documentation\ConversationGui.cs" />
-    <Compile Include="Documentation\testConversation.cs" />
+    <None Include="Documentation\ConversationGui.cs" />
+    <None Include="Documentation\testConversation.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
