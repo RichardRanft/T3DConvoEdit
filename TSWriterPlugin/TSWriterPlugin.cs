@@ -257,7 +257,8 @@ namespace TSWriterPlugin
                 NodeTextBoxItem tb = (NodeTextBoxItem)items[0];
                 script += "\t\t\tdisplayText = \"" + conditionText(tb.Text) + "\";" + Environment.NewLine;
                 tb = (NodeTextBoxItem)items[2];
-                script += "\t\t\tscriptMethod = \"" + tb.Text + "\";" + Environment.NewLine;
+                if (tb.Text != "Conversation Exit Script")
+                    script += "\t\t\tscriptMethod = \"" + tb.Text + "\";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation End Node" + nodename);
                 return script;
