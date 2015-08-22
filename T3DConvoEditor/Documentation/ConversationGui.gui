@@ -52,7 +52,7 @@
       canSaveDynamicFields = "0";
 
       new GuiBitmapButtonTextCtrl(CW_Button1) {
-         bitmap = "art/gui/ConversationWheel/CW_button_right";
+         bitmap = "./ConversationWheel/CW_button_right";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -76,7 +76,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button2) {
-         bitmap = "art/gui/ConversationWheel/CW_button_right";
+         bitmap = "./ConversationWheel/CW_button_right";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -100,7 +100,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button3) {
-         bitmap = "art/gui/ConversationWheel/CW_button_right";
+         bitmap = "./ConversationWheel/CW_button_right";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -124,7 +124,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button4) {
-         bitmap = "art/gui/ConversationWheel/CW_button_right";
+         bitmap = "./ConversationWheel/CW_button_right";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -148,7 +148,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button5) {
-         bitmap = "art/gui/ConversationWheel/CW_button_left";
+         bitmap = "./ConversationWheel/CW_button_left";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -172,7 +172,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button6) {
-         bitmap = "art/gui/ConversationWheel/CW_button_left";
+         bitmap = "./ConversationWheel/CW_button_left";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -196,7 +196,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button7) {
-         bitmap = "art/gui/ConversationWheel/CW_button_left";
+         bitmap = "./ConversationWheel/CW_button_left";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -220,7 +220,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapButtonTextCtrl(CW_Button8) {
-         bitmap = "art/gui/ConversationWheel/CW_button_left";
+         bitmap = "./ConversationWheel/CW_button_left";
          bitmapMode = "Stretched";
          autoFitExtents = "0";
          useModifiers = "0";
@@ -244,7 +244,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapCtrl(CW_Center) {
-         bitmap = "art/gui/ConversationWheel/CW_WheelBase.png";
+         bitmap = "./ConversationWheel/CW_WheelBase.png";
          wrap = "0";
          position = "271 9";
          extent = "128 128";
@@ -261,7 +261,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiBitmapCtrl(CW_IconDisplay) {
-         bitmap = "art/gui/ConversationWheel/CW_standby0021";
+         bitmap = "./ConversationWheel/CW_standby0021";
          wrap = "0";
          position = "271 9";
          extent = "128 128";
