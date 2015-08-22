@@ -1,86 +1,53 @@
-//--- OBJECT WRITE BEGIN ---
-new SimSet(TC_1) {
-   class = "Conversation";
-   canSave = "1";
-   canSaveDynamicFields = "1";
+// Conversation output generated using T3DConvoEditor
+// Copyright © 2015 Roostertail Games
+// Use of T3DConvoEditor and its output are governed by the MIT license.
 
-   new ScriptObject(TC_1_node1) {
-      class = "ConversationNode";
-      canSave = "1";
-      canSaveDynamicFields = "1";
-         button2 = "That\'s great!";
-         button2next=TC_1_node2;
-		 button2Cmd="TC_1_node1.likeNode();";
-         button6 = "That sucks!";
-         button6next=TC_1_node3;
-		 button6Cmd="TC_1_node1.hateNode();";
-         displayText = "This is node one.  What do you think?";
-   };
-   new ScriptObject(TC_1_node2) {
-      class = "ConversationNode";
-      canSave = "1";
-      canSaveDynamicFields = "1";
-         button2 = "It\'s also great!";
-		 button2Cmd="TC_1_node2.likeNode();";
-         button3 = "See node 1 again";
-         button3next=TC_1_node1;
-		 button3Cmd="TC_1_node2.revisitNode();";
-         button6 = "It sucks!";
-		 button6Cmd="TC_1_node2.hateNode();";
-         displayText = "Glad you liked node one.  This is node two.  What do you think?";
-   };
-   new ScriptObject(TC_1_node3) {
-      class = "ConversationNode";
-      canSave = "1";
-      canSaveDynamicFields = "1";
-         button2 = "It\'s great!";
-		 button2Cmd="TC_1_node3.likeNode();";
-         button3 = "See node 1 again";
-         button3next=TC_1_node1;
-		 button3Cmd="TC_1_node3.revisitNode();";
-         button6 = "It sucks!";
-		 button6Cmd="TC_1_node3.hateNode();";
-         displayText = "Too bad you didn\'t like node 1.  This is node three.  What do you think?";
-   };
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+//--- OBJECT WRITE BEGIN ---
+new SimSet(output6){
+	class = "Conversation";
+	canSave = "1";
+	canSaveDynamicFields = "1";
+
+	new ScriptObject(output6_Conversation_End_000) {
+		class = "ConversationEnd";
+		canSave = "1";
+		canSaveDynamicFields = "1";
+			displayText = "Enter text";
+			scriptMethod = "exit(5000);";
+	};
+	new ScriptObject(output6_Conversation_Start) {
+		class = "ConversationStart";
+		canSave = "1";
+		canSaveDynamicFields = "1";
+			numOutLinks = 1;
+			outLink0 = output6_DefaultNodeName_0000;
+	};
+	new ScriptObject(output6_DefaultNodeName_0000) {
+		class = "ConversationNode";
+		canSave = "1";
+		canSaveDynamicFields = "1";
+			displayText = "Enter NPC text";
+			numOutLinks = 1;
+			button0next = output6_Conversation_End_000;
+			button0 = "Enter player text";
+	};
 };
 //--- OBJECT WRITE END ---
-function TC_1_node1::likeNode(%this)
-{
-	echo(" @@@ liked node 1");
-}
-
-function TC_1_node1::hateNode(%this)
-{
-	echo(" @@@ hated node 1");
-}
-
-function TC_1_node2::likeNode(%this)
-{
-	echo(" @@@ liked node 2");
-}
-
-function TC_1_node2::hateNode(%this)
-{
-	echo(" @@@ hated node 2");
-}
-
-function TC_1_node2::revisitNode(%this)
-{
-	echo(" @@@ node 2 looking at node 1 again.");
-}
-
-function TC_1_node3::likeNode(%this)
-{
-	echo(" @@@ liked node 3");
-}
-
-function TC_1_node3::hateNode(%this)
-{
-	echo(" @@@ hated node 3");
-}
-
-function TC_1_node3::revisitNode(%this)
-{
-	echo(" @@@ node 3 looking at node 1 again.");
-}
-
