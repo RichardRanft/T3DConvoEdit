@@ -28,6 +28,14 @@ namespace TSWriterPlugin
             }
         }
 
+        public CSettings Settings
+        {
+            get
+            {
+                return m_settings;
+            }
+        }
+
         public void Initialize(GraphControl ctrl, CLog log)
         {
             m_graphCtrl = ctrl;
@@ -230,7 +238,7 @@ namespace TSWriterPlugin
                     script += "\t\t\tbutton" + (i - start).ToString() + "next = " + convName + "_" + target + ";" + Environment.NewLine;
                     script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + conditionText(Text) + "\";" + Environment.NewLine;
                     if (Method != "Enter script method")
-                        script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + "\";" + Environment.NewLine;
+                        script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + Method + ";\";" + Environment.NewLine;
                 }
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
@@ -258,7 +266,7 @@ namespace TSWriterPlugin
                 script += "\t\t\tdisplayText = \"" + conditionText(tb.Text) + "\";" + Environment.NewLine;
                 tb = (NodeTextBoxItem)items[2];
                 if (tb.Text != "Conversation Exit Script")
-                    script += "\t\t\tscriptMethod = \"" + tb.Text + "\";" + Environment.NewLine;
+                    script += "\t\t\tscriptMethod = \"" + tb.Text + ";\";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation End Node" + nodename);
                 return script;

@@ -28,6 +28,7 @@ namespace T3DConvoEditor
         private FPluginPage m_plugins;
         private String m_saveDefaultPath;
         private Dictionary<string, IPlugin> _Plugins;
+        private CSettings m_currentPluginSettings;
 
         public Form1()
         {
@@ -72,6 +73,12 @@ namespace T3DConvoEditor
             pnlGraph.Controls.Add(graphCtrl);
 
             _Plugins = m_plugins.Plugins;
+            if (_Plugins.ContainsKey("TSWriterPlugin"))
+            {
+                IPlugin plugin = _Plugins["TSWriterPlugin"];
+                plugin.Initialize(graphCtrl, m_log);
+                m_currentPluginSettings = plugin.Settings;
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -145,7 +152,7 @@ namespace T3DConvoEditor
             var endLabel = new NodeLabelItem(name, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
             endLabel.Name = "NodeName";
             node.AddItem(endLabel);
-            node.AddItem(new NodeTextBoxItem("Conversation Exit Script"));
+            node.AddItem(new NodeTextBoxItem(m_currentPluginSettings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
             this.DoDragDrop(node, DragDropEffects.Copy);
         }
 
