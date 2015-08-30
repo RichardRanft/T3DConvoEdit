@@ -10,16 +10,25 @@ using System.Windows.Forms;
 using Graph;
 using Graph.Compatibility;
 using Graph.Items;
+using BasicSettings;
 
 namespace T3DConvoEditor
 {
     public partial class FNodeEdit : Form
     {
+        private CSettings m_settings;
+
         public Form1 MainForm = null;
         public int MaxOutputs = 6;
         public Node EditingNode;
 
-        public int ConvoNodeStart = 4;
+        public int ConvoNodeStart = 4;        
+
+        public CSettings Settings
+        {
+            get { return m_settings; }
+            set { m_settings = value; }
+        }
 
         public FNodeEdit()
         {
@@ -28,6 +37,11 @@ namespace T3DConvoEditor
 
         private void FNodeEdit_Activated(object sender, EventArgs e)
         {
+            if(m_settings != null)
+            {
+                MaxOutputs = int.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
+                ConvoNodeStart = int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
+            }
             lbxChoiceNodes.Items.Clear();
             List<NodeItem> items = (List<NodeItem>)EditingNode.Items;
             if (items.Count > ConvoNodeStart)

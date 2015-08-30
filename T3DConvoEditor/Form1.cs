@@ -44,7 +44,6 @@ namespace T3DConvoEditor
             m_preferences.Settings = m_settings;
 
             m_nodeEdit = new FNodeEdit();
-            m_nodeEdit.MaxOutputs = int.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
             m_nodeEdit.Text = "Edit Conversation Selection List";
             m_nodeEdit.MainForm = this;
             m_partEdit = new FConvPartEdit();
@@ -197,6 +196,7 @@ namespace T3DConvoEditor
             if(e.Item != null)
             {
                 m_nodeEdit.EditingNode = e.Item.Node;
+                m_nodeEdit.Settings = m_currentPluginSettings;
                 m_nodeEdit.ShowDialog(this);
             }
         }
@@ -276,6 +276,34 @@ namespace T3DConvoEditor
                 MessageBox.Show("You have unconnected inputs or outputs in your conversation graph.  Please review your graph and ensure all node inputs and outputs are connected.", "Check Connections");
                 return false;
             }
+            List<String> names = new List<string>();
+            foreach(Node node in nodes)
+            {
+                foreach(NodeItem item in node.Items)
+                {
+                    if(item.Name == "NodeName")
+                    {
+                        String name = "";
+                        if (item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                        {
+                            NodeTextBoxItem i = item as NodeTextBoxItem;
+                            name = i.Text;
+                        }
+                        if (item.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                        {
+                            NodeLabelItem i = item as NodeLabelItem;
+                            name = i.Text;
+                        }
+                        if(names.Contains(name))
+                        {
+                            MessageBox.Show("Two or more nodes have the same name.  Node names must be unique.", "Duplicate Nodes Detected");
+                            return false;
+                        }
+                        names.Add(name);
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -343,6 +371,7 @@ namespace T3DConvoEditor
             m_preferences.ShowDialog();
             String defFileName = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxConvoName.Text = defFileName.Remove(defFileName.LastIndexOf('.'));
+            m_settings = m_preferences.Settings;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)

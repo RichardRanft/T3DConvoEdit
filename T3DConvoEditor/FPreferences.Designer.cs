@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FPreferences));
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBrowseFolder = new System.Windows.Forms.Button();
             this.tbxOutputFolder = new System.Windows.Forms.TextBox();
@@ -38,22 +37,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tbxDefaultNodeName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.nudMaxConvChoice = new System.Windows.Forms.NumericUpDown();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.fbdFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxConvChoice)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Maximum Conversation Choices:";
             // 
             // groupBox1
             // 
@@ -64,18 +52,16 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tbxDefaultNodeName);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.nudMaxConvChoice);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(415, 136);
+            this.groupBox1.Size = new System.Drawing.Size(415, 94);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
             // 
             // btnBrowseFolder
             // 
-            this.btnBrowseFolder.Location = new System.Drawing.Point(331, 94);
+            this.btnBrowseFolder.Location = new System.Drawing.Point(327, 63);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
             this.btnBrowseFolder.Size = new System.Drawing.Size(79, 23);
             this.btnBrowseFolder.TabIndex = 8;
@@ -85,7 +71,7 @@
             // 
             // tbxOutputFolder
             // 
-            this.tbxOutputFolder.Location = new System.Drawing.Point(90, 96);
+            this.tbxOutputFolder.Location = new System.Drawing.Point(86, 65);
             this.tbxOutputFolder.Name = "tbxOutputFolder";
             this.tbxOutputFolder.Size = new System.Drawing.Size(235, 20);
             this.tbxOutputFolder.TabIndex = 7;
@@ -93,7 +79,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 99);
+            this.label4.Location = new System.Drawing.Point(6, 68);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 13);
             this.label4.TabIndex = 6;
@@ -101,7 +87,7 @@
             // 
             // tbxDefaultFilename
             // 
-            this.tbxDefaultFilename.Location = new System.Drawing.Point(176, 70);
+            this.tbxDefaultFilename.Location = new System.Drawing.Point(172, 39);
             this.tbxDefaultFilename.Name = "tbxDefaultFilename";
             this.tbxDefaultFilename.Size = new System.Drawing.Size(233, 20);
             this.tbxDefaultFilename.TabIndex = 5;
@@ -109,7 +95,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 73);
+            this.label3.Location = new System.Drawing.Point(6, 42);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 13);
             this.label3.TabIndex = 4;
@@ -117,7 +103,7 @@
             // 
             // tbxDefaultNodeName
             // 
-            this.tbxDefaultNodeName.Location = new System.Drawing.Point(176, 44);
+            this.tbxDefaultNodeName.Location = new System.Drawing.Point(172, 13);
             this.tbxDefaultNodeName.Name = "tbxDefaultNodeName";
             this.tbxDefaultNodeName.Size = new System.Drawing.Size(233, 20);
             this.tbxDefaultNodeName.TabIndex = 3;
@@ -125,28 +111,15 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 47);
+            this.label2.Location = new System.Drawing.Point(6, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Default Node Name:";
             // 
-            // nudMaxConvChoice
-            // 
-            this.nudMaxConvChoice.Location = new System.Drawing.Point(176, 17);
-            this.nudMaxConvChoice.Name = "nudMaxConvChoice";
-            this.nudMaxConvChoice.Size = new System.Drawing.Size(51, 20);
-            this.nudMaxConvChoice.TabIndex = 1;
-            this.nudMaxConvChoice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudMaxConvChoice.Value = new decimal(new int[] {
-            6,
-            0,
-            0,
-            0});
-            // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(352, 154);
+            this.btnAccept.Location = new System.Drawing.Point(352, 112);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(75, 23);
             this.btnAccept.TabIndex = 3;
@@ -157,7 +130,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(271, 154);
+            this.btnCancel.Location = new System.Drawing.Point(271, 112);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 4;
@@ -170,7 +143,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(439, 185);
+            this.ClientSize = new System.Drawing.Size(439, 148);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.groupBox1);
@@ -182,16 +155,13 @@
             this.Activated += new System.EventHandler(this.FPreferences_Activated);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxConvChoice)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.NumericUpDown nudMaxConvChoice;
         private System.Windows.Forms.Button btnAccept;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnBrowseFolder;

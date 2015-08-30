@@ -32,7 +32,6 @@ namespace T3DConvoEditor
             m_settings = settings;
             InitializeComponent();
 
-            nudMaxConvChoice.Value = decimal.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
             tbxDefaultNodeName.Text = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"];
             tbxDefaultFilename.Text = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxOutputFolder.Text = m_settings.Attributes["[Default]"]["OUTPUTFOLDER"];
@@ -40,7 +39,6 @@ namespace T3DConvoEditor
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
-            m_settings.Set("[Default]", "MAXOUTPUTS", nudMaxConvChoice.Value.ToString());
             m_settings.Set("[Default]", "DEFAULTNODENAME", tbxDefaultNodeName.Text);
             m_settings.Set("[Default]", "DEFAULTFILENAME", tbxDefaultFilename.Text);
             m_settings.Set("[Default]", "OUTPUTFOLDER", tbxOutputFolder.Text);
@@ -51,7 +49,6 @@ namespace T3DConvoEditor
 
         private void FPreferences_Activated(object sender, EventArgs e)
         {
-            nudMaxConvChoice.Value = int.Parse(m_settings.Attributes["[Default]"]["MAXOUTPUTS"]);
             tbxDefaultNodeName.Text = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"];
             tbxDefaultFilename.Text = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxOutputFolder.Text = m_settings.Attributes["[Default]"]["OUTPUTFOLDER"];
