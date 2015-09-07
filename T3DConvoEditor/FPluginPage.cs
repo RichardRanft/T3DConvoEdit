@@ -40,6 +40,7 @@ namespace T3DConvoEditor
     {
         private Dictionary<string, IPlugin> _Plugins;
         private CLog m_log;
+        private String m_pluginFolder;
 
         public Dictionary<string, IPlugin> Plugins
         {
@@ -56,9 +57,11 @@ namespace T3DConvoEditor
         private void loadPlugins()
         {
             _Plugins = new Dictionary<string, IPlugin>();
+            m_pluginFolder = Path.GetFullPath(".\\" + "Plugins");
+            m_log.WriteLine("Loading plugins from " + m_pluginFolder);
             try
             {
-                ICollection<IPlugin> plugins = GenericPluginLoader<IPlugin>.LoadPlugins("Plugins");
+                ICollection<IPlugin> plugins = GenericPluginLoader<IPlugin>.LoadPlugins(m_pluginFolder);
                 foreach (var item in plugins)
                 {
                     _Plugins.Add(item.Name, item);

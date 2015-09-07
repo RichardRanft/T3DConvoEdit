@@ -37,6 +37,7 @@ namespace T3DConvoEditor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new Form1();
+            MainForm.Initialize();
             Application.Run(MainForm);
         }
     }

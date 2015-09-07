@@ -38,6 +38,7 @@ namespace TSWriterPlugin
         private GraphControl m_graphCtrl;
         private CLog m_log;
         private CSettings m_settings;
+        private String m_iniPath;
 
         public String Name
         {
@@ -59,8 +60,23 @@ namespace TSWriterPlugin
         {
             m_graphCtrl = ctrl;
             m_log = log;
-            m_settings = new CSettings("plugins\\TSWriterPlugin.ini");
-            m_settings.LoadSettings();
+            String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            m_iniPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
+            String iniFile = m_iniPath + "TSWriterPlugin.ini";
+            m_log.WriteLine("Attempting to load " + iniFile);
+            if (File.Exists(iniFile))
+                m_settings = new CSettings(m_iniPath + "TSWriterPlugin.ini");
+            else
+            {
+                m_iniPath = Path.GetFullPath(".\\");
+                iniFile = m_iniPath + @"Plugins\TSWriterPlugin.ini";
+                m_log.WriteLine("Attempting to load " + iniFile);
+                m_settings = new CSettings(iniFile);
+            }
+            if (!m_settings.LoadSettings())
+                m_log.WriteLine("Failed to locate TSWriterPlugin.ini");
+            else
+                m_log.WriteLine("TSWriterPlugin settings loaded");
         }
 
         public void Export(String filename)

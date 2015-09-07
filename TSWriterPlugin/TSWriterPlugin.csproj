@@ -30,16 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BasicLogging, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BasicLogging.2.0.0.5\lib\net45\BasicLogging.dll</HintPath>
+    <Reference Include="BasicLogging, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BasicLogging.2.0.0.8\lib\net45\BasicLogging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BasicSettings, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BasicSettings.1.0.0.5\lib\net45\BasicSettings.dll</HintPath>
+    <Reference Include="BasicSettings, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BasicSettings.1.0.0.6\lib\net45\BasicSettings.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Graph">
-      <HintPath>..\..\Graph\Graph\bin\Debug\Graph.dll</HintPath>
+    <Reference Include="Graph, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Graph.1.0.0.16\lib\net45\Graph.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PluginContracts">
       <HintPath>..\PluginContracts\bin\Debug\PluginContracts.dll</HintPath>

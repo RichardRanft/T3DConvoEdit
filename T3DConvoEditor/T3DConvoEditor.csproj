@@ -37,17 +37,17 @@
     <ApplicationIcon>RTG.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BasicLogging, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BasicLogging.2.0.0.5\lib\net45\BasicLogging.dll</HintPath>
+    <Reference Include="BasicLogging, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BasicLogging.2.0.0.8\lib\net45\BasicLogging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BasicSettings, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BasicSettings.1.0.0.6\lib\net45\BasicSettings.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Graph, Version=1.0.0.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Graph\Graph\bin\Debug\Graph.dll</HintPath>
+    <Reference Include="Graph, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Graph.1.0.0.16\lib\net45\Graph.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -71,7 +71,7 @@
     <Compile Include="CGraphManager.cs" />
     <None Include="Documentation\ConversationGui.cs" />
     <None Include="Documentation\testConversation.cs" />
-    <Content Include="Documentation\conversation.cs" />
+    <None Include="Documentation\conversation.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,46 +141,46 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Documentation\ConversationWheel\CW_BlankOverlay.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_left_d.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_left_h.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_left_n.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_right_d.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_right_h.png" />
-    <Content Include="Documentation\ConversationWheel\CW_button_right_n.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0000.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0001.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0002.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0003.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0004.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0005.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0006.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0007.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0008.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0009.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0010.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0011.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0012.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0013.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0014.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0015.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0016.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0017.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0018.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0019.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0020.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0021.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0022.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0023.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0024.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0025.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0026.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0027.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0028.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0029.png" />
-    <Content Include="Documentation\ConversationWheel\CW_standby0030.png" />
-    <Content Include="Documentation\ConversationWheel\CW_WheelBase.png" />
-    <Content Include="Documentation\ConversationWheel\newJoinDialog.jpg" />
+    <None Include="Documentation\ConversationWheel\CW_BlankOverlay.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_left_d.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_left_h.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_left_n.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_right_d.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_right_h.png" />
+    <None Include="Documentation\ConversationWheel\CW_button_right_n.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0000.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0001.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0002.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0003.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0004.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0005.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0006.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0007.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0008.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0009.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0010.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0011.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0012.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0013.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0014.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0015.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0016.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0017.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0018.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0019.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0020.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0021.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0022.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0023.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0024.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0025.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0026.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0027.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0028.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0029.png" />
+    <None Include="Documentation\ConversationWheel\CW_standby0030.png" />
+    <None Include="Documentation\ConversationWheel\CW_WheelBase.png" />
+    <None Include="Documentation\ConversationWheel\newJoinDialog.jpg" />
     <Content Include="Plugins\TSWriterPlugin.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -193,9 +193,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="T3DConvoEditor.ini">
+    <Content Include="T3DConvoEditor.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

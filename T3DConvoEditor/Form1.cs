@@ -46,18 +46,36 @@ namespace T3DConvoEditor
         private FPreferences m_preferences;
         private FPluginPage m_plugins;
         private String m_saveDefaultPath;
+        private String m_personalPath;
         private Dictionary<string, IPlugin> _Plugins;
         private CSettings m_currentPluginSettings;
 
         public Form1()
         {
+            InitializeComponent();
+        }
+
+        public void Initialize()
+        {
+            String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            m_saveDefaultPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
             m_dirty = false;
             m_log = new CLog();
-            m_log.Filename = "T3DConvoEditor.log";
-            m_settings = new CSettings("T3DConvoEditor.ini");
+            m_log.Filename = m_saveDefaultPath + "T3DConvoEditor.log";
+            m_personalPath = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) + @"\Roostertail Games\T3DConvoEditor\"; ;
+            m_log.WriteLine("Checking for settings file in " + m_personalPath);
+            if (File.Exists(m_personalPath + "T3DConvoEditor.ini"))
+            {
+                m_log.WriteLine("Opening settings from " + m_personalPath);
+                m_settings = new CSettings(m_personalPath + "T3DConvoEditor.ini");
+            }
+            else
+            {
+                m_log.WriteLine("Opening settings file from application path");
+                m_settings = new CSettings("T3DConvoEditor.ini");
+            }
             m_settings.LoadSettings();
 
-            InitializeComponent();
 
             m_preferences = new FPreferences(m_settings);
             m_preferences.Settings = m_settings;
@@ -69,8 +87,6 @@ namespace T3DConvoEditor
             m_plugins = new FPluginPage(m_log);
             m_log.WriteLine("T3D Conversation Editor started");
 
-            String homeFolder = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            m_saveDefaultPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
             if (!Directory.Exists(m_saveDefaultPath))
                 Directory.CreateDirectory(m_saveDefaultPath);
             sfdSaveGraphFile.InitialDirectory = m_saveDefaultPath;
@@ -78,11 +94,7 @@ namespace T3DConvoEditor
 
             String defFileName = m_settings.Attributes["[Default]"]["DEFAULTFILENAME"];
             tbxConvoName.Text = defFileName.Remove(defFileName.LastIndexOf('.'));
-            init();
-        }
 
-        private void init()
-        {
             graphCtrl.NodeAdded += new EventHandler<AcceptNodeEventArgs>(onNodeAdded);
             int width = pnlWork.Width - (2 * pnlWork.Margin.All);
             int height = pnlWork.Height - (2 * pnlWork.Margin.All);

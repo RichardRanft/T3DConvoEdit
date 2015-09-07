@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("T3DConvoEditor")]
+[assembly: AssemblyTitle("T3D Conversation Editor")]
 [assembly: AssemblyDescription("A conversation graph editor for Torque 3D.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Roostertail Games")]
-[assembly: AssemblyProduct("T3DConvoEditor")]
+[assembly: AssemblyProduct("T3D Conversation Editor")]
 [assembly: AssemblyCopyright("Copyright © Roostertail Games 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
