@@ -53,9 +53,6 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PluginContracts">
-      <HintPath>..\PluginContracts\bin\Debug\PluginContracts.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -200,7 +197,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PluginContracts\PluginContracts.csproj">
+      <Project>{43c879d1-31ae-424f-91d1-92cf286d5497}</Project>
+      <Name>PluginContracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Plugins\TSWriterPlugin.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

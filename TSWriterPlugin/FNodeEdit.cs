@@ -31,13 +31,13 @@ using Graph.Compatibility;
 using Graph.Items;
 using BasicSettings;
 
-namespace T3DConvoEditor
+namespace TSWriterPlugin
 {
     public partial class FNodeEdit : Form
     {
         private CSettings m_settings;
 
-        public Form1 MainForm = null;
+        public CTSWriterPlugin PluginMain = null;
         public int MaxOutputs = 6;
         public Node EditingNode;
 
@@ -92,7 +92,7 @@ namespace T3DConvoEditor
                 btnMethod.Name = "ConvMethod";
                 newNode.AddPart(btnText);
                 newNode.AddPart(btnMethod);
-                newNode.Clicked += MainForm.GetConvMouseHandler();
+                newNode.Clicked += PluginMain.GetConvMouseHandler();
                 NodeTextBoxItem nodeName = (NodeTextBoxItem)items[0];
                 EditingNode.AddItem(newNode);
                 lbxChoiceNodes.Items.Clear();

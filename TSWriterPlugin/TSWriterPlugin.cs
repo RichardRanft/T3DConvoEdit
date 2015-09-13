@@ -39,6 +39,10 @@ namespace TSWriterPlugin
         private CLog m_log;
         private CSettings m_settings;
         private String m_iniPath;
+        private FNodeEdit m_nodeEdit;
+        private FConvPartEdit m_partEdit;
+        private FSettings m_settingsForm;
+        private List<String> m_nodeTypeNames;
 
         public String Name
         {
@@ -56,8 +60,147 @@ namespace TSWriterPlugin
             }
         }
 
+        public void ShowSettings()
+        {
+            m_settingsForm.ShowDialog();
+        }
+
+        public List<string> GetNodeTypenames()
+        {
+            return m_nodeTypeNames;
+        }
+
+        public Node GetNodeByTypename(string typename)
+        {
+            switch(typename.ToLower())
+            {
+                case "start":
+                    {
+                        var node = new Node("Conversation Start");
+                        var startLabel = new NodeLabelItem("Conversation_Start", NodeIOMode.Output) { Tag = TagType.LABEL };
+                        startLabel.Name = "NodeName";
+                        node.AddItem(startLabel);
+                        return node;
+                    }
+                    break;
+                case "end":
+                    {
+                        var node = new Node("Conversation End");
+                        node.AddItem(new NodeTextBoxItem("Enter text"));
+                        String name = "Conversation_End_" + getEndNodeCount().ToString().PadLeft(3, '0');
+                        var endLabel = new NodeLabelItem(name, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
+                        endLabel.Name = "NodeName";
+                        node.AddItem(endLabel);
+                        node.AddItem(new NodeTextBoxItem(m_settings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
+                    }
+                    break;
+                case "conversation":
+                    {
+                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
+                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
+                        var node = new Node("Conversation Node");
+                        var nodeNameItem = new NodeTextBoxItem(nodeName);
+                        nodeNameItem.Name = "NodeName";
+                        node.AddItem(nodeNameItem);
+                        NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
+                        displayText.Name = "DisplayText";
+                        node.AddItem(displayText);
+                        var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
+                        inputLabel.Name = nodeName + "_in";
+                        node.AddItem(inputLabel);
+                        var editNode = new NodeLabelItem("Click Here To Edit Output List");
+                        editNode.Name = "EditNodeItem";
+                        editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                        node.AddItem(editNode);
+                        NodeCompositeItem firstButton = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                        firstButton.Name = "button_1";
+                        ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
+                        btnText.Name = "ConvText";
+                        ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
+                        btnMethod.Name = "ConvMethod";
+                        firstButton.AddPart(btnText);
+                        firstButton.AddPart(btnMethod);
+                        firstButton.Clicked += new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+                        node.AddItem(firstButton);
+                        return node;
+                    }
+            }
+            return null;
+        }
+
+        private int getConvNodeCount()
+        {
+            int count = 0;
+
+            foreach (Node node in m_graphCtrl.Nodes)
+            {
+                if (node.Title == "Conversation Node")
+                    count++;
+            }
+
+            return count;
+        }
+
+        private int getEndNodeCount()
+        {
+            int count = 0;
+
+            foreach (Node node in m_graphCtrl.Nodes)
+            {
+                if (node.Title == "Conversation End")
+                    count++;
+            }
+
+            return count;
+        }
+
+        public EventHandler<NodeItemEventArgs> GetEditMouseHandler()
+        {
+            return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+        }
+
+        public EventHandler<NodeItemEventArgs> GetConvMouseHandler()
+        {
+            return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+        }
+
+        private void editOutputListNode_MouseDown(object sender, NodeItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                m_nodeEdit.EditingNode = e.Item.Node;
+                m_nodeEdit.Settings = m_settings;
+                m_nodeEdit.ShowDialog();
+            }
+        }
+
+        private void editConvNode_MouseDown(object sender, NodeItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                m_partEdit.Node = e.Item as NodeCompositeItem;
+                m_partEdit.ShowDialog();
+            }
+        }
+
+        public bool SaveGraph(GraphControl graph, String filename)
+        {
+            CGraphManager graphman = new CGraphManager(m_log, this);
+            graphman.SaveGraph(m_graphCtrl, filename);
+            return false;
+        }
+
+        public GraphControl LoadGraph(String filename)
+        {
+            return null;
+        }
+
         public void Initialize(GraphControl ctrl, CLog log)
         {
+            m_nodeTypeNames = new List<string>();
+            m_nodeTypeNames.Add("Start");
+            m_nodeTypeNames.Add("End");
+            m_nodeTypeNames.Add("Conversation");
             m_graphCtrl = ctrl;
             m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -77,6 +220,9 @@ namespace TSWriterPlugin
                 m_log.WriteLine("Failed to locate TSWriterPlugin.ini");
             else
                 m_log.WriteLine("TSWriterPlugin settings loaded");
+            m_nodeEdit = new FNodeEdit();
+            m_partEdit = new FConvPartEdit();
+            m_settingsForm = new FSettings();
         }
 
         public void Export(String filename)

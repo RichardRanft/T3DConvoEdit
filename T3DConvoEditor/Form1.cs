@@ -47,8 +47,9 @@ namespace T3DConvoEditor
         private FPluginPage m_plugins;
         private String m_saveDefaultPath;
         private String m_personalPath;
-        private Dictionary<string, IPlugin> _Plugins;
+        private Dictionary<string, IPlugin> m_availPlugins;
         private CSettings m_currentPluginSettings;
+        private IPlugin m_currentPlugin;
 
         public Form1()
         {
@@ -102,11 +103,18 @@ namespace T3DConvoEditor
             pnlGraph.Bounds = graphBounds;
             pnlGraph.Controls.Add(graphCtrl);
 
-            _Plugins = m_plugins.Plugins;
-            if (_Plugins.ContainsKey("TSWriterPlugin"))
+            m_availPlugins = m_plugins.Plugins;
+            if(m_availPlugins.Keys.Count > 0)
             {
-                IPlugin plugin = _Plugins["TSWriterPlugin"];
+                String firstKey = "";
+                foreach (String key in m_availPlugins.Keys)
+                {
+                    firstKey = key;
+                    break;
+                }
+                IPlugin plugin = m_availPlugins[firstKey];
                 plugin.Initialize(graphCtrl, m_log);
+                m_currentPlugin = plugin;
                 m_currentPluginSettings = plugin.Settings;
             }
         }
@@ -245,8 +253,7 @@ namespace T3DConvoEditor
         {
             if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
             {
-                CGraphManager graphman = new CGraphManager(this, m_log);
-                graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
+                m_currentPlugin.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
                 m_dirty = false;
             }
         }
@@ -255,13 +262,7 @@ namespace T3DConvoEditor
         {
             if(ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                List<Node> nodeList = new List<Node>();
-                foreach (Node n in graphCtrl.Nodes)
-                    nodeList.Add(n);
-                graphCtrl.RemoveNodes(nodeList);
-                graphCtrl.Refresh();
-                CGraphManager graphman = new CGraphManager(this, m_log);
-                graphman.LoadGraph(graphCtrl, ofdOpenFile.FileName);
+                graphCtrl = m_currentPlugin.LoadGraph(ofdOpenFile.FileName);
                 m_dirty = false;
             }
         }
@@ -270,9 +271,9 @@ namespace T3DConvoEditor
         {
             if (validateGraph())
             {
-                if (_Plugins.ContainsKey("TSWriterPlugin"))
+                if (m_availPlugins.ContainsKey("TSWriterPlugin"))
                 {
-                    IPlugin plugin = _Plugins["TSWriterPlugin"];
+                    IPlugin plugin = m_availPlugins["TSWriterPlugin"];
                     plugin.Initialize(graphCtrl, m_log);
                     sfdExportScript.DefaultExt = plugin.GetDefaultExtension();
                     sfdExportScript.InitialDirectory = m_settings.Attributes["[Default]"]["OUTPUTFOLDER"];
@@ -431,75 +432,4 @@ namespace T3DConvoEditor
             m_plugins.ShowDialog();
         }
     }
-
-    // translation tool for deserialization-time recovery of object types.
-    public static class TagFactory
-    {
-        public static object GetTagObject(String typeName)
-        {
-            switch(typeName)
-            {
-                case "T3DConvoEditor.CheckboxClass":
-                    return TagType.CHECKBOX;
-                case "T3DConvoEditor.ColorClass":
-                    return TagType.COLOR;
-                case "T3DConvoEditor.DropDownClass":
-                    return TagType.DROPDOWN;
-                case "T3DConvoEditor.ImageClass":
-                    return TagType.IMAGE;
-                case "T3DConvoEditor.LabelClass":
-                    return TagType.LABEL;
-                case "T3DConvoEditor.NumericSliderClass":
-                    return TagType.NUMERICSLIDER;
-                case "T3DConvoEditor.SliderClass":
-                    return TagType.SLIDER;
-                case "T3DConvoEditor.TextBoxClass":
-                    return TagType.TEXTBOX;
-                case "T3DConvoEditor.NodeTitleClass":
-                    return TagType.NODETITLE;
-                case "T3DConvoEditor.CompositeClass":
-                    return TagType.COMPOSITE;
-                default:
-                    return null;
-            }
-        }
-    }
-
-    // Friendly tag def
-    [Serializable]
-    public static class TagType
-    {
-        public static CheckboxClass CHECKBOX = new CheckboxClass();
-        public static ColorClass COLOR = new ColorClass();
-        public static DropDownClass DROPDOWN = new DropDownClass();
-        public static ImageClass IMAGE = new ImageClass();
-        public static LabelClass LABEL = new LabelClass();
-        public static NumericSliderClass NUMERICSLIDER = new NumericSliderClass();
-        public static SliderClass SLIDER = new SliderClass();
-        public static TextBoxClass TEXTBOX = new TextBoxClass();
-        public static NodeTitleClass NODETITLE = new NodeTitleClass();
-        public static CompositeClass COMPOSITE = new CompositeClass();
-    }
-
-    // Dummy classes to use as types for item tags
-    [Serializable]
-    public class CheckboxClass : object { }
-    [Serializable]
-    public class ColorClass : object { }
-    [Serializable]
-    public class DropDownClass : object { }
-    [Serializable]
-    public class ImageClass : object { }
-    [Serializable]
-    public class LabelClass : object { }
-    [Serializable]
-    public class NumericSliderClass : object { }
-    [Serializable]
-    public class SliderClass : object { }
-    [Serializable]
-    public class TextBoxClass : object { }
-    [Serializable]
-    public class NodeTitleClass : object { }
-    [Serializable]
-    public class CompositeClass : object { }
 }
