@@ -42,7 +42,7 @@ namespace PluginContracts
         EventHandler<NodeItemEventArgs> GetEditMouseHandler();
         EventHandler<NodeItemEventArgs> GetConvMouseHandler();
         List<string> GetNodeTypenames();
-        Node GetNodeByTypename(string name);
+        Node GetNodeByTypename(string name, string nodename);
 
         void ShowSettings();
 

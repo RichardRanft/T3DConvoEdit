@@ -70,7 +70,7 @@ namespace TSWriterPlugin
             return m_nodeTypeNames;
         }
 
-        public Node GetNodeByTypename(string typename)
+        public Node GetNodeByTypename(string typename, string nodename)
         {
             switch(typename.ToLower())
             {
@@ -82,24 +82,22 @@ namespace TSWriterPlugin
                         node.AddItem(startLabel);
                         return node;
                     }
-                    break;
                 case "end":
                     {
                         var node = new Node("Conversation End");
                         node.AddItem(new NodeTextBoxItem("Enter text"));
-                        String name = "Conversation_End_" + getEndNodeCount().ToString().PadLeft(3, '0');
-                        var endLabel = new NodeLabelItem(name, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
+                        var endLabel = new NodeLabelItem(nodename, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
                         endLabel.Name = "NodeName";
                         node.AddItem(endLabel);
                         node.AddItem(new NodeTextBoxItem(m_settings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
+                        return node;
                     }
-                    break;
                 case "conversation":
                     {
                         List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
                         String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
                         var node = new Node("Conversation Node");
-                        var nodeNameItem = new NodeTextBoxItem(nodeName);
+                        var nodeNameItem = new NodeTextBoxItem(nodename);
                         nodeNameItem.Name = "NodeName";
                         node.AddItem(nodeNameItem);
                         NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
@@ -168,6 +166,7 @@ namespace TSWriterPlugin
         {
             if (e.Item != null)
             {
+                m_nodeEdit.PluginMain = this;
                 m_nodeEdit.EditingNode = e.Item.Node;
                 m_nodeEdit.Settings = m_settings;
                 m_nodeEdit.ShowDialog();

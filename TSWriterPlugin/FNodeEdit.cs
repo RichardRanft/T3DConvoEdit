@@ -151,8 +151,14 @@ namespace TSWriterPlugin
                 {
                     for (int i = ConvoNodeStart; i < items.Count; i++)
                     {
-                        NodeTextBoxItem item = (NodeTextBoxItem)items[i];
-                        lbxChoiceNodes.Items.Add(item.Text);
+                        NodeCompositeItem item = (NodeCompositeItem)items[i];
+                        String text = "";
+                        foreach (ItemTextBoxPart part in item.Parts)
+                        {
+                            if (part.Name == "ConvText")
+                                text = part.Text;
+                        }
+                        lbxChoiceNodes.Items.Add(text);
                     }
                 }
             }
