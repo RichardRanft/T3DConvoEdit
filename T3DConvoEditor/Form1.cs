@@ -447,5 +447,16 @@ namespace T3DConvoEditor
             if(!m_newProjectDlg.IsValid)
                 MessageBox.Show("Invalid or empty project name or path.  Please try again.", "Error");
         }
+
+        private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
+        {
+            gbxConvName.Width = splitPanel.Panel1.Width - 10;
+            tbxConvoName.Width = gbxConvName.Width - 10;
+            gbxNodes.Width = splitPanel.Panel1.Width - 10;
+            gbxProject.Width = splitPanel.Panel1.Width - 10;
+            gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
+            lbxConvList.Width = gbxProject.Width - 12;
+            lbxConvList.Height = gbxProject.Height - 30;
+        }
     }
 }
