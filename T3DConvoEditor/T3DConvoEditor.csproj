@@ -69,11 +69,18 @@
     <None Include="Documentation\ConversationGui.cs" />
     <None Include="Documentation\testConversation.cs" />
     <None Include="Documentation\conversation.cs" />
+    <Compile Include="CProject.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FConvPartEdit.Designer.cs">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FNewProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FNewProject.Designer.cs">
+      <DependentUpon>FNewProject.cs</DependentUpon>
     </Compile>
     <Compile Include="FNodeEdit.cs">
       <SubType>Form</SubType>
@@ -112,6 +119,9 @@
     <None Include="RTG.ico" />
     <EmbeddedResource Include="FConvPartEdit.resx">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FNewProject.resx">
+      <DependentUpon>FNewProject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FNodeEdit.resx">
       <DependentUpon>FNodeEdit.cs</DependentUpon>

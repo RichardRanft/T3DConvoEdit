@@ -45,11 +45,13 @@ namespace T3DConvoEditor
         private FConvPartEdit m_partEdit;
         private FPreferences m_preferences;
         private FPluginPage m_plugins;
+        private FNewProject m_newProjectDlg;
         private String m_saveDefaultPath;
         private String m_personalPath;
         private Dictionary<string, IPlugin> m_availPlugins;
         private CSettings m_currentPluginSettings;
         private IPlugin m_currentPlugin;
+        private CProject m_project;
 
         public Form1()
         {
@@ -77,6 +79,7 @@ namespace T3DConvoEditor
             }
             m_settings.LoadSettings();
 
+            m_newProjectDlg = new FNewProject();
 
             m_preferences = new FPreferences(m_settings);
             m_preferences.Settings = m_settings;
@@ -430,6 +433,19 @@ namespace T3DConvoEditor
         private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_plugins.ShowDialog();
+        }
+
+        private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(m_newProjectDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                m_project = new CProject(m_log);
+                m_project.Name = m_newProjectDlg.ProjectName;
+                m_project.BaseFolder = m_newProjectDlg.BasePath;
+                this.Text = "T3D Conversation Editor - " + m_project.Name;
+            }
+            if(!m_newProjectDlg.IsValid)
+                MessageBox.Show("Invalid or empty project name or path.  Please try again.", "Error");
         }
     }
 }
