@@ -36,6 +36,12 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.fbdProjFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnCBrowse = new System.Windows.Forms.Button();
+            this.tbxConvPath = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnSBrowse = new System.Windows.Forms.Button();
+            this.tbxScriptPath = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -83,7 +89,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(554, 101);
+            this.btnCancel.Location = new System.Drawing.Point(554, 177);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -93,7 +99,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(473, 101);
+            this.btnOK.Location = new System.Drawing.Point(473, 177);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 6;
@@ -101,11 +107,69 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // btnCBrowse
+            // 
+            this.btnCBrowse.Location = new System.Drawing.Point(554, 108);
+            this.btnCBrowse.Name = "btnCBrowse";
+            this.btnCBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnCBrowse.TabIndex = 9;
+            this.btnCBrowse.Text = "Browse";
+            this.btnCBrowse.UseVisualStyleBackColor = true;
+            this.btnCBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // tbxConvPath
+            // 
+            this.tbxConvPath.Location = new System.Drawing.Point(13, 110);
+            this.tbxConvPath.Name = "tbxConvPath";
+            this.tbxConvPath.Size = new System.Drawing.Size(535, 20);
+            this.tbxConvPath.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 93);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(144, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Conversation File Save Path:";
+            // 
+            // btnSBrowse
+            // 
+            this.btnSBrowse.Location = new System.Drawing.Point(554, 148);
+            this.btnSBrowse.Name = "btnSBrowse";
+            this.btnSBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnSBrowse.TabIndex = 12;
+            this.btnSBrowse.Text = "Browse";
+            this.btnSBrowse.UseVisualStyleBackColor = true;
+            this.btnSBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // tbxScriptPath
+            // 
+            this.tbxScriptPath.Location = new System.Drawing.Point(13, 150);
+            this.tbxScriptPath.Name = "tbxScriptPath";
+            this.tbxScriptPath.Size = new System.Drawing.Size(535, 20);
+            this.tbxScriptPath.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 133);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(122, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Script Export Base Path:";
+            // 
             // FNewProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 136);
+            this.ClientSize = new System.Drawing.Size(641, 211);
+            this.Controls.Add(this.btnSBrowse);
+            this.Controls.Add(this.tbxScriptPath);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.btnCBrowse);
+            this.Controls.Add(this.tbxConvPath);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnBrowse);
@@ -131,5 +195,11 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.FolderBrowserDialog fbdProjFolder;
+        private System.Windows.Forms.Button btnCBrowse;
+        private System.Windows.Forms.TextBox tbxConvPath;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnSBrowse;
+        private System.Windows.Forms.TextBox tbxScriptPath;
+        private System.Windows.Forms.Label label4;
     }
 }

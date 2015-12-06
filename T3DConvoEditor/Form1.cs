@@ -264,7 +264,9 @@ namespace T3DConvoEditor
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            ofdOpenFile.DefaultExt = "(JSON)|*.json";
+            ofdOpenFile.FileName = "*.json";
+            if (ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 graphCtrl = m_currentPlugin.LoadGraph(ofdOpenFile.FileName);
                 m_dirty = false;
@@ -440,10 +442,40 @@ namespace T3DConvoEditor
         {
             if(m_newProjectDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                if(m_project != null && m_project.IsDirty)
+                {
+                    DialogResult res = MessageBox.Show("Do you want to save your current project?", "Save " + m_project.Name + "?", MessageBoxButtons.YesNoCancel);
+                    if (res == System.Windows.Forms.DialogResult.Yes)
+                        m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvprj");
+                    if (res == System.Windows.Forms.DialogResult.Cancel)
+                        return;
+                }
+                try
+                {
+                    if(!Directory.Exists(m_newProjectDlg.BasePath))
+                        Directory.CreateDirectory(m_newProjectDlg.BasePath);
+                }
+                catch (Exception ex)
+                {
+                    String message = "Unable to create " + m_newProjectDlg.BasePath + " : " + Environment.NewLine;
+                    message += ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        message += Environment.NewLine + ex.InnerException.Message;
+                    }
+                    m_log.WriteLine(message);
+                    MessageBox.Show("Could not create " + m_newProjectDlg.BasePath + " : " + Environment.NewLine + ex.Message, "Error Creating Folder");
+                    return;
+                }
                 m_project = new CProject(m_log);
                 m_project.Name = m_newProjectDlg.ProjectName;
                 m_project.BaseFolder = m_newProjectDlg.BasePath;
+                m_project.SaveFolder = m_newProjectDlg.SavePath;
+                m_project.ScriptFolder = m_newProjectDlg.ScriptPath;
+                m_project.ScriptExt = m_currentPlugin.GetDefaultExtension();
+                m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
+                m_dirty = false;
             }
             if(!m_newProjectDlg.IsValid)
                 MessageBox.Show("Invalid or empty project name or path.  Please try again.", "Error");
@@ -452,12 +484,24 @@ namespace T3DConvoEditor
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
             gbxConvName.Width = splitPanel.Panel1.Width - 10;
-            tbxConvoName.Width = gbxConvName.Width - 10;
+            tbxConvoName.Width = gbxConvName.Width - 16;
             gbxNodes.Width = splitPanel.Panel1.Width - 10;
             gbxProject.Width = splitPanel.Panel1.Width - 10;
             gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
-            lbxConvList.Width = gbxProject.Width - 12;
+            lbxConvList.Width = gbxProject.Width - 19;
             lbxConvList.Height = gbxProject.Height - 30;
+        }
+
+        private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ofdOpenFile.DefaultExt = "(Conversation Project)|*.cnvproj";
+            ofdOpenFile.FileName = "*.cnvproj";
+            if (ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                m_project = new CProject(m_log, ofdOpenFile.FileName);
+                this.Text = "T3D Conversation Editor - " + m_project.Name;
+                m_dirty = false;
+            }
         }
     }
 }

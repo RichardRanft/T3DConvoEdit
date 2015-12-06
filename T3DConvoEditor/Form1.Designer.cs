@@ -46,6 +46,7 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlPalette = new System.Windows.Forms.Panel();
+            this.gbxProject = new System.Windows.Forms.GroupBox();
             this.gbxNodes = new System.Windows.Forms.GroupBox();
             this.lblStartNode = new System.Windows.Forms.Label();
             this.lblConvoNode = new System.Windows.Forms.Label();
@@ -59,10 +60,10 @@
             this.ofdOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.sfdExportScript = new System.Windows.Forms.SaveFileDialog();
             this.splitPanel = new System.Windows.Forms.SplitContainer();
-            this.gbxProject = new System.Windows.Forms.GroupBox();
-            this.lbxConvList = new System.Windows.Forms.ListBox();
+            this.lbxConvList = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.pnlPalette.SuspendLayout();
+            this.gbxProject.SuspendLayout();
             this.gbxNodes.SuspendLayout();
             this.gbxConvName.SuspendLayout();
             this.pnlWork.SuspendLayout();
@@ -70,7 +71,6 @@
             this.splitPanel.Panel1.SuspendLayout();
             this.splitPanel.Panel2.SuspendLayout();
             this.splitPanel.SuspendLayout();
-            this.gbxProject.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -104,64 +104,65 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
+            this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // saveProjectToolStripMenuItem
             // 
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(140, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exportToolStripMenuItem.Text = "Ex&port";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(140, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -198,6 +199,16 @@
             this.pnlPalette.Name = "pnlPalette";
             this.pnlPalette.Size = new System.Drawing.Size(156, 533);
             this.pnlPalette.TabIndex = 1;
+            // 
+            // gbxProject
+            // 
+            this.gbxProject.Controls.Add(this.lbxConvList);
+            this.gbxProject.Location = new System.Drawing.Point(4, 156);
+            this.gbxProject.Name = "gbxProject";
+            this.gbxProject.Size = new System.Drawing.Size(150, 374);
+            this.gbxProject.TabIndex = 5;
+            this.gbxProject.TabStop = false;
+            this.gbxProject.Text = "Project Conversations";
             // 
             // gbxNodes
             // 
@@ -334,22 +345,11 @@
             this.splitPanel.SplitterDistance = 160;
             this.splitPanel.TabIndex = 3;
             // 
-            // gbxProject
-            // 
-            this.gbxProject.Controls.Add(this.lbxConvList);
-            this.gbxProject.Location = new System.Drawing.Point(4, 156);
-            this.gbxProject.Name = "gbxProject";
-            this.gbxProject.Size = new System.Drawing.Size(150, 374);
-            this.gbxProject.TabIndex = 5;
-            this.gbxProject.TabStop = false;
-            this.gbxProject.Text = "Project Conversations";
-            // 
             // lbxConvList
             // 
-            this.lbxConvList.FormattingEnabled = true;
-            this.lbxConvList.Location = new System.Drawing.Point(6, 20);
+            this.lbxConvList.Location = new System.Drawing.Point(9, 20);
             this.lbxConvList.Name = "lbxConvList";
-            this.lbxConvList.Size = new System.Drawing.Size(135, 342);
+            this.lbxConvList.Size = new System.Drawing.Size(132, 348);
             this.lbxConvList.TabIndex = 0;
             // 
             // Form1
@@ -371,6 +371,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnlPalette.ResumeLayout(false);
+            this.gbxProject.ResumeLayout(false);
             this.gbxNodes.ResumeLayout(false);
             this.gbxNodes.PerformLayout();
             this.gbxConvName.ResumeLayout(false);
@@ -380,7 +381,6 @@
             this.splitPanel.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel)).EndInit();
             this.splitPanel.ResumeLayout(false);
-            this.gbxProject.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -418,7 +418,7 @@
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitPanel;
         private System.Windows.Forms.GroupBox gbxProject;
-        private System.Windows.Forms.ListBox lbxConvList;
+        private System.Windows.Forms.TreeView lbxConvList;
     }
 }
 
