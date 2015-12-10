@@ -47,6 +47,7 @@
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlPalette = new System.Windows.Forms.Panel();
             this.gbxProject = new System.Windows.Forms.GroupBox();
+            this.lbxConvList = new System.Windows.Forms.TreeView();
             this.gbxNodes = new System.Windows.Forms.GroupBox();
             this.lblStartNode = new System.Windows.Forms.Label();
             this.lblConvoNode = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.ofdOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.sfdExportScript = new System.Windows.Forms.SaveFileDialog();
             this.splitPanel = new System.Windows.Forms.SplitContainer();
-            this.lbxConvList = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.pnlPalette.SuspendLayout();
             this.gbxProject.SuspendLayout();
@@ -120,6 +120,7 @@
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
             this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
+            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -209,6 +210,14 @@
             this.gbxProject.TabIndex = 5;
             this.gbxProject.TabStop = false;
             this.gbxProject.Text = "Project Conversations";
+            // 
+            // lbxConvList
+            // 
+            this.lbxConvList.Location = new System.Drawing.Point(9, 20);
+            this.lbxConvList.Name = "lbxConvList";
+            this.lbxConvList.Size = new System.Drawing.Size(132, 348);
+            this.lbxConvList.TabIndex = 0;
+            this.lbxConvList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lbxConvList_AfterSelect);
             // 
             // gbxNodes
             // 
@@ -344,13 +353,6 @@
             this.splitPanel.Size = new System.Drawing.Size(1084, 537);
             this.splitPanel.SplitterDistance = 160;
             this.splitPanel.TabIndex = 3;
-            // 
-            // lbxConvList
-            // 
-            this.lbxConvList.Location = new System.Drawing.Point(9, 20);
-            this.lbxConvList.Name = "lbxConvList";
-            this.lbxConvList.Size = new System.Drawing.Size(132, 348);
-            this.lbxConvList.TabIndex = 0;
             // 
             // Form1
             // 

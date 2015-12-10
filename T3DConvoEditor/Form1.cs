@@ -120,6 +120,10 @@ namespace T3DConvoEditor
                 m_currentPlugin = plugin;
                 m_currentPluginSettings = plugin.Settings;
             }
+            m_project = new CProject(m_log);
+            lbxConvList.Nodes.Clear();
+            TreeNode rootNode = new TreeNode();
+            lbxConvList.Nodes.Add(rootNode);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -257,6 +261,9 @@ namespace T3DConvoEditor
         {
             if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
             {
+                // see if current conversation is in current project.  If not, add it.
+
+                // save conversation graph.
                 m_currentPlugin.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
                 m_dirty = false;
             }
@@ -420,6 +427,9 @@ namespace T3DConvoEditor
                 {
                     if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
                     {
+                        // handle project membership here
+
+
                         CGraphManager graphman = new CGraphManager(this, m_log);
                         graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
                     }
@@ -430,12 +440,26 @@ namespace T3DConvoEditor
                 nodeList.Add(n);
             graphCtrl.RemoveNodes(nodeList);
             graphCtrl.Refresh();
+
+            // add new conversation to project here.
+
             m_dirty = false;
         }
 
         private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_plugins.ShowDialog();
+        }
+
+        private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
+        {
+            gbxConvName.Width = splitPanel.Panel1.Width - 10;
+            tbxConvoName.Width = gbxConvName.Width - 16;
+            gbxNodes.Width = splitPanel.Panel1.Width - 10;
+            gbxProject.Width = splitPanel.Panel1.Width - 10;
+            gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
+            lbxConvList.Width = gbxProject.Width - 19;
+            lbxConvList.Height = gbxProject.Height - 30;
         }
 
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -475,21 +499,13 @@ namespace T3DConvoEditor
                 m_project.ScriptExt = m_currentPlugin.GetDefaultExtension();
                 m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
+                lbxConvList.Nodes.Clear();
+                TreeNode rootNode = new TreeNode(m_project.Name);
+                lbxConvList.Nodes.Add(rootNode);
                 m_dirty = false;
             }
             if(!m_newProjectDlg.IsValid)
                 MessageBox.Show("Invalid or empty project name or path.  Please try again.", "Error");
-        }
-
-        private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
-        {
-            gbxConvName.Width = splitPanel.Panel1.Width - 10;
-            tbxConvoName.Width = gbxConvName.Width - 16;
-            gbxNodes.Width = splitPanel.Panel1.Width - 10;
-            gbxProject.Width = splitPanel.Panel1.Width - 10;
-            gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
-            lbxConvList.Width = gbxProject.Width - 19;
-            lbxConvList.Height = gbxProject.Height - 30;
         }
 
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -502,6 +518,18 @@ namespace T3DConvoEditor
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
                 m_dirty = false;
             }
+        }
+
+        private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // save the project....
+            m_project.Save(m_project.BaseFolder);
+        }
+
+        private void lbxConvList_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // handle node double-click to open conversation save file.  Will prompt to save current
+            // conversation tree before loading.
         }
     }
 }
