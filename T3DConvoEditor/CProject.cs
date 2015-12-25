@@ -280,6 +280,16 @@ namespace T3DConvoEditor
             return false;
         }
 
+        public bool Contains(String conv)
+        {
+            foreach(String key in m_conversations.Keys)
+            {
+                if (m_conversations[key].Equals(conv))
+                    return true;
+            }
+            return false;
+        }
+
         private void loadProject(String path)
         {
             if (!File.Exists(path))

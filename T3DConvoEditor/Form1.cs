@@ -425,10 +425,19 @@ namespace T3DConvoEditor
             {
                 if(MessageBox.Show("Save before starting a new conversation?", "Save", MessageBoxButtons.YesNoCancel) == System.Windows.Forms.DialogResult.Yes)
                 {
+                    sfdSaveGraphFile.InitialDirectory = m_project.SaveFolder;
                     if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
                     {
                         // handle project membership here
-
+                        if(sfdSaveGraphFile.FileName.Contains(m_project.SaveFolder))
+                        {
+                            // is this save file already in the project?
+                            if(!m_project.Contains(sfdSaveGraphFile.FileName))
+                            {
+                                m_project.AddConversation(sfdSaveGraphFile.FileName.Replace(m_project.SaveFolder, ""), sfdSaveGraphFile.FileName);
+                                m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
+                            }
+                        }
 
                         CGraphManager graphman = new CGraphManager(this, m_log);
                         graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
@@ -442,6 +451,26 @@ namespace T3DConvoEditor
             graphCtrl.Refresh();
 
             // add new conversation to project here.
+            TreeNode rootNode = lbxConvList.SelectedNode;
+            if (rootNode == null)
+            {
+                TreeNode[] nodes = lbxConvList.Nodes.Find(m_project.Name, false);
+                if (nodes.Length > 0)
+                    rootNode = nodes[0];
+                else
+                    rootNode = lbxConvList.Nodes[0];
+            }
+            String nodename = sfdSaveGraphFile.FileName.Replace(m_project.SaveFolder, "");
+            nodename = nodename.Replace(m_project.SaveExt, "");
+            String[] pathParts = nodename.Split('\\');
+            List<TreeNode> pathnodes = new List<TreeNode>();
+            foreach(String part in pathParts)
+            {
+                pathnodes.Add(new TreeNode(part));
+            }
+            TreeNode foldernode = pathnodes[pathnodes.Count - 1];
+            TreeNode convNode = new TreeNode();
+            
 
             m_dirty = false;
         }
@@ -470,7 +499,7 @@ namespace T3DConvoEditor
                 {
                     DialogResult res = MessageBox.Show("Do you want to save your current project?", "Save " + m_project.Name + "?", MessageBoxButtons.YesNoCancel);
                     if (res == System.Windows.Forms.DialogResult.Yes)
-                        m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvprj");
+                        m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
                     if (res == System.Windows.Forms.DialogResult.Cancel)
                         return;
                 }
@@ -500,6 +529,7 @@ namespace T3DConvoEditor
                 m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
                 lbxConvList.Nodes.Clear();
+                lbxConvList.SetTopNodeName(m_project.Name);
                 TreeNode rootNode = new TreeNode(m_project.Name);
                 lbxConvList.Nodes.Add(rootNode);
                 m_dirty = false;
@@ -516,6 +546,9 @@ namespace T3DConvoEditor
             {
                 m_project = new CProject(m_log, ofdOpenFile.FileName);
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
+                foreach (String item in m_project.Conversations.Keys)
+                    lbxConvList.AddPath(m_project.Conversations[item]);
+                lbxConvList.SetTopNodeName(m_project.Name);
                 m_dirty = false;
             }
         }
@@ -523,7 +556,7 @@ namespace T3DConvoEditor
         private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // save the project....
-            m_project.Save(m_project.BaseFolder);
+            m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
         }
 
         private void lbxConvList_AfterSelect(object sender, TreeViewEventArgs e)

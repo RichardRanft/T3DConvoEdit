@@ -76,6 +76,9 @@
     <Compile Include="FConvPartEdit.Designer.cs">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FNewProject.cs">
       <SubType>Form</SubType>
     </Compile>

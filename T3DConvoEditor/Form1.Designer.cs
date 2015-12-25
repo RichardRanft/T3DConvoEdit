@@ -47,7 +47,7 @@
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlPalette = new System.Windows.Forms.Panel();
             this.gbxProject = new System.Windows.Forms.GroupBox();
-            this.lbxConvList = new System.Windows.Forms.TreeView();
+            this.lbxConvList = new FileTreeView();
             this.gbxNodes = new System.Windows.Forms.GroupBox();
             this.lblStartNode = new System.Windows.Forms.Label();
             this.lblConvoNode = new System.Windows.Forms.Label();
@@ -420,7 +420,7 @@
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitPanel;
         private System.Windows.Forms.GroupBox gbxProject;
-        private System.Windows.Forms.TreeView lbxConvList;
+        private FileTreeView lbxConvList;
     }
 }
 
