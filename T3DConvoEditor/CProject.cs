@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Windows.Forms;
 using BasicLogging;
 
 namespace T3DConvoEditor
@@ -22,6 +23,8 @@ namespace T3DConvoEditor
         private Dictionary<String, String> m_scripts;
         private bool m_dirty;
         private CLog m_log;
+
+        public FileTreeView TreeView { get; set; }
 
         public String Name
         {
@@ -155,7 +158,12 @@ namespace T3DConvoEditor
                 m_projectData.Save(path);
 
                 m_dirty = false;
-                
+
+                this.TreeView.Nodes.Clear();
+                this.TreeView.SetTopNodeName(m_projectName);
+                TreeNode rootNode = new TreeNode(m_projectName);
+                this.TreeView.Nodes.Add(rootNode);
+
                 return true;
             }
             catch (Exception ex)
@@ -176,7 +184,7 @@ namespace T3DConvoEditor
             {
                 m_conversations.Add(name, m_convFolder + "\\" + path);
                 m_scripts.Add(name, m_scriptFolder + "\\" + path);
-                
+                this.TreeView.AddPath(path);
                 m_dirty = true;
 
                 return true;
@@ -227,7 +235,9 @@ namespace T3DConvoEditor
                 }
                 m_scripts.Remove(oldName);
                 m_scripts.Add(newName, newpath);
-
+                this.TreeView.AddPath(newpath);
+                // remove old file path - start at leaf, work back toward trunk until containing folder is not empty 
+                // after the removal of nodes.
                 m_dirty = true;
 
                 return true;

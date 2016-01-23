@@ -120,10 +120,11 @@ namespace T3DConvoEditor
                 m_currentPlugin = plugin;
                 m_currentPluginSettings = plugin.Settings;
             }
-            m_project = new CProject(m_log);
             lbxConvList.Nodes.Clear();
             TreeNode rootNode = new TreeNode();
             lbxConvList.Nodes.Add(rootNode);
+            m_project = new CProject(m_log);
+            m_project.TreeView = lbxConvList;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -511,10 +512,6 @@ namespace T3DConvoEditor
                 m_project.ScriptExt = m_currentPlugin.GetDefaultExtension();
                 m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
-                lbxConvList.Nodes.Clear();
-                lbxConvList.SetTopNodeName(m_project.Name);
-                TreeNode rootNode = new TreeNode(m_project.Name);
-                lbxConvList.Nodes.Add(rootNode);
                 m_dirty = false;
             }
             if(!m_newProjectDlg.IsValid)

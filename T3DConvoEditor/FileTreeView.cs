@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace T3DConvoEditor
 {
-    class FileTreeView : TreeView
+    public class FileTreeView : TreeView
     {
         private string pathText;
 
