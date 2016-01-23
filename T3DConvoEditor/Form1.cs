@@ -451,26 +451,9 @@ namespace T3DConvoEditor
             graphCtrl.Refresh();
 
             // add new conversation to project here.
-            TreeNode rootNode = lbxConvList.SelectedNode;
-            if (rootNode == null)
-            {
-                TreeNode[] nodes = lbxConvList.Nodes.Find(m_project.Name, false);
-                if (nodes.Length > 0)
-                    rootNode = nodes[0];
-                else
-                    rootNode = lbxConvList.Nodes[0];
-            }
             String nodename = sfdSaveGraphFile.FileName.Replace(m_project.SaveFolder, "");
             nodename = nodename.Replace(m_project.SaveExt, "");
-            String[] pathParts = nodename.Split('\\');
-            List<TreeNode> pathnodes = new List<TreeNode>();
-            foreach(String part in pathParts)
-            {
-                pathnodes.Add(new TreeNode(part));
-            }
-            TreeNode foldernode = pathnodes[pathnodes.Count - 1];
-            TreeNode convNode = new TreeNode();
-            
+            lbxConvList.AddPath(nodename);
 
             m_dirty = false;
         }

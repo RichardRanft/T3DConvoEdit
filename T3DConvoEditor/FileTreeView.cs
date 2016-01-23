@@ -42,7 +42,7 @@ namespace T3DConvoEditor
         }
 
         /// <summary>
-        /// Set the path text - this will generate a set of TreeNode objects to match.
+        /// Set the top node name and text to the assigned string.
         /// </summary>
         [Browsable(false)]
         public virtual void SetTopNodeName(string name)
