@@ -48,7 +48,7 @@ namespace RenPyPlugin
         {
             get
             {
-                return "TSWriterPlugin";
+                return "RenPyPlugin";
             }
         }
 
@@ -204,21 +204,21 @@ namespace RenPyPlugin
             m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
             m_iniPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
-            String iniFile = m_iniPath + "TSWriterPlugin.ini";
+            String iniFile = m_iniPath + "RenPyPlugin.ini";
             m_log.WriteLine("Attempting to load " + iniFile);
             if (File.Exists(iniFile))
-                m_settings = new CSettings(m_iniPath + "TSWriterPlugin.ini");
+                m_settings = new CSettings(m_iniPath + "RenPyPlugin.ini");
             else
             {
                 m_iniPath = Path.GetFullPath(".\\");
-                iniFile = m_iniPath + @"Plugins\TSWriterPlugin.ini";
+                iniFile = m_iniPath + @"Plugins\RenPyPlugin.ini";
                 m_log.WriteLine("Attempting to load " + iniFile);
                 m_settings = new CSettings(iniFile);
             }
             if (!m_settings.LoadSettings())
-                m_log.WriteLine("Failed to locate TSWriterPlugin.ini");
+                m_log.WriteLine("Failed to locate RenPyPlugin.ini");
             else
-                m_log.WriteLine("TSWriterPlugin settings loaded");
+                m_log.WriteLine("RenPyPlugin settings loaded");
             m_nodeEdit = new FNodeEdit();
             m_partEdit = new FConvPartEdit();
             m_settingsForm = new FSettings();
@@ -227,7 +227,7 @@ namespace RenPyPlugin
         public void Export(String filename)
         {
             if (m_graphCtrl == null)
-                MessageBox.Show("TorqueScript Writer Plugin can't export graph - call SetGraphControl() to set the graph for export.");
+                MessageBox.Show("Ren'Py Writer Plugin can't export graph - call SetGraphControl() to set the graph for export.");
             CTorquescriptWriter writer = new CTorquescriptWriter(m_log, m_settings);
             if (filename.Length < 1)
                 filename = "defaultScript.cs";
@@ -254,7 +254,7 @@ namespace RenPyPlugin
             {
                 try
                 {
-                    String conversation = Path.GetFileName(filename).Replace(".cs", "");
+                    String conversation = Path.GetFileName(filename).Replace(".rpy", "");
                     String script = generateScript(conversation, nodelist);
 
                     using (StreamWriter sr = new StreamWriter(filename))
@@ -274,37 +274,45 @@ namespace RenPyPlugin
 
             private String generateScript(String convoName, List<Node> nodes)
             {
-                m_log.WriteLine("Generating conversation script " + convoName + "...");
+                m_log.WriteLine("Generating script.rpy...");
 
                 String script = "";
 
-                script += "// Conversation output generated using T3DConvoEditor" + Environment.NewLine;
-                script += "// Copyright © 2015 Roostertail Games" + Environment.NewLine;
-                script += "// Use of T3DConvoEditor and its output are governed by the MIT license." + Environment.NewLine + Environment.NewLine;
+                script += "## Conversation output generated using T3DConvoEditor" + Environment.NewLine;
+                script += "## Copyright © 2015 Roostertail Games" + Environment.NewLine;
+                script += "## Use of T3DConvoEditor and its output are governed by the MIT license." + Environment.NewLine + Environment.NewLine;
 
-                script += "// Permission is hereby granted, free of charge, to any person obtaining a copy" + Environment.NewLine;
-                script += "// of this software and associated documentation files (the \"Software\"), to deal" + Environment.NewLine;
-                script += "// in the Software without restriction, including without limitation the rights" + Environment.NewLine;
-                script += "// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" + Environment.NewLine;
-                script += "// copies of the Software, and to permit persons to whom the Software is" + Environment.NewLine;
-                script += "// furnished to do so, subject to the following conditions:" + Environment.NewLine + Environment.NewLine;
+                script += "## Permission is hereby granted, free of charge, to any person obtaining a copy" + Environment.NewLine;
+                script += "## of this software and associated documentation files (the \"Software\"), to deal" + Environment.NewLine;
+                script += "## in the Software without restriction, including without limitation the rights" + Environment.NewLine;
+                script += "## to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" + Environment.NewLine;
+                script += "## copies of the Software, and to permit persons to whom the Software is" + Environment.NewLine;
+                script += "## furnished to do so, subject to the following conditions:" + Environment.NewLine + Environment.NewLine;
 
-                script += "// The above copyright notice and this permission notice shall be included in" + Environment.NewLine;
-                script += "// all copies or substantial portions of the Software." + Environment.NewLine + Environment.NewLine;
+                script += "## The above copyright notice and this permission notice shall be included in" + Environment.NewLine;
+                script += "## all copies or substantial portions of the Software." + Environment.NewLine + Environment.NewLine;
 
-                script += "// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" + Environment.NewLine;
-                script += "// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," + Environment.NewLine;
-                script += "// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" + Environment.NewLine;
-                script += "// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" + Environment.NewLine;
-                script += "// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," + Environment.NewLine;
-                script += "// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN" + Environment.NewLine;
-                script += "// THE SOFTWARE." + Environment.NewLine + Environment.NewLine;
+                script += "## THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" + Environment.NewLine;
+                script += "## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," + Environment.NewLine;
+                script += "## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" + Environment.NewLine;
+                script += "## AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" + Environment.NewLine;
+                script += "## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," + Environment.NewLine;
+                script += "## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN" + Environment.NewLine;
+                script += "## THE SOFTWARE." + Environment.NewLine + Environment.NewLine;
 
-                script += "//--- OBJECT WRITE BEGIN ---" + Environment.NewLine;
-                script += "new SimSet(" + convoName + "){" + Environment.NewLine;
-                script += "\tclass = \"Conversation\";" + Environment.NewLine;
-                script += "\tcanSave = \"1\";" + Environment.NewLine;
-                script += "\tcanSaveDynamicFields = \"1\";" + Environment.NewLine + Environment.NewLine;
+                script += "## The script of the game goes in this file." + Environment.NewLine + Environment.NewLine;
+
+                script += "## Declare characters used by this game. The color argument colorizes the name" + Environment.NewLine;
+                script += "## of the character." + Environment.NewLine + Environment.NewLine;
+
+                // next write Character definitions
+
+
+                // next write image definitions
+
+
+                // start writing script
+                script += "label start:" + Environment.NewLine;
 
                 foreach (Node node in nodes)
                 {
@@ -323,8 +331,9 @@ namespace RenPyPlugin
                             break;
                     }
                 }
-                script += "};" + Environment.NewLine;
-                script += "//--- OBJECT WRITE END ---" + Environment.NewLine;
+                script += "    " + Environment.NewLine;
+                script += "    ## This ends the game" + Environment.NewLine + Environment.NewLine;
+                script += "    return" + Environment.NewLine;
 
                 m_log.WriteLine(convoName + " script generated.");
 
