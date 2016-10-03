@@ -109,6 +109,12 @@
     <Compile Include="FPreferences.Designer.cs">
       <DependentUpon>FPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="FProjectSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FProjectSettings.Designer.cs">
+      <DependentUpon>FProjectSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenericPluginLoader.cs" />
     <Compile Include="PluginLoader.cs" />
     <Compile Include="Program.cs" />
@@ -137,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FPreferences.resx">
       <DependentUpon>FPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FProjectSettings.resx">
+      <DependentUpon>FProjectSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

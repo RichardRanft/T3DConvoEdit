@@ -46,6 +46,7 @@ namespace T3DConvoEditor
         private FPreferences m_preferences;
         private FPluginPage m_plugins;
         private FNewProject m_newProjectDlg;
+        private FProjectSettings m_editProjectDlg;
         private String m_saveDefaultPath;
         private String m_personalPath;
         private Dictionary<string, IPlugin> m_availPlugins;
@@ -80,6 +81,7 @@ namespace T3DConvoEditor
             m_settings.LoadSettings();
 
             m_newProjectDlg = new FNewProject();
+            m_editProjectDlg = new FProjectSettings();
 
             m_preferences = new FPreferences(m_settings);
             m_preferences.Settings = m_settings;
@@ -477,9 +479,9 @@ namespace T3DConvoEditor
 
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(m_newProjectDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (m_newProjectDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if(m_project != null && m_project.IsDirty)
+                if (m_project != null && m_project.IsDirty)
                 {
                     DialogResult res = MessageBox.Show("Do you want to save your current project?", "Save " + m_project.Name + "?", MessageBoxButtons.YesNoCancel);
                     if (res == System.Windows.Forms.DialogResult.Yes)
@@ -489,7 +491,7 @@ namespace T3DConvoEditor
                 }
                 try
                 {
-                    if(!Directory.Exists(m_newProjectDlg.BasePath))
+                    if (!Directory.Exists(m_newProjectDlg.BasePath))
                         Directory.CreateDirectory(m_newProjectDlg.BasePath);
                 }
                 catch (Exception ex)
@@ -514,6 +516,8 @@ namespace T3DConvoEditor
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
                 m_dirty = false;
             }
+            else
+                return;
             if(!m_newProjectDlg.IsValid)
                 MessageBox.Show("Invalid or empty project name or path.  Please try again.", "Error");
         }
@@ -543,6 +547,15 @@ namespace T3DConvoEditor
         {
             // handle node double-click to open conversation save file.  Will prompt to save current
             // conversation tree before loading.
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_editProjectDlg.Project = m_project;
+            if(m_editProjectDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                m_project = m_editProjectDlg.Project;
+            }
         }
     }
 }
