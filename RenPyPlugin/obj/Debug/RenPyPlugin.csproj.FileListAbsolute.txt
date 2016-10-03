@@ -13,3 +13,4 @@ I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FNodeEdit.resour
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.csproj.GenerateResource.Cache
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.dll
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.pdb
+I:\programming\T3DConvoEditor\RenPyPlugin\bin\Debug\RenPyPlugin.ini

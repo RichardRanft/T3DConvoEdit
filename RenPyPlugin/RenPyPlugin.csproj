@@ -86,6 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="RenPyPlugin.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PluginContracts\PluginContracts.csproj">
@@ -102,6 +105,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)$(OutDir)RenPyPlugin.dll $(ProjectDir)..\T3DConvoEditor\Plugins\
+copy $(ProjectDir)$(OutDir)RenPyPlugin.pdb $(ProjectDir)..\T3DConvoEditor\Plugins\
+copy $(ProjectDir)$(OutDir)RenPyPlugin.ini $(ProjectDir)..\T3DConvoEditor\Plugins\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
