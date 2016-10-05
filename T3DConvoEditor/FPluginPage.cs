@@ -42,9 +42,17 @@ namespace T3DConvoEditor
         private CLog m_log;
         private String m_pluginFolder;
 
+        public IPlugin Active;
+
         public Dictionary<string, IPlugin> Plugins
         {
             get { return _Plugins; }
+        }
+
+        public void SetActive(String pluginName)
+        {
+            lblLoadedPlugin.Text = pluginName;
+            Active = _Plugins[pluginName];
         }
 
         public FPluginPage(CLog log)
@@ -67,6 +75,11 @@ namespace T3DConvoEditor
                     _Plugins.Add(item.Name, item);
                     m_log.WriteLine("Loaded " + item.Name);
                 }
+                lbxAvailPlugins.Items.Clear();
+                foreach(KeyValuePair<string, IPlugin> p in _Plugins)
+                {
+                    lbxAvailPlugins.Items.Add(p.Key);
+                }
             }
             catch(Exception ex)
             {
@@ -82,10 +95,18 @@ namespace T3DConvoEditor
 
         private void FPluginPage_Activated(object sender, EventArgs e)
         {
-            lbxLoadedPlugins.Items.Clear();
+            lbxAvailPlugins.Items.Clear();
             foreach(String key in _Plugins.Keys)
             {
-                lbxLoadedPlugins.Items.Add(key);
+                lbxAvailPlugins.Items.Add(key);
+            }
+        }
+
+        private void lbxAvailPlugins_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(lbxAvailPlugins.SelectedIndex > -1)
+            {
+                Active = _Plugins[lbxAvailPlugins.SelectedItem.ToString()];
             }
         }
     }

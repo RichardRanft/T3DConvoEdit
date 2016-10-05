@@ -29,31 +29,34 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FPluginPage));
-            this.lbxLoadedPlugins = new System.Windows.Forms.ListBox();
+            this.lbxAvailPlugins = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.lblLoadedPlugin = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lbxLoadedPlugins
+            // lbxAvailPlugins
             // 
-            this.lbxLoadedPlugins.FormattingEnabled = true;
-            this.lbxLoadedPlugins.Location = new System.Drawing.Point(12, 29);
-            this.lbxLoadedPlugins.Name = "lbxLoadedPlugins";
-            this.lbxLoadedPlugins.Size = new System.Drawing.Size(164, 251);
-            this.lbxLoadedPlugins.TabIndex = 0;
+            this.lbxAvailPlugins.FormattingEnabled = true;
+            this.lbxAvailPlugins.Location = new System.Drawing.Point(12, 52);
+            this.lbxAvailPlugins.Name = "lbxAvailPlugins";
+            this.lbxAvailPlugins.Size = new System.Drawing.Size(204, 238);
+            this.lbxAvailPlugins.TabIndex = 0;
+            this.lbxAvailPlugins.SelectedIndexChanged += new System.EventHandler(this.lbxAvailPlugins_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
+            this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Loaded Plugins";
+            this.label1.Text = "Loaded Plugin:";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(284, 299);
+            this.button1.Location = new System.Drawing.Point(141, 299);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -61,14 +64,33 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // lblLoadedPlugin
+            // 
+            this.lblLoadedPlugin.AutoSize = true;
+            this.lblLoadedPlugin.Location = new System.Drawing.Point(97, 13);
+            this.lblLoadedPlugin.Name = "lblLoadedPlugin";
+            this.lblLoadedPlugin.Size = new System.Drawing.Size(0, 13);
+            this.lblLoadedPlugin.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Available Plugins";
+            // 
             // FPluginPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 334);
+            this.ClientSize = new System.Drawing.Size(228, 334);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblLoadedPlugin);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lbxLoadedPlugins);
+            this.Controls.Add(this.lbxAvailPlugins);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FPluginPage";
             this.Text = "Plugin Settings";
@@ -80,8 +102,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lbxLoadedPlugins;
+        private System.Windows.Forms.ListBox lbxAvailPlugins;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblLoadedPlugin;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -121,6 +121,7 @@ namespace T3DConvoEditor
                 plugin.Initialize(graphCtrl, m_log);
                 m_currentPlugin = plugin;
                 m_currentPluginSettings = plugin.Settings;
+                m_plugins.SetActive(m_currentPlugin.Name);
             }
             lbxConvList.Nodes.Clear();
             TreeNode rootNode = new TreeNode();
@@ -155,9 +156,6 @@ namespace T3DConvoEditor
         private void lblStartNode_MouseDown(object sender, MouseEventArgs e)
         {
             var node = m_currentPlugin.GetNodeByTypename("start", ""); //new Node("Conversation Start");
-            //var startLabel = new NodeLabelItem("Conversation_Start", NodeIOMode.Output) { Tag = TagType.LABEL };
-            //startLabel.Name = "NodeName";
-            //node.AddItem(startLabel);
             this.DoDragDrop(node, DragDropEffects.Copy);
         }
 
@@ -166,29 +164,6 @@ namespace T3DConvoEditor
             List<Node> nodes = (List<Node>)graphCtrl.Nodes;
             String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
             var node = m_currentPlugin.GetNodeByTypename("conversation", nodeName); //new Node("Conversation Node");
-            //var nodeNameItem = new NodeTextBoxItem(nodeName);
-            //nodeNameItem.Name = "NodeName";
-            //node.AddItem(nodeNameItem);
-            //NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
-            //displayText.Name = "DisplayText";
-            //node.AddItem(displayText);
-            //var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
-            //inputLabel.Name = nodeName + "_in";
-            //node.AddItem(inputLabel);
-            //var editNode = new NodeLabelItem("Click Here To Edit Output List");
-            //editNode.Name = "EditNodeItem";
-            //editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
-            //node.AddItem(editNode);
-            //NodeCompositeItem firstButton = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
-            //firstButton.Name = "button_1";
-            //ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
-            //btnText.Name = "ConvText";
-            //ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
-            //btnMethod.Name = "ConvMethod";
-            //firstButton.AddPart(btnText);
-            //firstButton.AddPart(btnMethod);
-            //firstButton.Clicked += new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
-            //node.AddItem(firstButton);
 			this.DoDragDrop(node, DragDropEffects.Copy);
         }
 
@@ -196,12 +171,6 @@ namespace T3DConvoEditor
         {
             String name = "Conversation_End_" + getEndNodeCount().ToString().PadLeft(3, '0');
             var node = m_currentPlugin.GetNodeByTypename("end", name); //new Node("Conversation End");
-            //node.AddItem(new NodeTextBoxItem("Enter text"));
-            //String name = "Conversation_End_" + getEndNodeCount().ToString().PadLeft(3, '0');
-            //var endLabel = new NodeLabelItem(name, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
-            //endLabel.Name = "NodeName";
-            //node.AddItem(endLabel);
-            //node.AddItem(new NodeTextBoxItem(m_currentPluginSettings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
             this.DoDragDrop(node, DragDropEffects.Copy);
         }
 
@@ -464,6 +433,34 @@ namespace T3DConvoEditor
         private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_plugins.ShowDialog();
+            if(m_plugins.Active != m_currentPlugin)
+            {
+                if(MessageBox.Show("Save before switching plugins?", "Save", MessageBoxButtons.YesNoCancel) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    sfdSaveGraphFile.InitialDirectory = m_project.SaveFolder;
+                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
+                    {
+                        // handle project membership here
+                        if(sfdSaveGraphFile.FileName.Contains(m_project.SaveFolder))
+                        {
+                            // is this save file already in the project?
+                            if(!m_project.Contains(sfdSaveGraphFile.FileName))
+                            {
+                                m_project.AddConversation(sfdSaveGraphFile.FileName.Replace(m_project.SaveFolder, ""), sfdSaveGraphFile.FileName);
+                                m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
+                            }
+                        }
+
+                        CGraphManager graphman = new CGraphManager(this, m_log);
+                        graphman.SaveGraph(graphCtrl, sfdSaveGraphFile.FileName);
+                    }
+                }
+                List<Node> nodeList = new List<Node>();
+                foreach (Node n in graphCtrl.Nodes)
+                    nodeList.Add(n);
+                graphCtrl.RemoveNodes(nodeList);
+                graphCtrl.Refresh();
+            }
         }
 
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)

@@ -311,9 +311,6 @@ namespace RenPyPlugin
                 // next write image definitions
 
 
-                // start writing script
-                script += "label start:" + Environment.NewLine;
-
                 foreach (Node node in nodes)
                 {
                     List<NodeItem> items = (List<NodeItem>)node.Items;
@@ -345,17 +342,14 @@ namespace RenPyPlugin
                 String script = "";
                 List<NodeItem> items = (List<NodeItem>)node.Items;
                 NodeLabelItem linkItem = (NodeLabelItem)items[0];
-                script += "\tnew ScriptObject(" + convName + "_" + linkItem.Text + ") {" + Environment.NewLine;
-                script += "\t\tclass = \"ConversationStart\";" + Environment.NewLine;
-                script += "\t\tcanSave = \"1\";" + Environment.NewLine;
-                script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
-                script += "\t\t\tnumOutLinks = 1;" + Environment.NewLine;
+                // start writing script
+                script += "label start:" + Environment.NewLine;
+
                 List<NodeConnection> conns = (List<NodeConnection>)linkItem.Node.Connections;
                 NodeConnection outconn = conns[0];
                 List<NodeItem> targetItemList = (List<NodeItem>)outconn.To.Node.Items;
                 NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
-                script += "\t\t\toutLink0 = " + convName + "_" + targetItem.Text + ";" + Environment.NewLine;
-                script += "\t};" + Environment.NewLine;
+                script += "    jump " + targetItem.Text + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Start node");
                 return script;
             }
@@ -365,15 +359,11 @@ namespace RenPyPlugin
                 String script = "";
                 List<NodeItem> items = (List<NodeItem>)node.Items;
                 NodeTextBoxItem nameItem = (NodeTextBoxItem)items[0];
-                script += "\tnew ScriptObject(" + convName + "_" + nameItem.Text + ") {" + Environment.NewLine;
-                script += "\t\tclass = \"ConversationNode\";" + Environment.NewLine;
-                script += "\t\tcanSave = \"1\";" + Environment.NewLine;
-                script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
+                script += nameItem.Text + ":" + Environment.NewLine;
                 int outNodeCount = items.Count - int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
                 int start = int.Parse(m_settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
                 NodeTextBoxItem nodeText = (NodeTextBoxItem)items[1];
-                script += "\t\t\tdisplayText = \"" + conditionText(nodeText.Text) + "\";" + Environment.NewLine;
-                script += "\t\t\tnumOutLinks = " + outNodeCount + ";" + Environment.NewLine;
+                script += "    " + conditionText(nodeText.Text) + Environment.NewLine;
 
                 String target = "";
                 List<String> foundNodes = new List<String>();
@@ -424,12 +414,9 @@ namespace RenPyPlugin
                             }
                         }
                     }
-                    script += "\t\t\tbutton" + (i - start).ToString() + "next = " + convName + "_" + target + ";" + Environment.NewLine;
-                    script += "\t\t\tbutton" + (i - start).ToString() + " = \"" + conditionText(Text) + "\";" + Environment.NewLine;
                     if (Method != "Enter script method")
-                        script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + conditionText(Method) + ";\";" + Environment.NewLine;
+                        script += "     " + conditionText(Method) + Environment.NewLine;
                 }
-                script += "\t};" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
                 return script;
             }
@@ -447,20 +434,18 @@ namespace RenPyPlugin
                         nodename = nameitem.Text;
                     }
                 }
-                script += "\tnew ScriptObject(" + convName + "_" + nodename + ") {" + Environment.NewLine;
-                script += "\t\tclass = \"ConversationEnd\";" + Environment.NewLine;
-                script += "\t\tcanSave = \"1\";" + Environment.NewLine;
-                script += "\t\tcanSaveDynamicFields = \"1\";" + Environment.NewLine;
                 NodeTextBoxItem tb = (NodeTextBoxItem)items[0];
-                script += "\t\t\tdisplayText = \"" + conditionText(tb.Text) + "\";" + Environment.NewLine;
+                script += "    " + conditionText(tb.Text) + Environment.NewLine;
                 tb = (NodeTextBoxItem)items[2];
                 if (tb.Text != "Conversation Exit Script")
-                    script += "\t\t\tscriptMethod = \"" + conditionText(tb.Text) + ";\";" + Environment.NewLine;
-                script += "\t};" + Environment.NewLine;
+                    script += "    " + conditionText(tb.Text) + ";\";" + Environment.NewLine;
+                script += "    ## This ends the game" + Environment.NewLine + Environment.NewLine;
+                script += "    return" + Environment.NewLine;
                 m_log.WriteLine("Generated Conversation End Node" + nodename);
                 return script;
             }
 
+            // clean up single and double quotes in text.
             private String conditionText(String text)
             {
                 String clean = text.Replace("\"", "\\\"");
