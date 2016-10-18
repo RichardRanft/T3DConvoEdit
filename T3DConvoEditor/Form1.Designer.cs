@@ -42,12 +42,12 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlPalette = new System.Windows.Forms.Panel();
-            this.gbxProject = new System.Windows.Forms.GroupBox();
-            this.lbxConvList = new T3DConvoEditor.FileTreeView();
             this.gbxNodes = new System.Windows.Forms.GroupBox();
             this.lblStartNode = new System.Windows.Forms.Label();
             this.lblConvoNode = new System.Windows.Forms.Label();
@@ -61,11 +61,8 @@
             this.ofdOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.sfdExportScript = new System.Windows.Forms.SaveFileDialog();
             this.splitPanel = new System.Windows.Forms.SplitContainer();
-            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.pnlPalette.SuspendLayout();
-            this.gbxProject.SuspendLayout();
             this.gbxNodes.SuspendLayout();
             this.gbxConvName.SuspendLayout();
             this.pnlWork.SuspendLayout();
@@ -170,6 +167,21 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // projectToolStripMenuItem
+            // 
+            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.propertiesToolStripMenuItem});
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.projectToolStripMenuItem.Text = "Project";
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.propertiesToolStripMenuItem.Text = "Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -195,7 +207,6 @@
             // 
             // pnlPalette
             // 
-            this.pnlPalette.Controls.Add(this.gbxProject);
             this.pnlPalette.Controls.Add(this.gbxNodes);
             this.pnlPalette.Controls.Add(this.gbxConvName);
             this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -204,24 +215,6 @@
             this.pnlPalette.Size = new System.Drawing.Size(156, 533);
             this.pnlPalette.TabIndex = 1;
             // 
-            // gbxProject
-            // 
-            this.gbxProject.Controls.Add(this.lbxConvList);
-            this.gbxProject.Location = new System.Drawing.Point(4, 156);
-            this.gbxProject.Name = "gbxProject";
-            this.gbxProject.Size = new System.Drawing.Size(150, 374);
-            this.gbxProject.TabIndex = 5;
-            this.gbxProject.TabStop = false;
-            this.gbxProject.Text = "Project Conversations";
-            // 
-            // lbxConvList
-            // 
-            this.lbxConvList.Location = new System.Drawing.Point(9, 20);
-            this.lbxConvList.Name = "lbxConvList";
-            this.lbxConvList.Size = new System.Drawing.Size(132, 348);
-            this.lbxConvList.TabIndex = 0;
-            this.lbxConvList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lbxConvList_AfterSelect);
-            // 
             // gbxNodes
             // 
             this.gbxNodes.Controls.Add(this.lblStartNode);
@@ -229,7 +222,7 @@
             this.gbxNodes.Controls.Add(this.lblEndNode);
             this.gbxNodes.Location = new System.Drawing.Point(4, 59);
             this.gbxNodes.Name = "gbxNodes";
-            this.gbxNodes.Size = new System.Drawing.Size(150, 91);
+            this.gbxNodes.Size = new System.Drawing.Size(150, 207);
             this.gbxNodes.TabIndex = 4;
             this.gbxNodes.TabStop = false;
             this.gbxNodes.Text = "Node Types";
@@ -357,21 +350,6 @@
             this.splitPanel.SplitterDistance = 160;
             this.splitPanel.TabIndex = 3;
             // 
-            // projectToolStripMenuItem
-            // 
-            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.propertiesToolStripMenuItem});
-            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.projectToolStripMenuItem.Text = "Project";
-            // 
-            // propertiesToolStripMenuItem
-            // 
-            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,7 +369,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnlPalette.ResumeLayout(false);
-            this.gbxProject.ResumeLayout(false);
             this.gbxNodes.ResumeLayout(false);
             this.gbxNodes.PerformLayout();
             this.gbxConvName.ResumeLayout(false);
@@ -437,8 +414,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitPanel;
-        private System.Windows.Forms.GroupBox gbxProject;
-        private FileTreeView lbxConvList;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
     }

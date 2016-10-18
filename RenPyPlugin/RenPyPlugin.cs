@@ -77,7 +77,7 @@ namespace RenPyPlugin
                 case "start":
                     {
                         var node = new Node("Conversation Start");
-                        var startLabel = new NodeLabelItem("Conversation_Start", NodeIOMode.Output) { Tag = TagType.LABEL };
+                        var startLabel = new NodeLabelItem("label start:", NodeIOMode.Output) { Tag = TagType.LABEL };
                         startLabel.Name = "NodeName";
                         node.AddItem(startLabel);
                         return node;
@@ -96,30 +96,67 @@ namespace RenPyPlugin
                     {
                         List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
                         String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
+
                         var node = new Node("Conversation Node");
+                        
                         var nodeNameItem = new NodeTextBoxItem(nodename);
                         nodeNameItem.Name = "NodeName";
                         node.AddItem(nodeNameItem);
-                        NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
-                        displayText.Name = "DisplayText";
-                        node.AddItem(displayText);
+
+                        var bkgName = new NodeTextBoxItem("Enter Background Image Name", NodeIOMode.None);
+                        bkgName.Name = "Background";
+                        node.AddItem(bkgName);
+
+                        var sfxName = new NodeTextBoxItem("Enter Sound Effect Name", NodeIOMode.None);
+                        sfxName.Name = "SFX";
+                        node.AddItem(sfxName);
+
+                        var scriptBox = new NodeTextBoxItem("Enter Script Here", NodeIOMode.None, true);
+                        scriptBox.Name = "Script";
+                        node.AddItem(scriptBox);
+
+                        NodeTextBoxItem actor = new NodeTextBoxItem("Enter Character Name", NodeIOMode.None);
+                        actor.Name = "Character";
+                        node.AddItem(actor);
+
+                        NodeTextBoxItem dialog = new NodeTextBoxItem("Enter Character Speech", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                        dialog.Name = "DisplayText";
+                        node.AddItem(dialog);
+                        
                         var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
                         inputLabel.Name = nodeName + "_in";
                         node.AddItem(inputLabel);
+
+                        return node;
+                    }
+                case "menu":
+                    {
+                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
+                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
+                        var node = new Node("Menu Node");
+                        var nodeNameItem = new NodeTextBoxItem(nodename);
+                        nodeNameItem.Name = "NodeName";
+                        node.AddItem(nodeNameItem);
                         var editNode = new NodeLabelItem("Click Here To Edit Output List");
                         editNode.Name = "EditNodeItem";
                         editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
                         node.AddItem(editNode);
-                        NodeCompositeItem firstButton = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
-                        firstButton.Name = "button_1";
-                        ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
-                        btnText.Name = "ConvText";
-                        ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
-                        btnMethod.Name = "ConvMethod";
-                        firstButton.AddPart(btnText);
-                        firstButton.AddPart(btnMethod);
-                        firstButton.Clicked += new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
-                        node.AddItem(firstButton);
+
+                        return node;
+                    }
+                case "conditional":
+                    {
+                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
+                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
+                        var node = new Node("Conditional Node");
+                        var nodeNameItem = new NodeTextBoxItem(nodename);
+                        nodeNameItem.Name = "NodeName";
+                        node.AddItem(nodeNameItem);
+                        var editNode = new NodeLabelItem("Click Here To Edit Output List");
+                        editNode.Name = "EditNodeItem";
+                        editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                        node.AddItem(editNode);
+
                         return node;
                     }
             }
@@ -152,14 +189,30 @@ namespace RenPyPlugin
             return count;
         }
 
-        public EventHandler<NodeItemEventArgs> GetEditMouseHandler()
+        public EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "")
         {
-            return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+            switch(type.ToLower())
+            { 
+                case "conditional":
+                    return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                case "menu":
+                    return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                default:
+                    return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+            }
         }
 
-        public EventHandler<NodeItemEventArgs> GetConvMouseHandler()
+        public EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "")
         {
-            return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+            switch (type.ToLower())
+            {
+                case "conditional":
+                    return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+                case "menu":
+                    return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+                default:
+                    return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+            }
         }
 
         private void editOutputListNode_MouseDown(object sender, NodeItemEventArgs e)
@@ -170,6 +223,48 @@ namespace RenPyPlugin
                 m_nodeEdit.EditingNode = e.Item.Node;
                 m_nodeEdit.Settings = m_settings;
                 m_nodeEdit.ShowDialog();
+            }
+        }
+
+        public MouseEventHandler GetBtnHandler(Form parent, string type)
+        {
+            return new MouseEventHandler((sender, ea) => BtnHandler(sender, ea, parent, type));
+        }
+
+        public void BtnHandler(object sender, MouseEventArgs e, Form parent, string type)
+        {
+            switch (type.ToLower())
+            {
+                case "start":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "menu":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conditional":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conversation":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                default:
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
             }
         }
 
@@ -200,6 +295,8 @@ namespace RenPyPlugin
             m_nodeTypeNames.Add("Start");
             m_nodeTypeNames.Add("End");
             m_nodeTypeNames.Add("Conversation");
+            m_nodeTypeNames.Add("Menu");
+            m_nodeTypeNames.Add("Conditional");
             m_graphCtrl = ctrl;
             m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -228,7 +325,7 @@ namespace RenPyPlugin
         {
             if (m_graphCtrl == null)
                 MessageBox.Show("Ren'Py Writer Plugin can't export graph - call SetGraphControl() to set the graph for export.");
-            CTorquescriptWriter writer = new CTorquescriptWriter(m_log, m_settings);
+            CRenPyWriter writer = new CRenPyWriter(m_log, m_settings);
             if (filename.Length < 1)
                 filename = "defaultScript.cs";
             writer.WriteScript(filename, (List<Node>)m_graphCtrl.Nodes);
@@ -239,12 +336,12 @@ namespace RenPyPlugin
             return m_settings.Attributes["[Default]"]["DEFAULTEXT"];
         }
 
-        class CTorquescriptWriter
+        class CRenPyWriter
         {
             private CLog m_log;
             private CSettings m_settings;
 
-            public CTorquescriptWriter(CLog log, CSettings settings)
+            public CRenPyWriter(CLog log, CSettings settings)
             {
                 m_log = log;
                 m_settings = settings;

@@ -107,6 +107,7 @@ namespace T3DConvoEditor
             if(lbxAvailPlugins.SelectedIndex > -1)
             {
                 Active = _Plugins[lbxAvailPlugins.SelectedItem.ToString()];
+                lblLoadedPlugin.Text = Active.Name;
             }
         }
     }

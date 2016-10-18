@@ -70,6 +70,36 @@ namespace TSWriterPlugin
             return m_nodeTypeNames;
         }
 
+        public MouseEventHandler GetBtnHandler(Form parent, string type)
+        {
+            return new MouseEventHandler((sender, ea) => BtnHandler(sender, ea, parent, type));
+        }
+
+        public void BtnHandler(object sender, MouseEventArgs e, Form parent, string type)
+        {
+            switch (type.ToLower())
+            {
+                case "start":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conversation":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                default:
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+            }
+        }
+
         public Node GetNodeByTypename(string typename, string nodename)
         {
             switch(typename.ToLower())
@@ -152,12 +182,12 @@ namespace TSWriterPlugin
             return count;
         }
 
-        public EventHandler<NodeItemEventArgs> GetEditMouseHandler()
+        public EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "")
         {
             return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
         }
 
-        public EventHandler<NodeItemEventArgs> GetConvMouseHandler()
+        public EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "")
         {
             return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
         }

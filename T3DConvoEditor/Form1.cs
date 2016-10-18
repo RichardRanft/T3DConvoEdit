@@ -123,11 +123,12 @@ namespace T3DConvoEditor
                 m_currentPluginSettings = plugin.Settings;
                 m_plugins.SetActive(m_currentPlugin.Name);
             }
-            lbxConvList.Nodes.Clear();
-            TreeNode rootNode = new TreeNode();
-            lbxConvList.Nodes.Add(rootNode);
+            createNodeButtons();
+            //lbxConvList.Nodes.Clear();
+            //TreeNode rootNode = new TreeNode();
+            //lbxConvList.Nodes.Add(rootNode);
             m_project = new CProject(m_log);
-            m_project.TreeView = lbxConvList;
+            //m_project.TreeView = lbxConvList;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -151,6 +152,29 @@ namespace T3DConvoEditor
             int height = pnlWork.Height - (2 * pnlWork.Margin.All);
             Rectangle graphBounds = new Rectangle(new Point(pnlWork.Margin.All, pnlWork.Margin.All), new Size(width, height));
             pnlGraph.Bounds = graphBounds;
+        }
+
+        private void createNodeButtons()
+        {
+            gbxNodes.Controls.Clear();
+
+            List<string> nodeTypes = m_currentPlugin.GetNodeTypenames();
+            int top = 16;
+            foreach (String type in nodeTypes)
+            {
+                Label lblBtn = new System.Windows.Forms.Label();
+                lblBtn.AutoSize = true;
+                lblBtn.BackColor = System.Drawing.SystemColors.ButtonFace;
+                lblBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                lblBtn.Location = new System.Drawing.Point(9, top);
+                lblBtn.Size = new System.Drawing.Size(60, 15);
+                lblBtn.TabIndex = 1;
+                lblBtn.Text = type + " Node";
+                MouseEventHandler hndl = m_currentPlugin.GetBtnHandler(this, type);
+                lblBtn.MouseDown += hndl;
+                gbxNodes.Controls.Add(lblBtn);
+                top += lblBtn.Height + 4;
+            }
         }
 
         private void lblStartNode_MouseDown(object sender, MouseEventArgs e)
@@ -425,7 +449,7 @@ namespace T3DConvoEditor
             // add new conversation to project here.
             String nodename = sfdSaveGraphFile.FileName.Replace(m_project.SaveFolder, "");
             nodename = nodename.Replace(m_project.SaveExt, "");
-            lbxConvList.AddPath(nodename);
+            //lbxConvList.AddPath(nodename);
 
             m_dirty = false;
         }
@@ -460,6 +484,9 @@ namespace T3DConvoEditor
                     nodeList.Add(n);
                 graphCtrl.RemoveNodes(nodeList);
                 graphCtrl.Refresh();
+                m_currentPlugin = m_plugins.Active;
+                m_currentPlugin.Initialize(graphCtrl, m_log);
+                createNodeButtons();
             }
         }
 
@@ -468,10 +495,10 @@ namespace T3DConvoEditor
             gbxConvName.Width = splitPanel.Panel1.Width - 10;
             tbxConvoName.Width = gbxConvName.Width - 16;
             gbxNodes.Width = splitPanel.Panel1.Width - 10;
-            gbxProject.Width = splitPanel.Panel1.Width - 10;
-            gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
-            lbxConvList.Width = gbxProject.Width - 19;
-            lbxConvList.Height = gbxProject.Height - 30;
+            //gbxProject.Width = splitPanel.Panel1.Width - 10;
+            //gbxProject.Height = splitPanel.Panel1.Height - gbxProject.Top - 6;
+            //lbxConvList.Width = gbxProject.Width - 19;
+            //lbxConvList.Height = gbxProject.Height - 30;
         }
 
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -527,9 +554,9 @@ namespace T3DConvoEditor
             {
                 m_project = new CProject(m_log, ofdOpenFile.FileName);
                 this.Text = "T3D Conversation Editor - " + m_project.Name;
-                foreach (String item in m_project.Conversations.Keys)
-                    lbxConvList.AddPath(m_project.Conversations[item]);
-                lbxConvList.SetTopNodeName(m_project.Name);
+                //foreach (String item in m_project.Conversations.Keys)
+                //    lbxConvList.AddPath(m_project.Conversations[item]);
+                //lbxConvList.SetTopNodeName(m_project.Name);
                 m_dirty = false;
             }
         }

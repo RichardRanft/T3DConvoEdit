@@ -39,8 +39,11 @@ namespace PluginContracts
         CSettings Settings { get; }
         System.String GetDefaultExtension();
 
-        EventHandler<NodeItemEventArgs> GetEditMouseHandler();
-        EventHandler<NodeItemEventArgs> GetConvMouseHandler();
+        EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "");
+        EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "");
+        MouseEventHandler GetBtnHandler(Form parent, string type);
+        void BtnHandler(object sender, MouseEventArgs e, Form parent, string type);
+
         List<string> GetNodeTypenames();
         Node GetNodeByTypename(string name, string nodename);
 
