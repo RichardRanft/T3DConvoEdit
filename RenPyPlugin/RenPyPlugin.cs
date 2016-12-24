@@ -39,7 +39,7 @@ namespace RenPyPlugin
         private CLog m_log;
         private CSettings m_settings;
         private String m_iniPath;
-        private FNodeEdit m_nodeEdit;
+        private FMenuNodeEdit m_nodeEdit;
         private FConvPartEdit m_partEdit;
         private FSettings m_settingsForm;
         private List<String> m_nodeTypeNames;
@@ -70,97 +70,122 @@ namespace RenPyPlugin
             return m_nodeTypeNames;
         }
 
-        public Node GetNodeByTypename(string typename, string nodename)
+        public Node GetNodeByTypename(string typename, string nodename = "")
         {
             switch (typename.ToLower())
             {
                 case "start":
                     {
-                        var node = new Node("Conversation Start");
-                        var startLabel = new NodeLabelItem("label start:", NodeIOMode.Output) { Tag = TagType.LABEL };
-                        startLabel.Name = "NodeName";
-                        node.AddItem(startLabel);
-                        return node;
+                        return getStartNode(nodename);
                     }
                 case "end":
                     {
-                        var node = new Node("Conversation End");
-                        node.AddItem(new NodeTextBoxItem("Enter text"));
-                        var endLabel = new NodeLabelItem(nodename, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
-                        endLabel.Name = "NodeName";
-                        node.AddItem(endLabel);
-                        node.AddItem(new NodeTextBoxItem(m_settings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
-                        return node;
+                        return getEndNode(nodename);
                     }
                 case "conversation":
                     {
-                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
-                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
-
-                        var node = new Node("Conversation Node");
-                        
-                        var nodeNameItem = new NodeTextBoxItem(nodename);
-                        nodeNameItem.Name = "NodeName";
-                        node.AddItem(nodeNameItem);
-
-                        var bkgName = new NodeTextBoxItem("Enter Background Image Name", NodeIOMode.None);
-                        bkgName.Name = "Background";
-                        node.AddItem(bkgName);
-
-                        var sfxName = new NodeTextBoxItem("Enter Sound Effect Name", NodeIOMode.None);
-                        sfxName.Name = "SFX";
-                        node.AddItem(sfxName);
-
-                        var scriptBox = new NodeTextBoxItem("Enter Script Here", NodeIOMode.None, true);
-                        scriptBox.Name = "Script";
-                        node.AddItem(scriptBox);
-
-                        NodeTextBoxItem actor = new NodeTextBoxItem("Enter Character Name", NodeIOMode.None);
-                        actor.Name = "Character";
-                        node.AddItem(actor);
-
-                        NodeTextBoxItem dialog = new NodeTextBoxItem("Enter Character Speech", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
-                        dialog.Name = "DisplayText";
-                        node.AddItem(dialog);
-                        
-                        var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
-                        inputLabel.Name = nodeName + "_in";
-                        node.AddItem(inputLabel);
-
-                        return node;
+                        return getConversationNode(nodename);
                     }
                 case "menu":
                     {
-                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
-                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
-                        var node = new Node("Menu Node");
-                        var nodeNameItem = new NodeTextBoxItem(nodename);
-                        nodeNameItem.Name = "NodeName";
-                        node.AddItem(nodeNameItem);
-                        var editNode = new NodeLabelItem("Click Here To Edit Output List");
-                        editNode.Name = "EditNodeItem";
-                        editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
-                        node.AddItem(editNode);
-
-                        return node;
+                        return getMenuNode(nodename);
                     }
                 case "conditional":
                     {
-                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
-                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
-                        var node = new Node("Conditional Node");
-                        var nodeNameItem = new NodeTextBoxItem(nodename);
-                        nodeNameItem.Name = "NodeName";
-                        node.AddItem(nodeNameItem);
-                        var editNode = new NodeLabelItem("Click Here To Edit Output List");
-                        editNode.Name = "EditNodeItem";
-                        editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
-                        node.AddItem(editNode);
-
-                        return node;
+                        return getConditionalNode(nodename);
                     }
             }
             return null;
+        }
+
+        private Node getStartNode(String name = "")
+        {
+            var node = new Node("Conversation Start");
+            var startLabel = new NodeLabelItem("label start:", NodeIOMode.Output) { Tag = TagType.LABEL };
+            startLabel.Name = "NodeName";
+            node.AddItem(startLabel);
+            return node;
+        }
+
+        private Node getEndNode(String name = "")
+        {
+            var node = new Node("Conversation End");
+            node.AddItem(new NodeTextBoxItem("Enter text"));
+            var endLabel = new NodeLabelItem(name, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
+            endLabel.Name = "NodeName";
+            node.AddItem(endLabel);
+            node.AddItem(new NodeTextBoxItem(m_settings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
+            return node;
+        }
+
+        private Node getConversationNode(String name = "")
+        {
+            var node = new Node("Conversation Node");
+
+            var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
+            inputLabel.Name = name + "_in";
+            node.AddItem(inputLabel);
+
+            var nodeNameItem = new NodeTextBoxItem(name);
+            nodeNameItem.Name = "NodeName";
+            node.AddItem(nodeNameItem);
+
+            var bkgName = new NodeTextBoxItem("Enter Background Image Name", NodeIOMode.None);
+            bkgName.Name = "Background";
+            node.AddItem(bkgName);
+
+            var sfxName = new NodeTextBoxItem("Enter Sound Effect Name", NodeIOMode.None);
+            sfxName.Name = "SFX";
+            node.AddItem(sfxName);
+
+            var scriptBox = new NodeTextBoxItem("Enter Script Here", NodeIOMode.None, true);
+            scriptBox.Name = "Script";
+            node.AddItem(scriptBox);
+
+            NodeTextBoxItem actor = new NodeTextBoxItem("Enter Character Name", NodeIOMode.None);
+            actor.Name = "Character";
+            node.AddItem(actor);
+
+            NodeTextBoxItem dialog = new NodeTextBoxItem("Enter Character Speech", NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+            dialog.Name = "DisplayText";
+            node.AddItem(dialog);
+
+            return node;
+        }
+
+        private Node getMenuNode(String name = "")
+        {
+            var node = new Node("Menu Node");
+            var nodeNameItem = new NodeTextBoxItem(name);
+            nodeNameItem.Name = "NodeName";
+            node.AddItem(nodeNameItem);
+
+            var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
+            inputLabel.Name = name + "_in";
+            node.AddItem(inputLabel);
+
+            var editNode = new NodeLabelItem("Click Here To Edit Output List");
+            editNode.Name = "EditNodeItem";
+            editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+            node.AddItem(editNode);
+
+            return node;
+        }
+
+        private Node getConditionalNode(String name = "")
+        {
+            var node = new Node("Conditional Node");
+
+            var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
+            inputLabel.Name = name + "_in";
+            node.AddItem(inputLabel);
+
+            var editNode = new NodeLabelItem("Click Here To Edit Output List");
+            editNode.Name = "EditNodeItem";
+            editNode.Clicked += new EventHandler<NodeItemEventArgs>(editConditionListNode_MouseDown);
+            node.AddItem(editNode);
+
+            return node;
         }
 
         private int getConvNodeCount()
@@ -191,10 +216,11 @@ namespace RenPyPlugin
 
         public EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "")
         {
-            switch(type.ToLower())
+            String nodeType = type.ToLower();
+            switch(nodeType)
             { 
                 case "conditional":
-                    return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                    return new EventHandler<NodeItemEventArgs>(editConditionListNode_MouseDown);
                 case "menu":
                     return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
                 default:
@@ -204,7 +230,8 @@ namespace RenPyPlugin
 
         public EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "")
         {
-            switch (type.ToLower())
+            String nodeType = type.ToLower();
+            switch (nodeType)
             {
                 case "conditional":
                     return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
@@ -226,45 +253,14 @@ namespace RenPyPlugin
             }
         }
 
-        public MouseEventHandler GetBtnHandler(Form parent, string type)
+        private void editConditionListNode_MouseDown(object sender, NodeItemEventArgs e)
         {
-            return new MouseEventHandler((sender, ea) => BtnHandler(sender, ea, parent, type));
-        }
-
-        public void BtnHandler(object sender, MouseEventArgs e, Form parent, string type)
-        {
-            switch (type.ToLower())
+            if (e.Item != null)
             {
-                case "start":
-                    {
-                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
-                        parent.DoDragDrop(node, DragDropEffects.Copy);
-                        break;
-                    }
-                case "menu":
-                    {
-                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
-                        parent.DoDragDrop(node, DragDropEffects.Copy);
-                        break;
-                    }
-                case "conditional":
-                    {
-                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
-                        parent.DoDragDrop(node, DragDropEffects.Copy);
-                        break;
-                    }
-                case "conversation":
-                    {
-                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
-                        parent.DoDragDrop(node, DragDropEffects.Copy);
-                        break;
-                    }
-                default:
-                    {
-                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
-                        parent.DoDragDrop(node, DragDropEffects.Copy);
-                        break;
-                    }
+                m_nodeEdit.PluginMain = this;
+                m_nodeEdit.EditingNode = e.Item.Node;
+                m_nodeEdit.Settings = m_settings;
+                m_nodeEdit.ShowDialog();
             }
         }
 
@@ -274,6 +270,49 @@ namespace RenPyPlugin
             {
                 m_partEdit.Node = e.Item as NodeCompositeItem;
                 m_partEdit.ShowDialog();
+            }
+        }
+
+        public MouseEventHandler GetBtnHandler(Form parent, string type)
+        {
+            return new MouseEventHandler((sender, ea) => BtnHandler(sender, ea, parent, type));
+        }
+
+        public void BtnHandler(object sender, MouseEventArgs e, Form parent, string type)
+        {
+            String nodeType = type.ToLower();
+            switch (nodeType)
+            {
+                case "start":
+                    {
+                        var node = GetNodeByTypename(nodeType); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "menu":
+                    {
+                        var node = GetNodeByTypename(nodeType); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conditional":
+                    {
+                        var node = GetNodeByTypename(nodeType); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conversation":
+                    {
+                        var node = GetNodeByTypename(nodeType); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                default:
+                    {
+                        var node = GetNodeByTypename(nodeType); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
             }
         }
 
@@ -316,7 +355,7 @@ namespace RenPyPlugin
                 m_log.WriteLine("Failed to locate RenPyPlugin.ini");
             else
                 m_log.WriteLine("RenPyPlugin settings loaded");
-            m_nodeEdit = new FNodeEdit();
+            m_nodeEdit = new FMenuNodeEdit();
             m_partEdit = new FConvPartEdit();
             m_settingsForm = new FSettings();
         }
@@ -375,8 +414,6 @@ namespace RenPyPlugin
 
                 String script = "";
 
-                script += "## Conversation output generated using T3DConvoEditor" + Environment.NewLine;
-                script += "## Copyright © 2015 Roostertail Games" + Environment.NewLine;
                 script += "## Use of T3DConvoEditor and its output are governed by the MIT license." + Environment.NewLine + Environment.NewLine;
 
                 script += "## Permission is hereby granted, free of charge, to any person obtaining a copy" + Environment.NewLine;
@@ -407,24 +444,15 @@ namespace RenPyPlugin
 
                 // next write image definitions
 
+                script += "## The game starts here." + Environment.NewLine;
+                script += "label start:" + Environment.NewLine;
 
-                foreach (Node node in nodes)
-                {
-                    List<NodeItem> items = (List<NodeItem>)node.Items;
-                    String title = items[0].Node.Title;
-                    switch (title)
-                    {
-                        case "Conversation Start":
-                            script += getStartNodeScript(convoName, node);
-                            break;
-                        case "Conversation Node":
-                            script += getConvoNodeScript(convoName, node);
-                            break;
-                        case "Conversation End":
-                            script += getEndNodeScript(convoName, node);
-                            break;
-                    }
-                }
+                CNodeWrapper node = new CNodeWrapper(nodes[0]);
+                node.Log = m_log; // borrow the logger
+                node.Settings = m_settings; // and the settings
+                node.GenerateTree();
+                node.Write(ref script);
+
                 script += "    " + Environment.NewLine;
                 script += "    ## This ends the game" + Environment.NewLine + Environment.NewLine;
                 script += "    return" + Environment.NewLine;

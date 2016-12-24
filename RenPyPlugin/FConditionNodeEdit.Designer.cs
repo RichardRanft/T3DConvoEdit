@@ -1,6 +1,6 @@
 ﻿namespace RenPyPlugin
 {
-    partial class FNodeEdit
+    partial class FConditionNodeEdit
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FNodeEdit));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FMenuNodeEdit));
             this.btnOK = new System.Windows.Forms.Button();
             this.lbxChoiceNodes = new System.Windows.Forms.ListBox();
             this.btnAdd = new System.Windows.Forms.Button();

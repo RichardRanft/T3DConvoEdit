@@ -9,8 +9,9 @@ I:\programming\T3DConvoEditor\RenPyPlugin\bin\Debug\PluginContracts.pdb
 I:\programming\T3DConvoEditor\RenPyPlugin\bin\Debug\Newtonsoft.Json.xml
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.csprojResolveAssemblyReference.cache
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FConvPartEdit.resources
-I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FNodeEdit.resources
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.csproj.GenerateResource.Cache
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.dll
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.pdb
 I:\programming\T3DConvoEditor\RenPyPlugin\bin\Debug\RenPyPlugin.ini
+I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FConditionNodeEdit.resources
+I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FMenuNodeEdit.resources

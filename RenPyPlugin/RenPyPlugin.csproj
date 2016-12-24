@@ -60,17 +60,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CGraphManager.cs" />
+    <Compile Include="CNodeWrapper.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FConvPartEdit.Designer.cs">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="FNodeEdit.cs">
+    <Compile Include="FConditionNodeEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FNodeEdit.Designer.cs">
-      <DependentUpon>FNodeEdit.cs</DependentUpon>
+    <Compile Include="FConditionNodeEdit.Designer.cs">
+      <DependentUpon>FConditionNodeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FMenuNodeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FMenuNodeEdit.Designer.cs">
+      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="FSettings.cs">
       <SubType>Form</SubType>
@@ -102,8 +109,11 @@
     <EmbeddedResource Include="FConvPartEdit.resx">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FNodeEdit.resx">
-      <DependentUpon>FNodeEdit.cs</DependentUpon>
+    <EmbeddedResource Include="FConditionNodeEdit.resx">
+      <DependentUpon>FConditionNodeEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FMenuNodeEdit.resx">
+      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

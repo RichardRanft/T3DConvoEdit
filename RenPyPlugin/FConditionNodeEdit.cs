@@ -33,7 +33,7 @@ using BasicSettings;
 
 namespace RenPyPlugin
 {
-    public partial class FNodeEdit : Form
+    public partial class FConditionNodeEdit : Form
     {
         private CSettings m_settings;
 
@@ -49,7 +49,7 @@ namespace RenPyPlugin
             set { m_settings = value; }
         }
 
-        public FNodeEdit()
+        public FConditionNodeEdit()
         {
             InitializeComponent();
         }
