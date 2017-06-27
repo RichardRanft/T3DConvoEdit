@@ -65,6 +65,12 @@
   <ItemGroup>
     <Compile Include="CGraphManager.cs" />
     <Compile Include="CNodeWrapper.cs" />
+    <Compile Include="FMenuNodeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FMenuNodeEdit.Designer.cs">
+      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FMenuNodeEdit.resx">
+      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FConvPartEdit.resx">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
     </EmbeddedResource>
