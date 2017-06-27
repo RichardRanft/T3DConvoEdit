@@ -41,7 +41,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Graph, Version=1.0.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Graph.1.0.0.17\lib\net45\Graph.dll</HintPath>
+      <HintPath>..\packages\Graph.1.0.0.17\lib\net40-Client\Graph.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -72,12 +76,6 @@
     </Compile>
     <Compile Include="FConditionNodeEdit.Designer.cs">
       <DependentUpon>FConditionNodeEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FMenuNodeEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FMenuNodeEdit.Designer.cs">
-      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="FSettings.cs">
       <SubType>Form</SubType>
@@ -111,9 +109,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FConditionNodeEdit.resx">
       <DependentUpon>FConditionNodeEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FMenuNodeEdit.resx">
-      <DependentUpon>FMenuNodeEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

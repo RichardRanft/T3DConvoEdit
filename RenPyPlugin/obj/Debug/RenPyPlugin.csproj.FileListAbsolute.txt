@@ -15,3 +15,7 @@ I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.pdb
 I:\programming\T3DConvoEditor\RenPyPlugin\bin\Debug\RenPyPlugin.ini
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FConditionNodeEdit.resources
 I:\programming\T3DConvoEditor\RenPyPlugin\obj\Debug\RenPyPlugin.FMenuNodeEdit.resources
+E:\Projects\T3DConvoEdit\RenPyPlugin\obj\Debug\RenPyPlugin.csprojResolveAssemblyReference.cache
+E:\Projects\T3DConvoEdit\RenPyPlugin\obj\Debug\RenPyPlugin.FConvPartEdit.resources
+E:\Projects\T3DConvoEdit\RenPyPlugin\obj\Debug\RenPyPlugin.FConditionNodeEdit.resources
+E:\Projects\T3DConvoEdit\RenPyPlugin\obj\Debug\RenPyPlugin.csproj.GenerateResource.Cache

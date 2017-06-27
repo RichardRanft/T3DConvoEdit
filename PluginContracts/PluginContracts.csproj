@@ -36,8 +36,8 @@
       <HintPath>..\packages\BasicLogging.2.0.0.5\lib\net45\BasicLogging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BasicSettings, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BasicSettings.1.0.0.6\lib\net45\BasicSettings.dll</HintPath>
+    <Reference Include="BasicSettings, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BasicSettings.1.0.0.9\lib\net45\BasicSettings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Graph">
