@@ -74,7 +74,7 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
-            // FNodeEdit
+            // FMenuNodeEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -86,8 +86,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "FNodeEdit";
-            this.Text = "FNodeEdit";
+            this.Name = "FMenuNodeEdit";
+            this.Text = "Menu Node Editor";
             this.Activated += new System.EventHandler(this.FNodeEdit_Activated);
             this.ResumeLayout(false);
 

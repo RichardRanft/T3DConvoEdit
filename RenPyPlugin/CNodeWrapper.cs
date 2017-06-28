@@ -45,7 +45,96 @@ namespace RenPyPlugin
 
         private String getScript()
         {
-            return "";
+            String scriptText = "";
+            List<NodeItem> items = (List<NodeItem>)m_node.Items;
+            String title = items[0].Node.Title;
+            switch (title)
+            {
+                case "Conversation Start":
+                    scriptText = getStartNodeText(m_node);
+                    break;
+                case "Conversation Node":
+                    scriptText = getConvNodeText(m_node);
+                    break;
+                case "Menu Node":
+                    scriptText = getMenuNodeText(m_node);
+                    break;
+                case "Conditional Node":
+                    scriptText = getCondNodeText(m_node);
+                    break;
+                case "Conversation End":
+                    scriptText = getEndNodeText(m_node);
+                    break;
+            }
+            return scriptText;
+        }
+
+        private string getEndNodeText(Node m_node)
+        {
+            String script = "";
+            String nodename = "";
+            List<NodeItem> items = (List<NodeItem>)m_node.Items;
+            foreach (NodeItem item in items)
+            {
+                if (item.Name == "NodeName")
+                {
+                    NodeLabelItem nameitem = item as NodeLabelItem;
+                    nodename = nameitem.Text;
+                }
+            }
+            NodeTextBoxItem tb = (NodeTextBoxItem)items[2];
+            if (!String.IsNullOrEmpty(tb.Text) && tb.Text != "Conversation Exit Script")
+            {
+                String[] parts = conditionText(tb.Text).Split('\n');
+                foreach(String str in parts)
+                    script += "\t\"" + str.Trim() + "\"" + Environment.NewLine;
+            }
+            script += "\treturn" + Environment.NewLine;
+            return script;
+        }
+
+        private string getCondNodeText(Node m_node)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string getMenuNodeText(Node m_node)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string getConvNodeText(Node m_node)
+        {
+            String script = "";
+            List<NodeItem> items = (List<NodeItem>)m_node.Items;
+            NodeTextBoxItem nameItem = (NodeTextBoxItem)items[0];
+            int outNodeCount = items.Count - int.Parse(Settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
+            int start = int.Parse(Settings.Attributes["[Default]"]["CONVOOUTNODESTART"]);
+            NodeTextBoxItem nodeText = (NodeTextBoxItem)items[1];
+            script += "\t" + conditionText(nodeText.Text) + "\"" + Environment.NewLine;
+
+            List<String> foundNodes = new List<String>();
+            for (int i = start; i < items.Count; i++)
+            {
+                NodeCompositeItem textItem = (NodeCompositeItem)items[i];
+                String Text = "";
+                String Method = "";
+                foreach (ItemTextBoxPart part in textItem.Parts)
+                {
+                    if (part.Name == "ConvText")
+                        Text = part.Text;
+                    if (part.Name == "ConvMethod")
+                        Method = part.Text;
+                }
+            }
+            return script;
+        }
+
+        private string getStartNodeText(Node m_node)
+        {
+            String script = "";
+            script += "label start:" + Environment.NewLine;
+            return script;
         }
 
         public void GenerateTree()
@@ -55,16 +144,30 @@ namespace RenPyPlugin
             switch (title)
             {
                 case "Conversation Start":
+                    getNextNodes(m_node);
                     break;
                 case "Conversation Node":
+                    getNextNodes(m_node);
+                    break;
+                case "Menu Node":
+                    getNextNodes(m_node);
+                    break;
+                case "Conditional Node":
+                    getNextNodes(m_node);
                     break;
                 case "Conversation End":
                     break;
-                case "Menu Node":
-                    break;
-                case "Conditional Node":
-                    break;
             }
+        }
+
+        private void getNextNodes(Node node)
+        {
+            List<NodeItem> items = (List<NodeItem>)node.Items;
+            NodeLabelItem linkItem = (NodeLabelItem)items[0];
+            List<NodeConnection> conns = (List<NodeConnection>)linkItem.Node.Connections;
+            NodeConnection outconn = conns[0];
+            List<NodeItem> linkItems = getConnections(linkItem.Node, (NodeOutputConnector)linkItem.Output);
+            Log.WriteLine("Generated Node Links for " + node.Title);
         }
 
         private void getStartNodeWrapper(Node node)

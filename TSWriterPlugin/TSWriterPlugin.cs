@@ -269,6 +269,82 @@ namespace TSWriterPlugin
             return m_settings.Attributes["[Default]"]["DEFAULTEXT"];
         }
 
+        public bool Validate(GraphControl graph)
+        {
+            List<Node> nodes = (List<Node>)graph.Nodes;
+            if (nodes.Count < 1)
+            {
+                MessageBox.Show("There is nothing to save.", "Graph Empty");
+                return false;
+            }
+            if (!checkContents(nodes))
+            {
+                MessageBox.Show("There are no conversation nodes in this graph.", "Graph Incomplete");
+                return false;
+            }
+            if (!checkConnections(nodes))
+            {
+                MessageBox.Show("You have unconnected inputs or outputs in your conversation graph.  Please review your graph and ensure all node inputs and outputs are connected.", "Check Connections");
+                return false;
+            }
+            List<String> names = new List<string>();
+            foreach (Node node in nodes)
+            {
+                foreach (NodeItem item in node.Items)
+                {
+                    if (item.Name == "NodeName")
+                    {
+                        String name = "";
+                        if (item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                        {
+                            NodeTextBoxItem i = item as NodeTextBoxItem;
+                            name = i.Text;
+                        }
+                        if (item.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                        {
+                            NodeLabelItem i = item as NodeLabelItem;
+                            name = i.Text;
+                        }
+                        if (names.Contains(name))
+                        {
+                            MessageBox.Show("Two or more nodes have the same name.  Node names must be unique.", "Duplicate Nodes Detected");
+                            return false;
+                        }
+                        names.Add(name);
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool checkContents(List<Node> nodes)
+        {
+            bool convoNodeFound = false;
+
+            foreach (Node node in nodes)
+            {
+                if (node.Title.Equals("Conversation Node"))
+                {
+                    convoNodeFound = true;
+                    break;
+                }
+            }
+
+            return convoNodeFound;
+        }
+
+        private bool checkConnections(List<Node> nodelist)
+        {
+            foreach (Node n in nodelist)
+            {
+                if (n.HasNoItems)
+                    continue;
+                if (n.AnyConnectorsDisconnected)
+                    return false;
+            }
+            return true;
+        }
+
         class CTorquescriptWriter
         {
             private CLog m_log;

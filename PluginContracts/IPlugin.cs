@@ -54,6 +54,8 @@ namespace PluginContracts
 
         void Initialize(GraphControl ctrl, CLog log);
         void Export(System.String filename);
+
+        bool Validate(GraphControl graph);
     }
 
     // translation tool for deserialization-time recovery of object types.

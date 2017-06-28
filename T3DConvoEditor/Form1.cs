@@ -255,7 +255,7 @@ namespace T3DConvoEditor
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
+            if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && m_currentPlugin.Validate(graphCtrl))
             {
                 // see if current conversation is in current project.  If not, add it.
 
@@ -278,7 +278,7 @@ namespace T3DConvoEditor
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (validateGraph())
+            if (m_currentPlugin.Validate(graphCtrl))
             {
                 if (m_availPlugins.ContainsKey("TSWriterPlugin"))
                 {
@@ -297,83 +297,6 @@ namespace T3DConvoEditor
         private void exportGraph(IPlugin plugin, String filename)
         {
             plugin.Export(filename);
-        }
-
-        private bool validateGraph()
-        {
-            List<Node> nodes = (List<Node>)graphCtrl.Nodes;
-            if (nodes.Count < 1)
-            {
-                MessageBox.Show("There is nothing to save.", "Graph Empty");
-                return false;
-            }
-            if (!checkContents(nodes))
-            {
-                MessageBox.Show("There are no conversation nodes in this graph.", "Graph Incomplete");
-                return false;
-            }
-            if (!checkConnections(nodes))
-            {
-                MessageBox.Show("You have unconnected inputs or outputs in your conversation graph.  Please review your graph and ensure all node inputs and outputs are connected.", "Check Connections");
-                return false;
-            }
-            List<String> names = new List<string>();
-            foreach(Node node in nodes)
-            {
-                foreach(NodeItem item in node.Items)
-                {
-                    if(item.Name == "NodeName")
-                    {
-                        String name = "";
-                        if (item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
-                        {
-                            NodeTextBoxItem i = item as NodeTextBoxItem;
-                            name = i.Text;
-                        }
-                        if (item.GetType().ToString() == "Graph.Items.NodeLabelItem")
-                        {
-                            NodeLabelItem i = item as NodeLabelItem;
-                            name = i.Text;
-                        }
-                        if(names.Contains(name))
-                        {
-                            MessageBox.Show("Two or more nodes have the same name.  Node names must be unique.", "Duplicate Nodes Detected");
-                            return false;
-                        }
-                        names.Add(name);
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool checkContents(List<Node> nodes)
-        {
-            bool convoNodeFound = false;
-
-            foreach(Node node in nodes)
-            {
-                if(node.Title.Equals("Conversation Node"))
-                {
-                    convoNodeFound = true;
-                    break;
-                }
-            }
-
-            return convoNodeFound;
-        }
-
-        private bool checkConnections(List<Node> nodelist)
-        {
-            foreach(Node n in nodelist)
-            {
-                if (n.HasNoItems)
-                    continue;
-                if (n.AnyConnectorsDisconnected)
-                    return false;
-            }
-            return true;
         }
 
         private void onNodeAdded(object sender, AcceptNodeEventArgs e)
@@ -422,7 +345,7 @@ namespace T3DConvoEditor
                 if(MessageBox.Show("Save before starting a new conversation?", "Save", MessageBoxButtons.YesNoCancel) == System.Windows.Forms.DialogResult.Yes)
                 {
                     sfdSaveGraphFile.InitialDirectory = m_project.SaveFolder;
-                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
+                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && m_currentPlugin.Validate(graphCtrl))
                     {
                         // handle project membership here
                         if(sfdSaveGraphFile.FileName.Contains(m_project.SaveFolder))
@@ -462,7 +385,7 @@ namespace T3DConvoEditor
                 if(MessageBox.Show("Save before switching plugins?", "Save", MessageBoxButtons.YesNoCancel) == System.Windows.Forms.DialogResult.Yes)
                 {
                     sfdSaveGraphFile.InitialDirectory = m_project.SaveFolder;
-                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && validateGraph())
+                    if (sfdSaveGraphFile.ShowDialog() == System.Windows.Forms.DialogResult.OK && m_currentPlugin.Validate(graphCtrl))
                     {
                         // handle project membership here
                         if(sfdSaveGraphFile.FileName.Contains(m_project.SaveFolder))
