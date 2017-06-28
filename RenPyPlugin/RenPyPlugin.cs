@@ -138,7 +138,7 @@ namespace RenPyPlugin
             sfxName.Name = "SFX";
             node.AddItem(sfxName);
 
-            var scriptBox = new NodeTextBoxItem("Enter Script Here", NodeIOMode.None, true);
+            var scriptBox = new NodeTextBoxItem("Enter Script Here", NodeIOMode.None);
             scriptBox.Name = "Script";
             node.AddItem(scriptBox);
 
