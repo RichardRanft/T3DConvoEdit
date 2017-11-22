@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -11,3 +11,10 @@
 /TSWriterPlugin/bin
 /TSWriterPlugin/obj
 /UpgradeLog.htm
+packages/
+PluginContracts/bin/
+RenPyPlugin/obj/
+*.pdb
+*.dll
+*.suo
+*.updated
