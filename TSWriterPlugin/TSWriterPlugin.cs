@@ -39,6 +39,10 @@ namespace TSWriterPlugin
         private CLog m_log;
         private CSettings m_settings;
         private String m_iniPath;
+        private FNodeEdit m_nodeEdit;
+        private FConvPartEdit m_partEdit;
+        private FSettings m_settingsForm;
+        private List<String> m_nodeTypeNames;
 
         public String Name
         {
@@ -56,8 +60,176 @@ namespace TSWriterPlugin
             }
         }
 
+        public void ShowSettings()
+        {
+            m_settingsForm.ShowDialog();
+        }
+
+        public List<string> GetNodeTypenames()
+        {
+            return m_nodeTypeNames;
+        }
+
+        public MouseEventHandler GetBtnHandler(Form parent, string type)
+        {
+            return new MouseEventHandler((sender, ea) => BtnHandler(sender, ea, parent, type));
+        }
+
+        public void BtnHandler(object sender, MouseEventArgs e, Form parent, string type)
+        {
+            switch (type.ToLower())
+            {
+                case "start":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                case "conversation":
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+                default:
+                    {
+                        var node = GetNodeByTypename(type.ToLower(), ""); //new Node("Conversation Start");
+                        parent.DoDragDrop(node, DragDropEffects.Copy);
+                        break;
+                    }
+            }
+        }
+
+        public Node GetNodeByTypename(string typename, string nodename)
+        {
+            switch(typename.ToLower())
+            {
+                case "start":
+                    {
+                        var node = new Node("Conversation Start");
+                        var startLabel = new NodeLabelItem("Conversation_Start", NodeIOMode.Output) { Tag = TagType.LABEL };
+                        startLabel.Name = "NodeName";
+                        node.AddItem(startLabel);
+                        return node;
+                    }
+                case "end":
+                    {
+                        var node = new Node("Conversation End");
+                        node.AddItem(new NodeTextBoxItem("Enter text"));
+                        var endLabel = new NodeLabelItem(nodename, NodeIOMode.Input) { Tag = TagType.TEXTBOX };
+                        endLabel.Name = "NodeName";
+                        node.AddItem(endLabel);
+                        node.AddItem(new NodeTextBoxItem(m_settings.Attributes["[Default]"]["DEFAULTEXITMETHOD"]));
+                        return node;
+                    }
+                case "conversation":
+                    {
+                        List<Node> nodes = (List<Node>)m_graphCtrl.Nodes;
+                        String nodeName = m_settings.Attributes["[Default]"]["DEFAULTNODENAME"] + "_" + getConvNodeCount().ToString().PadLeft(4, '0');
+                        var node = new Node("Conversation Node");
+                        var nodeNameItem = new NodeTextBoxItem(nodename);
+                        nodeNameItem.Name = "NodeName";
+                        node.AddItem(nodeNameItem);
+                        NodeTextBoxItem displayText = new NodeTextBoxItem("Enter NPC text", NodeIOMode.None);
+                        displayText.Name = "DisplayText";
+                        node.AddItem(displayText);
+                        var inputLabel = new NodeLabelItem("Conversation input", NodeIOMode.Input) { Tag = TagType.LABEL };
+                        inputLabel.Name = nodeName + "_in";
+                        node.AddItem(inputLabel);
+                        var editNode = new NodeLabelItem("Click Here To Edit Output List");
+                        editNode.Name = "EditNodeItem";
+                        editNode.Clicked += new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+                        node.AddItem(editNode);
+                        NodeCompositeItem firstButton = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                        firstButton.Name = "button_1";
+                        ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
+                        btnText.Name = "ConvText";
+                        ItemTextBoxPart btnMethod = new ItemTextBoxPart("Enter script method");
+                        btnMethod.Name = "ConvMethod";
+                        firstButton.AddPart(btnText);
+                        firstButton.AddPart(btnMethod);
+                        firstButton.Clicked += new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+                        node.AddItem(firstButton);
+                        return node;
+                    }
+            }
+            return null;
+        }
+
+        private int getConvNodeCount()
+        {
+            int count = 0;
+
+            foreach (Node node in m_graphCtrl.Nodes)
+            {
+                if (node.Title == "Conversation Node")
+                    count++;
+            }
+
+            return count;
+        }
+
+        private int getEndNodeCount()
+        {
+            int count = 0;
+
+            foreach (Node node in m_graphCtrl.Nodes)
+            {
+                if (node.Title == "Conversation End")
+                    count++;
+            }
+
+            return count;
+        }
+
+        public EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "")
+        {
+            return new EventHandler<NodeItemEventArgs>(editOutputListNode_MouseDown);
+        }
+
+        public EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "")
+        {
+            return new EventHandler<NodeItemEventArgs>(editConvNode_MouseDown);
+        }
+
+        private void editOutputListNode_MouseDown(object sender, NodeItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                m_nodeEdit.PluginMain = this;
+                m_nodeEdit.EditingNode = e.Item.Node;
+                m_nodeEdit.Settings = m_settings;
+                m_nodeEdit.ShowDialog();
+            }
+        }
+
+        private void editConvNode_MouseDown(object sender, NodeItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                m_partEdit.Node = e.Item as NodeCompositeItem;
+                m_partEdit.ShowDialog();
+            }
+        }
+
+        public bool SaveGraph(GraphControl graph, String filename)
+        {
+            CGraphManager graphman = new CGraphManager(m_log, this);
+            graphman.SaveGraph(m_graphCtrl, filename);
+            return false;
+        }
+
+        public GraphControl LoadGraph(String filename)
+        {
+            return null;
+        }
+
         public void Initialize(GraphControl ctrl, CLog log)
         {
+            m_nodeTypeNames = new List<string>();
+            m_nodeTypeNames.Add("Start");
+            m_nodeTypeNames.Add("End");
+            m_nodeTypeNames.Add("Conversation");
             m_graphCtrl = ctrl;
             m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -77,6 +249,9 @@ namespace TSWriterPlugin
                 m_log.WriteLine("Failed to locate TSWriterPlugin.ini");
             else
                 m_log.WriteLine("TSWriterPlugin settings loaded");
+            m_nodeEdit = new FNodeEdit();
+            m_partEdit = new FConvPartEdit();
+            m_settingsForm = new FSettings();
         }
 
         public void Export(String filename)
@@ -92,6 +267,82 @@ namespace TSWriterPlugin
         public System.String GetDefaultExtension()
         {
             return m_settings.Attributes["[Default]"]["DEFAULTEXT"];
+        }
+
+        public bool Validate(GraphControl graph)
+        {
+            List<Node> nodes = (List<Node>)graph.Nodes;
+            if (nodes.Count < 1)
+            {
+                MessageBox.Show("There is nothing to save.", "Graph Empty");
+                return false;
+            }
+            if (!checkContents(nodes))
+            {
+                MessageBox.Show("There are no conversation nodes in this graph.", "Graph Incomplete");
+                return false;
+            }
+            if (!checkConnections(nodes))
+            {
+                MessageBox.Show("You have unconnected inputs or outputs in your conversation graph.  Please review your graph and ensure all node inputs and outputs are connected.", "Check Connections");
+                return false;
+            }
+            List<String> names = new List<string>();
+            foreach (Node node in nodes)
+            {
+                foreach (NodeItem item in node.Items)
+                {
+                    if (item.Name == "NodeName")
+                    {
+                        String name = "";
+                        if (item.GetType().ToString() == "Graph.Items.NodeTextBoxItem")
+                        {
+                            NodeTextBoxItem i = item as NodeTextBoxItem;
+                            name = i.Text;
+                        }
+                        if (item.GetType().ToString() == "Graph.Items.NodeLabelItem")
+                        {
+                            NodeLabelItem i = item as NodeLabelItem;
+                            name = i.Text;
+                        }
+                        if (names.Contains(name))
+                        {
+                            MessageBox.Show("Two or more nodes have the same name.  Node names must be unique.", "Duplicate Nodes Detected");
+                            return false;
+                        }
+                        names.Add(name);
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool checkContents(List<Node> nodes)
+        {
+            bool convoNodeFound = false;
+
+            foreach (Node node in nodes)
+            {
+                if (node.Title.Equals("Conversation Node"))
+                {
+                    convoNodeFound = true;
+                    break;
+                }
+            }
+
+            return convoNodeFound;
+        }
+
+        private bool checkConnections(List<Node> nodelist)
+        {
+            foreach (Node n in nodelist)
+            {
+                if (n.HasNoItems)
+                    continue;
+                if (n.AnyConnectorsDisconnected)
+                    return false;
+            }
+            return true;
         }
 
         class CTorquescriptWriter

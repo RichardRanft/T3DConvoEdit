@@ -11,6 +11,8 @@
     <AssemblyName>T3DConvoEditor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,16 +47,13 @@
       <HintPath>..\packages\BasicSettings.1.0.0.6\lib\net45\BasicSettings.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Graph, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Graph.1.0.0.16\lib\net45\Graph.dll</HintPath>
+    <Reference Include="Graph, Version=1.0.0.17, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Graph.1.0.0.17\lib\net45\Graph.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="PluginContracts">
-      <HintPath>..\PluginContracts\bin\Debug\PluginContracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,11 +71,21 @@
     <None Include="Documentation\ConversationGui.cs" />
     <None Include="Documentation\testConversation.cs" />
     <None Include="Documentation\conversation.cs" />
+    <Compile Include="CProject.cs" />
     <Compile Include="FConvPartEdit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FConvPartEdit.Designer.cs">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FNewProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FNewProject.Designer.cs">
+      <DependentUpon>FNewProject.cs</DependentUpon>
     </Compile>
     <Compile Include="FNodeEdit.cs">
       <SubType>Form</SubType>
@@ -102,6 +111,12 @@
     <Compile Include="FPreferences.Designer.cs">
       <DependentUpon>FPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="FProjectSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FProjectSettings.Designer.cs">
+      <DependentUpon>FProjectSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenericPluginLoader.cs" />
     <Compile Include="PluginLoader.cs" />
     <Compile Include="Program.cs" />
@@ -112,9 +127,15 @@
     <Compile Include="Wrappers\CNodeFields.cs" />
     <Compile Include="Wrappers\CNodeItemFields.cs" />
     <None Include="Documentation\ConversationGui.gui" />
+    <None Include="Plugins\RenPyPlugin.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="RTG.ico" />
     <EmbeddedResource Include="FConvPartEdit.resx">
       <DependentUpon>FConvPartEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FNewProject.resx">
+      <DependentUpon>FNewProject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FNodeEdit.resx">
       <DependentUpon>FNodeEdit.cs</DependentUpon>
@@ -127,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FPreferences.resx">
       <DependentUpon>FPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FProjectSettings.resx">
+      <DependentUpon>FProjectSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -181,6 +205,12 @@
     <None Include="Documentation\ConversationWheel\CW_standby0030.png" />
     <None Include="Documentation\ConversationWheel\CW_WheelBase.png" />
     <None Include="Documentation\ConversationWheel\newJoinDialog.jpg" />
+    <Content Include="Plugins\RenPyPlugin.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plugins\RenPyPlugin.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plugins\TSWriterPlugin.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -200,7 +230,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PluginContracts\PluginContracts.csproj">
+      <Project>{43c879d1-31ae-424f-91d1-92cf286d5497}</Project>
+      <Name>PluginContracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Plugins\TSWriterPlugin.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -210,6 +245,13 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
