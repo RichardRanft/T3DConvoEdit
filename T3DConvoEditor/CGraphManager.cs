@@ -28,10 +28,10 @@ using Graph.Compatibility;
 using Graph.Items;
 using Newtonsoft.Json;
 using BasicLogging;
-using T3DConvoEditor.Wrappers;
+using ConvoEditor.Wrappers;
 using System.Runtime.Serialization;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public class CGraphManager
     {

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
 	public static class GenericPluginLoader<T>
 	{

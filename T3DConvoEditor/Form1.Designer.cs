@@ -1,4 +1,4 @@
-﻿namespace T3DConvoEditor
+﻿namespace ConvoEditor
 {
     partial class Form1
     {
@@ -212,7 +212,7 @@
             this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPalette.Location = new System.Drawing.Point(0, 0);
             this.pnlPalette.Name = "pnlPalette";
-            this.pnlPalette.Size = new System.Drawing.Size(156, 533);
+            this.pnlPalette.Size = new System.Drawing.Size(156, 534);
             this.pnlPalette.TabIndex = 1;
             // 
             // gbxNodes
@@ -288,7 +288,7 @@
             this.pnlWork.Location = new System.Drawing.Point(0, 0);
             this.pnlWork.Margin = new System.Windows.Forms.Padding(10);
             this.pnlWork.Name = "pnlWork";
-            this.pnlWork.Size = new System.Drawing.Size(916, 533);
+            this.pnlWork.Size = new System.Drawing.Size(916, 534);
             this.pnlWork.TabIndex = 2;
             this.pnlWork.Resize += new System.EventHandler(this.pnlWork_Resize);
             // 
@@ -312,7 +312,7 @@
             this.graphCtrl.Location = new System.Drawing.Point(0, 0);
             this.graphCtrl.Name = "graphCtrl";
             this.graphCtrl.ShowLabels = false;
-            this.graphCtrl.Size = new System.Drawing.Size(1084, 561);
+            this.graphCtrl.Size = new System.Drawing.Size(1084, 562);
             this.graphCtrl.SmallGridStep = 16F;
             this.graphCtrl.SmallStepGridColor = System.Drawing.Color.DarkGray;
             this.graphCtrl.TabIndex = 0;
@@ -346,7 +346,7 @@
             // splitPanel.Panel2
             // 
             this.splitPanel.Panel2.Controls.Add(this.pnlWork);
-            this.splitPanel.Size = new System.Drawing.Size(1084, 537);
+            this.splitPanel.Size = new System.Drawing.Size(1084, 538);
             this.splitPanel.SplitterDistance = 160;
             this.splitPanel.TabIndex = 3;
             // 
@@ -355,7 +355,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1084, 561);
+            this.ClientSize = new System.Drawing.Size(1084, 562);
             this.Controls.Add(this.splitPanel);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.graphCtrl);
@@ -364,7 +364,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1100, 600);
             this.Name = "Form1";
-            this.Text = "T3D Conversation Editor";
+            this.Text = "Conversation Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

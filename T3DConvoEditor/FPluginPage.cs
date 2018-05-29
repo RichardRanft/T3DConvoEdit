@@ -34,7 +34,7 @@ using BasicLogging;
 using BasicSettings;
 using PluginContracts;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public partial class FPluginPage : Form
     {

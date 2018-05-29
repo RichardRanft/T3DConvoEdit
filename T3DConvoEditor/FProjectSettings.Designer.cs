@@ -1,4 +1,4 @@
-﻿namespace T3DConvoEditor
+﻿namespace ConvoEditor
 {
     partial class FProjectSettings
     {
@@ -194,6 +194,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FProjectSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Settings";
             this.Activated += new System.EventHandler(this.FProjectSettings_Activated);
             this.ResumeLayout(false);

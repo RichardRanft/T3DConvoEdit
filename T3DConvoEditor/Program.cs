@@ -23,7 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     static class Program
     {

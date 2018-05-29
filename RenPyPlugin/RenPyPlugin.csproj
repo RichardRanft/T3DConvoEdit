@@ -41,7 +41,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Graph, Version=1.0.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Graph.1.0.0.17\lib\net40-Client\Graph.dll</HintPath>
+      <HintPath>..\packages\Graph.1.0.0.18\lib\net45\Graph.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -118,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FConditionNodeEdit.resx">
       <DependentUpon>FConditionNodeEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FSettings.resx">
+      <DependentUpon>FSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

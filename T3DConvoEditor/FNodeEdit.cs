@@ -31,7 +31,7 @@ using Graph.Compatibility;
 using Graph.Items;
 using BasicSettings;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public partial class FNodeEdit : Form
     {

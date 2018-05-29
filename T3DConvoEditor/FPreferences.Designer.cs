@@ -1,4 +1,4 @@
-﻿namespace T3DConvoEditor
+﻿namespace ConvoEditor
 {
     partial class FPreferences
     {
@@ -151,6 +151,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FPreferences";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Preferences";
             this.Activated += new System.EventHandler(this.FPreferences_Activated);
             this.groupBox1.ResumeLayout(false);

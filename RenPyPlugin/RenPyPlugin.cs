@@ -490,26 +490,6 @@ namespace RenPyPlugin
 
                 String script = "";
 
-                script += "## Use of T3DConvoEditor and its output are governed by the MIT license." + Environment.NewLine + Environment.NewLine;
-
-                script += "## Permission is hereby granted, free of charge, to any person obtaining a copy" + Environment.NewLine;
-                script += "## of this software and associated documentation files (the \"Software\"), to deal" + Environment.NewLine;
-                script += "## in the Software without restriction, including without limitation the rights" + Environment.NewLine;
-                script += "## to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" + Environment.NewLine;
-                script += "## copies of the Software, and to permit persons to whom the Software is" + Environment.NewLine;
-                script += "## furnished to do so, subject to the following conditions:" + Environment.NewLine + Environment.NewLine;
-
-                script += "## The above copyright notice and this permission notice shall be included in" + Environment.NewLine;
-                script += "## all copies or substantial portions of the Software." + Environment.NewLine + Environment.NewLine;
-
-                script += "## THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" + Environment.NewLine;
-                script += "## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," + Environment.NewLine;
-                script += "## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" + Environment.NewLine;
-                script += "## AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" + Environment.NewLine;
-                script += "## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," + Environment.NewLine;
-                script += "## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN" + Environment.NewLine;
-                script += "## THE SOFTWARE." + Environment.NewLine + Environment.NewLine;
-
                 script += "## The game starts here." + Environment.NewLine;
 
                 CNodeWrapper node = new CNodeWrapper(nodes[0]);

@@ -92,6 +92,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FConvPartEdit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Conversation Entry";
             this.Activated += new System.EventHandler(this.FConvPartEdit_Activated);
             this.ResumeLayout(false);

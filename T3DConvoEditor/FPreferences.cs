@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasicSettings;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public partial class FPreferences : Form
     {

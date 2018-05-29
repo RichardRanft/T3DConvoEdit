@@ -1,4 +1,4 @@
-﻿namespace T3DConvoEditor
+﻿namespace ConvoEditor
 {
     partial class FNodeEdit
     {
@@ -87,6 +87,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FNodeEdit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FNodeEdit";
             this.Activated += new System.EventHandler(this.FNodeEdit_Activated);
             this.ResumeLayout(false);

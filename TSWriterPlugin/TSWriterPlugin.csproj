@@ -107,6 +107,9 @@
     <EmbeddedResource Include="FNodeEdit.resx">
       <DependentUpon>FNodeEdit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FSettings.resx">
+      <DependentUpon>FSettings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

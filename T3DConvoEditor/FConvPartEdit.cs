@@ -30,7 +30,7 @@ using Graph;
 using Graph.Compatibility;
 using Graph.Items;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public partial class FConvPartEdit : Form
     {

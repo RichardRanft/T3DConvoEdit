@@ -8,7 +8,7 @@ using System.Xml;
 using System.Windows.Forms;
 using BasicLogging;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public class CProject
     {

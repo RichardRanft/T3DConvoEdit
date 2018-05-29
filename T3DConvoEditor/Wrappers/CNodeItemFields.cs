@@ -8,7 +8,7 @@ using Graph.Compatibility;
 using Graph.Items;
 using System.Runtime.Serialization;
 
-namespace T3DConvoEditor.Wrappers
+namespace ConvoEditor.Wrappers
 {
     [Serializable]
     public class CNodeItemFields

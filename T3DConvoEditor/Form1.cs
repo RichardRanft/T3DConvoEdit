@@ -34,7 +34,7 @@ using BasicLogging;
 using BasicSettings;
 using PluginContracts;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public partial class Form1 : Form
     {
@@ -62,21 +62,33 @@ namespace T3DConvoEditor
         public void Initialize()
         {
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            m_saveDefaultPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
+            m_personalPath = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) + @"\Roostertail Games\ConvoEditor\";
+            if(!Directory.Exists(m_personalPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(m_personalPath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Application.Exit();
+                }
+            }
+            m_saveDefaultPath = homeFolder + @"\Roostertail Games\ConvoEditor\";
             m_dirty = false;
-            m_log = new CLog();
-            m_log.Filename = m_saveDefaultPath + "T3DConvoEditor.log";
-            m_personalPath = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) + @"\Roostertail Games\T3DConvoEditor\"; ;
+            m_log = new CLog("ConvoEditor.log");
+            m_log.Filename = m_saveDefaultPath + "ConvoEditor.log";
             m_log.WriteLine("Checking for settings file in " + m_personalPath);
-            if (File.Exists(m_personalPath + "T3DConvoEditor.ini"))
+            if (File.Exists(m_personalPath + "ConvoEditor.ini"))
             {
                 m_log.WriteLine("Opening settings from " + m_personalPath);
-                m_settings = new CSettings(m_personalPath + "T3DConvoEditor.ini");
+                m_settings = new CSettings(m_personalPath + "ConvoEditor.ini");
             }
             else
             {
                 m_log.WriteLine("Opening settings file from application path");
-                m_settings = new CSettings("T3DConvoEditor.ini");
+                m_settings = new CSettings("ConvoEditor.ini");
             }
             m_settings.LoadSettings();
 
@@ -91,7 +103,7 @@ namespace T3DConvoEditor
             m_nodeEdit.MainForm = this;
             m_partEdit = new FConvPartEdit();
             m_plugins = new FPluginPage(m_log);
-            m_log.WriteLine("T3D Conversation Editor started");
+            m_log.WriteLine("Conversation Editor started");
 
             if (!Directory.Exists(m_saveDefaultPath))
                 Directory.CreateDirectory(m_saveDefaultPath);
@@ -327,7 +339,7 @@ namespace T3DConvoEditor
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            m_log.WriteLine("Exiting T3DConvoEditor");
+            m_log.WriteLine("Exiting ConvoEditor");
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -460,7 +472,7 @@ namespace T3DConvoEditor
                 m_project.ScriptFolder = m_newProjectDlg.ScriptPath;
                 m_project.ScriptExt = m_currentPlugin.GetDefaultExtension();
                 m_project.Save(m_project.BaseFolder + "\\" + m_project.Name + ".cnvproj");
-                this.Text = "T3D Conversation Editor - " + m_project.Name;
+                this.Text = "Conversation Editor - " + m_project.Name;
                 m_dirty = false;
             }
             else
@@ -476,7 +488,7 @@ namespace T3DConvoEditor
             if (ofdOpenFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 m_project = new CProject(m_log, ofdOpenFile.FileName);
-                this.Text = "T3D Conversation Editor - " + m_project.Name;
+                this.Text = "Conversation Editor - " + m_project.Name;
                 //foreach (String item in m_project.Conversations.Keys)
                 //    lbxConvList.AddPath(m_project.Conversations[item]);
                 //lbxConvList.SetTopNodeName(m_project.Name);

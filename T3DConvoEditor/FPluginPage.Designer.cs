@@ -1,4 +1,4 @@
-﻿namespace T3DConvoEditor
+﻿namespace ConvoEditor
 {
     partial class FPluginPage
     {
@@ -93,6 +93,7 @@
             this.Controls.Add(this.lbxAvailPlugins);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FPluginPage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Plugin Settings";
             this.Activated += new System.EventHandler(this.FPluginPage_Activated);
             this.ResumeLayout(false);

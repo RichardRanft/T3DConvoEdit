@@ -24,7 +24,7 @@ using System.Reflection;
 using PluginContracts;
 using BasicLogging;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
 	public static class PluginLoader
 	{

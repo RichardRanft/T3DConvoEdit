@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace T3DConvoEditor
+namespace ConvoEditor
 {
     public class FileTreeView : TreeView
     {
