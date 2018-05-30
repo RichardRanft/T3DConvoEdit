@@ -1,9 +1,11 @@
-# T3DConvoEdit
-A conversation editor for Torque-based games
+# ConvoEdit
+A graph-based conversation editor.
 
 Example of a rudimentary system that could use the output from this tool is in the T3DConvoEdit/T3DConvoEditor/Documentation folder.
 
 This depends on my fork of the Graph library - https://github.com/RichardRanft/Graph
+
+In the pluginrefactor branch I have introduced the ability to build plug-in modules for the editor so that custom editors can be created for any other script-based engines.  Theoretically, a plug-in could be created for constructing generic scripts in any scripting language for any purpose.  I have started work on a plug-in for Ren'py VNs, for example, and it is in the pluginrefactor branch.
 
 Copyright (c) 2015 Richard Ranft
 
