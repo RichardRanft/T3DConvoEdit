@@ -71,7 +71,7 @@ namespace ConvoEditor
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, "Unable to find or create home folder.");
                     Application.Exit();
                 }
             }
