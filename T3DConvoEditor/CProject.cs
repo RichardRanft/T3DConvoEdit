@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Windows.Forms;
-using BasicLogging;
+using log4net;
 
 namespace ConvoEditor
 {
     public class CProject
     {
+        private static ILog m_log = LogManager.GetLogger(typeof(CProject));
+
         private XmlDocument m_projectData;
         private String m_projectName;
         private String m_baseFolder;
@@ -22,7 +24,6 @@ namespace ConvoEditor
         private Dictionary<String, String> m_conversations;
         private Dictionary<String, String> m_scripts;
         private bool m_dirty;
-        private CLog m_log;
 
         public FileTreeView TreeView { get; set; }
 
@@ -74,13 +75,12 @@ namespace ConvoEditor
             private set { m_conversations = value; }
         }
 
-        public CProject(CLog log, String path)
+        public CProject(String path)
         {
-            m_log = log;
             loadProject(path);
         }
 
-        public CProject(CLog log)
+        public CProject()
         {
             m_baseFolder = "";
             m_convFolder = "";
@@ -91,7 +91,6 @@ namespace ConvoEditor
             m_projectData = new XmlDocument();
             m_conversations = new Dictionary<string, string>();
             m_scripts = new Dictionary<string, string>();
-            m_log = log;
         }
 
         public bool Save(String path)
@@ -148,10 +147,7 @@ namespace ConvoEditor
                     }
                     catch (Exception ex)
                     {
-                        String message = ex.Message;
-                        if (ex.InnerException != null)
-                            message += Environment.NewLine + ex.InnerException.Message;
-                        m_log.WriteLine("Error saving project data : " + message);
+                        m_log.Error("Error saving project data : ", ex);
                         return false;
                     }
                 }
@@ -168,10 +164,7 @@ namespace ConvoEditor
             }
             catch (Exception ex)
             {
-                String message = ex.Message;
-                if (ex.InnerException != null)
-                    message += Environment.NewLine + ex.InnerException.Message;
-                m_log.WriteLine("Error saving project data : " + message);
+                m_log.Error("Error saving project data : ", ex);
                 return false;
             }
         }
@@ -189,7 +182,7 @@ namespace ConvoEditor
 
                 return true;
             }
-            m_log.WriteLine("Conversation " + name + " already exists.");
+            m_log.Info("Conversation " + name + " already exists.");
             return false;
         }
 
@@ -205,13 +198,7 @@ namespace ConvoEditor
                 }
                 catch (Exception ex)
                 {
-                    String message = "Unable to rename " + path + " to " + newpath + " : " + Environment.NewLine;
-                    message += ex.Message;
-                    if(ex.InnerException != null)
-                    {
-                        message += Environment.NewLine + ex.InnerException.Message;
-                    }
-                    m_log.WriteLine(message);
+                    m_log.Error(String.Format("Unable to rename {0} to {1}:", path, newpath), ex);
                     return false;
                 }
                 m_conversations.Remove(oldName);
@@ -225,13 +212,7 @@ namespace ConvoEditor
                 }
                 catch (Exception ex)
                 {
-                    String message = "Unable to rename " + path + " to " + newpath + " : " + Environment.NewLine;
-                    message += ex.Message;
-                    if (ex.InnerException != null)
-                    {
-                        message += Environment.NewLine + ex.InnerException.Message;
-                    }
-                    m_log.WriteLine(message);
+                    m_log.Error(String.Format("Unable to rename {0} to {1}:", path, newpath), ex);
                 }
                 m_scripts.Remove(oldName);
                 m_scripts.Add(newName, newpath);
@@ -242,7 +223,7 @@ namespace ConvoEditor
 
                 return true;
             }
-            m_log.WriteLine("Could not find a conversation named " + oldName + ".");
+            m_log.Warn("Could not find a conversation named " + oldName + ".");
             return false;
         }
 

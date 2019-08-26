@@ -28,15 +28,16 @@ using Graph;
 using Graph.Compatibility;
 using Graph.Items;
 using Newtonsoft.Json;
-using BasicLogging;
 using TSWriterPlugin.Wrappers;
 using PluginContracts;
+using log4net;
 
 namespace TSWriterPlugin
 {
     public class CGraphManager
     {
-        private CLog m_log;
+        private static ILog m_log = LogManager.GetLogger(typeof(CGraphManager));
+
         private JsonSerializer m_serializer;
         private ObjectIDGenerator m_idGen;
         private CGraphFields m_graphFields;
@@ -44,9 +45,8 @@ namespace TSWriterPlugin
         private Dictionary<String, String> m_idNameMap;
         private IPlugin m_plugin;
 
-        public CGraphManager(CLog log, IPlugin plugin)
+        public CGraphManager(IPlugin plugin)
         {
-            m_log = log;
             m_idGen = new ObjectIDGenerator();
             m_serializer = new JsonSerializer();
             m_itemMap = new Dictionary<String, NodeItem>();
@@ -65,9 +65,9 @@ namespace TSWriterPlugin
             }
             catch (Exception ex)
             {
-                m_log.WriteLine("Could not save file " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                m_log.Error("Could not save file " + filename + " : ", ex);
             }
-            m_log.WriteLine("Saved " + filename);
+            m_log.Info("Saved " + filename);
         }
 
         private void writeGraph(GraphControl graph, StreamWriter stream)
@@ -88,11 +88,11 @@ namespace TSWriterPlugin
             }
             catch(Exception ex)
             {
-                m_log.WriteLine("Could not load file " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                m_log.Error("Could not load file " + filename + " : ", ex);
                 return;
             }
             rebuildGraph(graph);
-            m_log.WriteLine("Loaded " + filename);
+            m_log.Info("Loaded " + filename);
         }
 
         private void rebuildGraph(GraphControl graph)

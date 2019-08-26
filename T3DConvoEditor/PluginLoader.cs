@@ -22,13 +22,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using PluginContracts;
-using BasicLogging;
+using log4net;
 
 namespace ConvoEditor
 {
 	public static class PluginLoader
 	{
-		public static ICollection<IPlugin> LoadPlugins(string path)
+        private static ILog m_log = LogManager.GetLogger(typeof(PluginLoader));
+
+        public static ICollection<IPlugin> LoadPlugins(string path)
 		{
 			string[] dllFileNames = null;
 

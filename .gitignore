@@ -18,3 +18,4 @@ RenPyPlugin/obj/
 *.dll
 *.suo
 *.updated
+/.vs/T3DConvoEditor/v15/Server/sqlite3

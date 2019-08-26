@@ -41,7 +41,12 @@ namespace RenPyPlugin
         public int MaxOutputs = 6;
         public Node EditingNode;
 
-        public int ConvoNodeStart = 4;        
+        public int ConvoNodeStart = 4;
+
+        public FMenuNodeEdit()
+        {
+            InitializeComponent();
+        }
 
         public CSettings Settings
         {
@@ -53,11 +58,6 @@ namespace RenPyPlugin
         {
             get { return tbxText.Text; }
             set { tbxText.Text = value; }
-        }
-
-        public FMenuNodeEdit()
-        {
-            InitializeComponent();
         }
 
         private void FNodeEdit_Activated(object sender, EventArgs e)

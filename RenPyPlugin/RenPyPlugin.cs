@@ -28,15 +28,16 @@ using Graph;
 using Graph.Compatibility;
 using Graph.Items;
 using PluginContracts;
-using BasicLogging;
 using BasicSettings;
+using log4net;
 
 namespace RenPyPlugin
 {
     public class CRenPyPlugin : IPlugin
     {
+        private static ILog m_log = LogManager.GetLogger(typeof(CRenPyPlugin));
+
         private GraphControl m_graphCtrl;
-        private CLog m_log;
         private CSettings m_settings;
         private String m_iniPath;
         private FMenuNodeEdit m_nodeEdit;
@@ -318,7 +319,7 @@ namespace RenPyPlugin
 
         public bool SaveGraph(GraphControl graph, String filename)
         {
-            CGraphManager graphman = new CGraphManager(m_log, this);
+            CGraphManager graphman = new CGraphManager(this);
             graphman.SaveGraph(m_graphCtrl, filename);
             return false;
         }
@@ -328,7 +329,7 @@ namespace RenPyPlugin
             return null;
         }
 
-        public void Initialize(GraphControl ctrl, CLog log)
+        public void Initialize(GraphControl ctrl)
         {
             m_nodeTypeNames = new List<string>();
             m_nodeTypeNames.Add("Start");
@@ -337,24 +338,23 @@ namespace RenPyPlugin
             m_nodeTypeNames.Add("Menu");
             m_nodeTypeNames.Add("Conditional");
             m_graphCtrl = ctrl;
-            m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
             m_iniPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
             String iniFile = m_iniPath + "RenPyPlugin.ini";
-            m_log.WriteLine("Attempting to load " + iniFile);
+            m_log.Info("Attempting to load " + iniFile);
             if (File.Exists(iniFile))
                 m_settings = new CSettings(m_iniPath + "RenPyPlugin.ini");
             else
             {
                 m_iniPath = Path.GetFullPath(".\\");
                 iniFile = m_iniPath + @"Plugins\RenPyPlugin.ini";
-                m_log.WriteLine("Attempting to load " + iniFile);
+                m_log.Info("Attempting to load " + iniFile);
                 m_settings = new CSettings(iniFile);
             }
             if (!m_settings.LoadSettings())
-                m_log.WriteLine("Failed to locate RenPyPlugin.ini");
+                m_log.Error("Failed to locate RenPyPlugin.ini");
             else
-                m_log.WriteLine("RenPyPlugin settings loaded");
+                m_log.Info("RenPyPlugin settings loaded");
             m_nodeEdit = new FMenuNodeEdit();
             m_partEdit = new FConvPartEdit();
             m_settingsForm = new FSettings();
@@ -364,7 +364,7 @@ namespace RenPyPlugin
         {
             if (m_graphCtrl == null)
                 MessageBox.Show("Ren'Py Writer Plugin can't export graph - call SetGraphControl() to set the graph for export.");
-            CRenPyWriter writer = new CRenPyWriter(m_log, m_settings);
+            CRenPyWriter writer = new CRenPyWriter(m_settings);
             if (filename.Length < 1)
                 filename = "defaultScript.cs";
             writer.WriteScript(filename, (List<Node>)m_graphCtrl.Nodes);
@@ -453,12 +453,12 @@ namespace RenPyPlugin
 
         class CRenPyWriter
         {
-            private CLog m_log;
+            private static ILog m_log = LogManager.GetLogger(typeof(CRenPyWriter));
+
             private CSettings m_settings;
 
-            public CRenPyWriter(CLog log, CSettings settings)
+            public CRenPyWriter(CSettings settings)
             {
-                m_log = log;
                 m_settings = settings;
             }
 
@@ -471,14 +471,14 @@ namespace RenPyPlugin
 
                     using (StreamWriter sr = new StreamWriter(filename))
                     {
-                        m_log.WriteLine("Writing script to " + filename);
+                        m_log.Info("Writing script to " + filename);
                         sr.Write(script);
                     }
-                    m_log.WriteLine(filename + " successfully written.");
+                    m_log.Info(filename + " successfully written.");
                 }
                 catch (Exception ex)
                 {
-                    m_log.WriteLine("Failed to write conversation script " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                    m_log.Error("Failed to write conversation script " + filename + " : ", ex);
                     return false;
                 }
                 return true;
@@ -486,14 +486,13 @@ namespace RenPyPlugin
 
             private String generateScript(String convoName, List<Node> nodes)
             {
-                m_log.WriteLine("Generating script.rpy...");
+                m_log.Info("Generating script.rpy...");
 
                 String script = "";
 
                 script += "## The game starts here." + Environment.NewLine;
 
                 CNodeWrapper node = new CNodeWrapper(nodes[0]);
-                node.Log = m_log; // borrow the logger
                 node.Settings = m_settings; // and the settings
                 node.GenerateTree();
                 node.Write(ref script);
@@ -502,7 +501,7 @@ namespace RenPyPlugin
                 script += "    ## This ends the game" + Environment.NewLine + Environment.NewLine;
                 script += "    return" + Environment.NewLine;
 
-                m_log.WriteLine(convoName + " script generated.");
+                m_log.Info(convoName + " script generated.");
 
                 return script;
             }
@@ -520,7 +519,7 @@ namespace RenPyPlugin
                 List<NodeItem> targetItemList = (List<NodeItem>)outconn.To.Node.Items;
                 NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
                 script += "    jump " + targetItem.Text + Environment.NewLine;
-                m_log.WriteLine("Generated Conversation Start node");
+                m_log.Info("Generated Conversation Start node");
                 return script;
             }
 
@@ -587,7 +586,7 @@ namespace RenPyPlugin
                     if (Method != "Enter script method")
                         script += "     " + conditionText(Method) + Environment.NewLine;
                 }
-                m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
+                m_log.Info("Generated Conversation Node " + nameItem.Text);
                 return script;
             }
 
@@ -611,7 +610,7 @@ namespace RenPyPlugin
                     script += "    " + conditionText(tb.Text) + ";\";" + Environment.NewLine;
                 script += "    ## This ends the game" + Environment.NewLine + Environment.NewLine;
                 script += "    return" + Environment.NewLine;
-                m_log.WriteLine("Generated Conversation End Node" + nodename);
+                m_log.Info("Generated Conversation End Node" + nodename);
                 return script;
             }
 

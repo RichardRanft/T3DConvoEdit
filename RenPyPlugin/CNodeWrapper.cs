@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using Graph;
 using Graph.Compatibility;
 using Graph.Items;
-using BasicLogging;
 using BasicSettings;
+using log4net;
 
 namespace RenPyPlugin
 {
     class CNodeWrapper
     {
-        public CLog Log;
+        private static ILog m_log = LogManager.GetLogger(typeof(CNodeWrapper));
+
         public CSettings Settings;
         public List<CNodeWrapper> Next;
 
@@ -167,7 +168,7 @@ namespace RenPyPlugin
             List<NodeConnection> conns = (List<NodeConnection>)linkItem.Node.Connections;
             NodeConnection outconn = conns[0];
             List<NodeItem> linkItems = getConnections(linkItem.Node, (NodeOutputConnector)linkItem.Output);
-            Log.WriteLine("Generated Node Links for " + node.Title);
+            m_log.Info("Generated Node Links for " + node.Title);
         }
 
         private void getStartNodeWrapper(Node node)
@@ -177,7 +178,7 @@ namespace RenPyPlugin
             List<NodeConnection> conns = (List<NodeConnection>)linkItem.Node.Connections;
             NodeConnection outconn = conns[0];
             List<NodeItem> linkItems = getConnections(linkItem.Node, (NodeOutputConnector)linkItem.Output);
-            Log.WriteLine("Generated Conversation Start Node");
+            m_log.Info("Generated Conversation Start Node");
         }
 
         private String getConvoNodeWrapper(String convName, Node node)
@@ -241,7 +242,7 @@ namespace RenPyPlugin
                 if (Method != "Enter script method")
                     script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + conditionText(Method) + ";\";" + Environment.NewLine;
             }
-            Log.WriteLine("Generated Conversation Node " + nameItem.Text);
+            m_log.Info("Generated Conversation Node " + nameItem.Text);
             return script;
         }
 
@@ -254,7 +255,7 @@ namespace RenPyPlugin
             NodeConnection outconn = conns[0];
             List<NodeItem> targetItemList = (List<NodeItem>)outconn.To.Node.Items;
             NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
-            Log.WriteLine("Generated Menu Node");
+            m_log.Info("Generated Menu Node");
             return script;
         }
 
@@ -267,7 +268,7 @@ namespace RenPyPlugin
             NodeConnection outconn = conns[0];
             List<NodeItem> targetItemList = (List<NodeItem>)outconn.To.Node.Items;
             NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
-            Log.WriteLine("Generated Condition Node");
+            m_log.Info("Generated Condition Node");
             return script;
         }
 
@@ -288,7 +289,7 @@ namespace RenPyPlugin
             tb = (NodeTextBoxItem)items[2];
             if (tb.Text != "Conversation Exit Script")
                 script += "\t\t\tscriptMethod = \"" + conditionText(tb.Text) + ";\";" + Environment.NewLine;
-            Log.WriteLine("Generated Conversation End Node" + nodename);
+            m_log.Info("Generated Conversation End Node" + nodename);
             return script;
         }
 

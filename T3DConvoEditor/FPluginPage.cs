@@ -30,16 +30,17 @@ using System.Windows.Forms;
 using Graph;
 using Graph.Compatibility;
 using Graph.Items;
-using BasicLogging;
 using BasicSettings;
 using PluginContracts;
+using log4net;
 
 namespace ConvoEditor
 {
     public partial class FPluginPage : Form
     {
+        private static ILog m_log = LogManager.GetLogger(typeof(FPluginPage));
+
         private Dictionary<string, IPlugin> _Plugins;
-        private CLog m_log;
         private String m_pluginFolder;
 
         public IPlugin Active;
@@ -55,10 +56,9 @@ namespace ConvoEditor
             Active = _Plugins[pluginName];
         }
 
-        public FPluginPage(CLog log)
+        public FPluginPage()
         {
             InitializeComponent();
-            m_log = log;
             loadPlugins();
         }
 
@@ -66,14 +66,14 @@ namespace ConvoEditor
         {
             _Plugins = new Dictionary<string, IPlugin>();
             m_pluginFolder = Path.GetFullPath(".\\" + "Plugins");
-            m_log.WriteLine("Loading plugins from " + m_pluginFolder);
+            m_log.Info("Loading plugins from " + m_pluginFolder);
             try
             {
                 ICollection<IPlugin> plugins = GenericPluginLoader<IPlugin>.LoadPlugins(m_pluginFolder);
                 foreach (var item in plugins)
                 {
                     _Plugins.Add(item.Name, item);
-                    m_log.WriteLine("Loaded " + item.Name);
+                    m_log.Info("Loaded " + item.Name);
                 }
                 lbxAvailPlugins.Items.Clear();
                 foreach(KeyValuePair<string, IPlugin> p in _Plugins)
@@ -83,7 +83,7 @@ namespace ConvoEditor
             }
             catch(Exception ex)
             {
-                m_log.WriteLine("Failed to load plugins: " + ex.Message + "\n" + ex.StackTrace);
+                m_log.Error("Failed to load plugins: ", ex);
                 MessageBox.Show("Failed to load plugins - see log for error.", "Plugin Load Failure");
             }
         }

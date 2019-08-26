@@ -27,15 +27,16 @@ using Graph;
 using Graph.Compatibility;
 using Graph.Items;
 using Newtonsoft.Json;
-using BasicLogging;
 using ConvoEditor.Wrappers;
 using System.Runtime.Serialization;
+using log4net;
 
 namespace ConvoEditor
 {
     public class CGraphManager
     {
-        private CLog m_log;
+        private static ILog m_log = LogManager.GetLogger(typeof(CGraphManager));
+
         private JsonSerializer m_serializer;
         private ObjectIDGenerator m_idGen;
         private CGraphFields m_graphFields;
@@ -43,9 +44,8 @@ namespace ConvoEditor
         private Dictionary<String, NodeItem> m_itemMap;
         private Dictionary<String, String> m_idNameMap;
 
-        public CGraphManager(Form1 parent, CLog log)
+        public CGraphManager(Form1 parent)
         {
-            m_log = log;
             m_parentForm = parent;
             m_idGen = new ObjectIDGenerator();
             m_serializer = new JsonSerializer();
@@ -64,9 +64,9 @@ namespace ConvoEditor
             }
             catch (Exception ex)
             {
-                m_log.WriteLine("Could not save file " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                m_log.Error("Could not save file " + filename + " : ", ex);
             }
-            m_log.WriteLine("Saved " + filename);
+            m_log.Info("Saved " + filename);
         }
 
         private void writeGraph(GraphControl graph, StreamWriter stream)
@@ -87,11 +87,11 @@ namespace ConvoEditor
             }
             catch(Exception ex)
             {
-                m_log.WriteLine("Could not load file " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                m_log.Error("Could not load file " + filename + " : ", ex);
                 return;
             }
             rebuildGraph(graph);
-            m_log.WriteLine("Loaded " + filename);
+            m_log.Info("Loaded " + filename);
         }
 
         private void rebuildGraph(GraphControl graph)

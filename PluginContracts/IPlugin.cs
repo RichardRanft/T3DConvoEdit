@@ -28,7 +28,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Graph;
-using BasicLogging;
 using BasicSettings;
 
 namespace PluginContracts
@@ -52,7 +51,7 @@ namespace PluginContracts
         bool SaveGraph(GraphControl graph, String filename);
         GraphControl LoadGraph(String filename);
 
-        void Initialize(GraphControl ctrl, CLog log);
+        void Initialize(GraphControl ctrl);
         void Export(System.String filename);
 
         bool Validate(GraphControl graph);

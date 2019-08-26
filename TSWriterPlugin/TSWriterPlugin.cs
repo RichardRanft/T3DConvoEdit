@@ -28,15 +28,16 @@ using Graph;
 using Graph.Compatibility;
 using Graph.Items;
 using PluginContracts;
-using BasicLogging;
 using BasicSettings;
+using log4net;
 
 namespace TSWriterPlugin
 {
     public class CTSWriterPlugin : IPlugin
     {
+        private static ILog m_log = LogManager.GetLogger(typeof(CTSWriterPlugin));
+
         private GraphControl m_graphCtrl;
-        private CLog m_log;
         private CSettings m_settings;
         private String m_iniPath;
         private FNodeEdit m_nodeEdit;
@@ -214,7 +215,7 @@ namespace TSWriterPlugin
 
         public bool SaveGraph(GraphControl graph, String filename)
         {
-            CGraphManager graphman = new CGraphManager(m_log, this);
+            CGraphManager graphman = new CGraphManager(this);
             graphman.SaveGraph(m_graphCtrl, filename);
             return false;
         }
@@ -224,31 +225,30 @@ namespace TSWriterPlugin
             return null;
         }
 
-        public void Initialize(GraphControl ctrl, CLog log)
+        public void Initialize(GraphControl ctrl)
         {
             m_nodeTypeNames = new List<string>();
             m_nodeTypeNames.Add("Start");
             m_nodeTypeNames.Add("End");
             m_nodeTypeNames.Add("Conversation");
             m_graphCtrl = ctrl;
-            m_log = log;
             String homeFolder = @Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
             m_iniPath = homeFolder + @"\Roostertail Games\T3DConvoEditor\";
             String iniFile = m_iniPath + "TSWriterPlugin.ini";
-            m_log.WriteLine("Attempting to load " + iniFile);
+            m_log.Info("Attempting to load " + iniFile);
             if (File.Exists(iniFile))
                 m_settings = new CSettings(m_iniPath + "TSWriterPlugin.ini");
             else
             {
                 m_iniPath = Path.GetFullPath(".\\");
                 iniFile = m_iniPath + @"Plugins\TSWriterPlugin.ini";
-                m_log.WriteLine("Attempting to load " + iniFile);
+                m_log.Info("Attempting to load " + iniFile);
                 m_settings = new CSettings(iniFile);
             }
             if (!m_settings.LoadSettings())
-                m_log.WriteLine("Failed to locate TSWriterPlugin.ini");
+                m_log.Error("Failed to locate TSWriterPlugin.ini");
             else
-                m_log.WriteLine("TSWriterPlugin settings loaded");
+                m_log.Info("TSWriterPlugin settings loaded");
             m_nodeEdit = new FNodeEdit();
             m_partEdit = new FConvPartEdit();
             m_settingsForm = new FSettings();
@@ -258,7 +258,7 @@ namespace TSWriterPlugin
         {
             if (m_graphCtrl == null)
                 MessageBox.Show("TorqueScript Writer Plugin can't export graph - call SetGraphControl() to set the graph for export.");
-            CTorquescriptWriter writer = new CTorquescriptWriter(m_log, m_settings);
+            CTorquescriptWriter writer = new CTorquescriptWriter(m_settings);
             if (filename.Length < 1)
                 filename = "defaultScript.cs";
             writer.WriteScript(filename, (List<Node>)m_graphCtrl.Nodes);
@@ -347,12 +347,12 @@ namespace TSWriterPlugin
 
         class CTorquescriptWriter
         {
-            private CLog m_log;
+            private static ILog m_log = LogManager.GetLogger(typeof(CTorquescriptWriter));
+
             private CSettings m_settings;
 
-            public CTorquescriptWriter(CLog log, CSettings settings)
+            public CTorquescriptWriter(CSettings settings)
             {
-                m_log = log;
                 m_settings = settings;
             }
 
@@ -365,14 +365,14 @@ namespace TSWriterPlugin
 
                     using (StreamWriter sr = new StreamWriter(filename))
                     {
-                        m_log.WriteLine("Writing script to " + filename);
+                        m_log.Info("Writing script to " + filename);
                         sr.Write(script);
                     }
-                    m_log.WriteLine(filename + " successfully written.");
+                    m_log.Info(filename + " successfully written.");
                 }
                 catch (Exception ex)
                 {
-                    m_log.WriteLine("Failed to write conversation script " + filename + " : " + ex.Message + "\n" + ex.StackTrace);
+                    m_log.Error("Failed to write conversation script " + filename + " : ", ex);
                     return false;
                 }
                 return true;
@@ -380,7 +380,7 @@ namespace TSWriterPlugin
 
             private String generateScript(String convoName, List<Node> nodes)
             {
-                m_log.WriteLine("Generating conversation script " + convoName + "...");
+                m_log.Info("Generating conversation script " + convoName + "...");
 
                 String script = "";
 
@@ -410,7 +410,7 @@ namespace TSWriterPlugin
                 script += "};" + Environment.NewLine;
                 script += "//--- OBJECT WRITE END ---" + Environment.NewLine;
 
-                m_log.WriteLine(convoName + " script generated.");
+                m_log.Info(convoName + " script generated.");
 
                 return script;
             }
@@ -431,7 +431,7 @@ namespace TSWriterPlugin
                 NodeTextBoxItem targetItem = (NodeTextBoxItem)targetItemList[0];
                 script += "\t\t\toutLink0 = " + convName + "_" + targetItem.Text + ";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
-                m_log.WriteLine("Generated Conversation Start node");
+                m_log.Info("Generated Conversation Start node");
                 return script;
             }
 
@@ -505,7 +505,7 @@ namespace TSWriterPlugin
                         script += "\t\t\tbutton" + (i - start).ToString() + "cmd = \"" + conditionText(Method) + ";\";" + Environment.NewLine;
                 }
                 script += "\t};" + Environment.NewLine;
-                m_log.WriteLine("Generated Conversation Node " + nameItem.Text);
+                m_log.Info("Generated Conversation Node " + nameItem.Text);
                 return script;
             }
 
@@ -532,7 +532,7 @@ namespace TSWriterPlugin
                 if (tb.Text != "Conversation Exit Script")
                     script += "\t\t\tscriptMethod = \"" + conditionText(tb.Text) + ";\";" + Environment.NewLine;
                 script += "\t};" + Environment.NewLine;
-                m_log.WriteLine("Generated Conversation End Node" + nodename);
+                m_log.Info("Generated Conversation End Node" + nodename);
                 return script;
             }
 
