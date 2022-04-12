@@ -17,6 +17,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Graph;
 using BasicLogging;
@@ -28,8 +30,95 @@ namespace PluginContracts
 	{
 		string Name { get; }
         CSettings Settings { get; }
-		void Export(System.String filename);
         System.String GetDefaultExtension();
+
+        EventHandler<NodeItemEventArgs> GetEditMouseHandler(string type = "");
+        EventHandler<NodeItemEventArgs> GetConvMouseHandler(string type = "");
+        MouseEventHandler GetBtnHandler(Form parent, string type);
+        void BtnHandler(object sender, MouseEventArgs e, Form parent, string type);
+
+        List<string> GetNodeTypenames();
+        Node GetNodeByTypename(string name, string nodename);
+
+        void ShowSettings();
+
+        bool SaveGraph(GraphControl graph, String filename);
+        GraphControl LoadGraph(String filename);
+
         void Initialize(GraphControl ctrl, CLog log);
-	}
+        void Export(System.String filename);
+
+        bool Validate(GraphControl graph);
+    }
+
+    // translation tool for deserialization-time recovery of object types.
+    public static class TagFactory
+    {
+        public static object GetTagObject(String typeName)
+        {
+            switch (typeName)
+            {
+                case "T3DConvoEditor.CheckboxClass":
+                    return TagType.CHECKBOX;
+                case "T3DConvoEditor.ColorClass":
+                    return TagType.COLOR;
+                case "T3DConvoEditor.DropDownClass":
+                    return TagType.DROPDOWN;
+                case "T3DConvoEditor.ImageClass":
+                    return TagType.IMAGE;
+                case "T3DConvoEditor.LabelClass":
+                    return TagType.LABEL;
+                case "T3DConvoEditor.NumericSliderClass":
+                    return TagType.NUMERICSLIDER;
+                case "T3DConvoEditor.SliderClass":
+                    return TagType.SLIDER;
+                case "T3DConvoEditor.TextBoxClass":
+                    return TagType.TEXTBOX;
+                case "T3DConvoEditor.NodeTitleClass":
+                    return TagType.NODETITLE;
+                case "T3DConvoEditor.CompositeClass":
+                    return TagType.COMPOSITE;
+                default:
+                    return null;
+            }
+        }
+    }
+
+    // Friendly tag def
+    [Serializable]
+    public static class TagType
+    {
+        public static CheckboxClass CHECKBOX = new CheckboxClass();
+        public static ColorClass COLOR = new ColorClass();
+        public static DropDownClass DROPDOWN = new DropDownClass();
+        public static ImageClass IMAGE = new ImageClass();
+        public static LabelClass LABEL = new LabelClass();
+        public static NumericSliderClass NUMERICSLIDER = new NumericSliderClass();
+        public static SliderClass SLIDER = new SliderClass();
+        public static TextBoxClass TEXTBOX = new TextBoxClass();
+        public static NodeTitleClass NODETITLE = new NodeTitleClass();
+        public static CompositeClass COMPOSITE = new CompositeClass();
+    }
+
+    // Dummy classes to use as types for item tags
+    [Serializable]
+    public class CheckboxClass : object { }
+    [Serializable]
+    public class ColorClass : object { }
+    [Serializable]
+    public class DropDownClass : object { }
+    [Serializable]
+    public class ImageClass : object { }
+    [Serializable]
+    public class LabelClass : object { }
+    [Serializable]
+    public class NumericSliderClass : object { }
+    [Serializable]
+    public class SliderClass : object { }
+    [Serializable]
+    public class TextBoxClass : object { }
+    [Serializable]
+    public class NodeTitleClass : object { }
+    [Serializable]
+    public class CompositeClass : object { }
 }

@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T3DConvoEditor", "T3DConvoE
 	ProjectSection(ProjectDependencies) = postProject
 		{65E32870-F4B6-49B6-83D2-438F4ABE3378} = {65E32870-F4B6-49B6-83D2-438F4ABE3378}
 		{43C879D1-31AE-424F-91D1-92CF286D5497} = {43C879D1-31AE-424F-91D1-92CF286D5497}
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36} = {9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginContracts", "PluginContracts\PluginContracts.csproj", "{43C879D1-31AE-424F-91D1-92CF286D5497}"
@@ -17,6 +18,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSWriterPlugin", "TSWriterP
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{8652A2D9-3293-4A2F-BBA5-7FAA9882DF5D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43C879D1-31AE-424F-91D1-92CF286D5497} = {43C879D1-31AE-424F-91D1-92CF286D5497}
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36} = {9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenPyPlugin", "RenPyPlugin\RenPyPlugin.csproj", "{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E3FA6F45-E341-4450-9B2B-ECE8AD3CDDA7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +53,10 @@ Global
 		{8652A2D9-3293-4A2F-BBA5-7FAA9882DF5D}.Debug|Any CPU.ActiveCfg = Debug
 		{8652A2D9-3293-4A2F-BBA5-7FAA9882DF5D}.Release|Any CPU.ActiveCfg = Release
 		{8652A2D9-3293-4A2F-BBA5-7FAA9882DF5D}.Release|Any CPU.Build.0 = Release
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE42EF3-5C71-44FC-8962-CE5FE32C7E36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

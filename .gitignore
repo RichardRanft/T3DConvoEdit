@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.nupkg
+/packages/Newtonsoft.Json.9.0.1
+/PluginContracts/obj
+/RenPyPlugin/bin/Debug
+/T3DConvoEditor/bin
+/T3DConvoEditor/obj
+/TSWriterPlugin/bin
+/TSWriterPlugin/obj
+/UpgradeLog.htm

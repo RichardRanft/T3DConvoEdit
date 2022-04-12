@@ -84,7 +84,7 @@ namespace T3DConvoEditor
             List<NodeItem> items = (List<NodeItem>)EditingNode.Items;
             if (items.Count < (MaxOutputs + ConvoNodeStart))
             {
-                NodeCompositeItem newNode = new NodeCompositeItem(NodeIOMode.Output) { Tag = TagType.TEXTBOX };
+                NodeCompositeItem newNode = new NodeCompositeItem(NodeIOMode.Output) { Tag = PluginContracts.TagType.TEXTBOX };
                 newNode.Name = "button_" + findUnusedButtonIndex().ToString().PadLeft(2, '0');
                 ItemTextBoxPart btnText = new ItemTextBoxPart("Enter player text");
                 btnText.Name = "ConvText";

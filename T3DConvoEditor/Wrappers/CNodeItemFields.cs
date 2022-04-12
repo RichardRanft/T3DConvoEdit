@@ -21,6 +21,7 @@ namespace T3DConvoEditor.Wrappers
         public String ParentNode { get; set; }
         public Graph.NodeIOMode IOMode { get; set; }
         public String Text { get; set; }
+        public bool Multiline { get; set; }
         public List<CItemPartFields> ItemParts { get; set; }
         public String Tag { get; set; }
 

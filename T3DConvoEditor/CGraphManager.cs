@@ -148,7 +148,7 @@ namespace T3DConvoEditor
                                     }
                                 }
                                 if (item.Tag != null)
-                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
+                                    temp.Tag = PluginContracts.TagFactory.GetTagObject(item.Tag);
                                 if (temp.Name.Contains("button_"))
                                     temp.Clicked += m_parentForm.GetConvMouseHandler();
                                 m_itemMap.Add(item.id, temp);
@@ -161,7 +161,7 @@ namespace T3DConvoEditor
                                 NodeTextBoxItem temp = new NodeTextBoxItem(item.Text, item.IOMode);
                                 temp.Name = name;
                                 if (item.Tag != null)
-                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
+                                    temp.Tag = PluginContracts.TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 n.AddItem(temp);
@@ -172,7 +172,7 @@ namespace T3DConvoEditor
                                 NodeLabelItem temp = new NodeLabelItem(item.Text, item.IOMode);
                                 temp.Name = name;
                                 if (item.Tag != null)
-                                    temp.Tag = TagFactory.GetTagObject(item.Tag);
+                                    temp.Tag = PluginContracts.TagFactory.GetTagObject(item.Tag);
                                 m_itemMap.Add(item.id, temp);
                                 m_idNameMap.Add(item.id, name);
                                 if (temp.Name == "EditNodeItem")
@@ -198,7 +198,7 @@ namespace T3DConvoEditor
             {
                 CConnectionFields inputFields = inputs[key];
                 NodeConnection conn = new NodeConnection();
-                conn.Tag = TagFactory.GetTagObject(inputFields.Tag);
+                conn.Tag = PluginContracts.TagFactory.GetTagObject(inputFields.Tag);
                 conn.Name = inputFields.name;
                 String[] fromNameParts = inputFields.From.Split(':');
                 String fromNodeName = fromNameParts[0];
@@ -218,7 +218,7 @@ namespace T3DConvoEditor
             {
                 CConnectionFields outputFields = outputs[key];
                 NodeConnection conn = new NodeConnection();
-                conn.Tag = TagFactory.GetTagObject(outputFields.Tag);
+                conn.Tag = PluginContracts.TagFactory.GetTagObject(outputFields.Tag);
                 conn.Name = outputFields.name;
                 String[] fromNameParts = outputFields.From.Split(':');
                 String fromNodeName = fromNameParts[0];
