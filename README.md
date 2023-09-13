@@ -1,6 +1,9 @@
 # T3DConvoEdit
 A conversation editor for Torque-based games
 
+THIS IS NOT A GAME ENGINE.
+The tool is meant to be used with Torque 3D - https://github.com/TorqueGameEngines/Torque3D
+
 Example of a rudimentary system that could use the output from this tool is in the T3DConvoEdit/T3DConvoEditor/Documentation folder.
 
 Copyright (c) 2015 Richard Ranft
